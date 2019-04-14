@@ -1,0 +1,278 @@
+*{
+	box-sizing: border-box;
+}
+
+div.IOContent{
+	margin: 0;
+	padding: 0;
+}
+
+div.IOContentHead{
+	margin: 0;
+	padding: 0;
+	height: 50px;
+	text-align: center;
+	font-size: 30px;
+}
+
+table.IOContentTableNo{
+	display: none;
+}
+
+table{
+	border-collapse: collapse;
+	border: 1px solid #eee;
+	width:100%;
+}
+
+tr.IOContentList{
+	display: none;
+}
+
+tr.IOContentListClick{
+	display: table-row;
+	
+}
+
+tr.IOContentListClick:not(:last-child){
+	border-bottom: 1px solid black;
+}
+
+tr.IOContentList td{
+	padding: 5px;
+	text-align: center;
+	width: 25%;
+	height: 50px;
+}
+
+td.isON{
+	width: 15%;
+}
+
+td.isChecked div{
+	margin-left: -20px;
+}
+
+button.IOSwitchButtonBase{
+  width:50px;
+  height: 40px ;
+  display: inline-block;
+  padding-left: 5px;
+  font-size: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: grey;
+  border: none;
+  border-radius: 15px;
+  /*box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);*/
+}
+
+button.IOSwitchButtonON{
+	background-color: #0A5;
+    box-shadow: inset 0px 0px 5px 0 rgb(0,0,0,0.8);
+    font-size: 20px;
+	animation: IOSwitchButtonONAnimation 0.1s step-end forwards paused;
+}
+
+
+button.IOSwitchButtonOFF{
+	background-color: red;
+    box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);
+    font-size: 20px;
+	animation: IOSwitchButtonOFFAnimation 0.2s step-end forwards paused;
+}
+
+@keyframes IOSwitchButtonONAnimation{
+	10%{
+		background-color: #085;
+	    box-shadow: inset 0px 0px 8px 2px rgb(0,0,0,1);
+	    font-size: 18px;
+	}
+	100%{
+		background-color: #0A5;
+	    box-shadow: inset 0px 0px 5px 0 rgb(0,0,0,0.8);
+	    font-size: 20px;
+	}
+}
+
+@keyframes IOSwitchButtonOFFAnimation{
+	10%{
+		background-color: #085;
+	    box-shadow: inset 0px 0px 8px 2px rgb(0,0,0,1);
+	    font-size: 18px;
+	}
+	100%{
+		background-color: red;
+	    box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);
+	    font-size: 20px;
+	}
+}
+
+td.IOName, td.IOAlias{
+	font-size: 15px;
+}
+
+button.IOSwitchButton:hover{
+	opacity: 0.7;
+}
+
+div.checkMarkBox{
+    z-index: 0;
+	position: relative;
+	left: 50%;
+	width: 50px;
+	height: 50px;	
+	vertical-align: middle;	
+	box-shadow: 0 0px 3px rgb(0,0,0,0.5), inset 0 0px 3px rgb(0,0,0,0.5);
+	border:3px solid white;
+}
+
+div.checkMarkBox span{
+	font:40px bold;
+	color: white;
+	text-shadow: 0 0px 3px rgb(0,0,0,0.5);
+	position: relative;
+	top: -5px;
+	user-select: none;
+}
+
+div.checkMarkBoxChecked{
+	border-color: #0A5;
+}
+
+div.checkMarkBoxChecked span{
+	color: #0A5;
+}
+
+div.checkMarkBoxError{
+	border-color: orangered;
+}
+
+div.checkMarkBoxError span{
+	color: orangered;
+}
+
+div.checkMarkBoxProblem{
+	border-color: gold;
+}
+
+div.checkMarkBoxProblem span{
+	color: gold;
+}
+
+th{
+	background: #fcff00;
+	padding:10px 50px;
+	font-size:20px;
+}
+
+th.IOHeadWrapper{
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+}
+
+th div.IOGroupName{
+	background-color: #fcff00;
+	color:white;
+	flex:10%;
+	font-size: 20px;
+}
+
+th div.IOContentWrapper{
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	flex:90%;
+	background-color: white;
+}
+
+th div.SingleWrapper{
+	width:20px;
+	height:40px;
+	text-align: :center;
+	vertical-align: :center;
+	border: 2px solid white;
+}
+
+th div.SingleWrapper div.isOn{
+	width: 100%;
+	height: 90%
+	font-size:30px;
+	text-align: :center;
+	vertical-align: center;
+	border-bottom: 2px solid white;
+}
+
+th div.IOSwitchButtonON{
+	background-color: #05d900;
+}
+
+th div.IOSwitchButtonOFF{
+	background-color: #ff0c00;
+}
+
+th div.isOn.None{
+	background-color: #6d6d6d;
+}
+
+th div.isOnClick{
+	box-shadow: inset 0 0px 3px rgb(0,0,0,0.5);
+}
+
+th div.isChecked{
+	width: 100%;
+	height: 10%;	
+}
+
+th div.isChecked.checkMarkBox{
+	background-color: white;	
+}
+
+th div.isChecked.checkMarkBoxChecked{
+   background-color: #0A5;
+}
+
+th div.isChecked.checkMarkBoxError{
+   background-color: orangered;	
+}
+
+th div.isChecked.checkMarkBoxProblem{
+	background-color: gold;
+}
+
+th div.isChecked.NoAlias .CheckFS{
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	background-color: #6d6d6d;
+}
+
+th div.isChecked.None{
+	background-color: #6d6d6d;
+}
+
+th div.isChecked.None div{
+	visibility: false;
+}
+
+th.index{
+	position: absolute;
+	right:0px;
+	bottom: 10%;
+	width: 30%;
+	height: 40%;
+	margin:2px;
+	padding: 0px;
+	color:white;
+	text-shadow: 0px 0px 2px solid black;
+}
+
+th.index.None{
+	color:black;
+	text-shadow: 0px 0px 2px solid white;
+}

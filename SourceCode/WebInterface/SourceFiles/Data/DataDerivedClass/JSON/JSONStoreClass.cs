@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.ComponentModel;
+
+namespace WebInterface
+{
+    class JSONStoreClass:StoreClass
+    {
+        public Dictionary<String, DataSet> dataDict;
+        public Dictionary<String, String> controllerDict;
+        public DataTable QPLCControllerTable { get; set; }
+        public DataTable ACSControllerTable { get; set; }
+        public DataTable ControllerTypeTable { get; set; }
+        public BindingList<ControllerListSource> controllerNameList;
+    }
+}
