@@ -28,9 +28,10 @@ namespace WebInterface.QueryUtilities
             int[] tr = new int[0];
             transStr = transStr.Trim('\r');
             result = true;
+            tr = transStr.Split(splitChar).Select(s => ACSTransParse(s)).ToArray();
             try
             {
-                tr = transStr.Split(splitChar).Select(s => int.Parse(s)).ToArray();
+                
             }
             catch
             {
@@ -38,6 +39,18 @@ namespace WebInterface.QueryUtilities
             }           
 
             return tr.ToList();
+        }
+
+        static int ACSTransParse(string s)
+        {
+            if (s.Contains(","))
+            {
+                return Convert.ToInt32(s.Replace(",", "").Trim(' '),2);
+            }
+            else
+            {
+                return int.Parse(s);
+            }
         }
     }
 

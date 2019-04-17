@@ -190,9 +190,9 @@ function TableContentInit(){
 			    	j++;
 
 			    	temp=testJson[controllerName][IOType][IOGroupName];
-			    	validIOIndex=temp[0].toString(2);
-			    	ONOFFIndex=temp[1].toString(2);
-			    	checkIndex=temp[2].toString(4);
+			    	validIOIndex=ConvertSignedIntToString(temp[0],2);
+			    	ONOFFIndex=ConvertSignedIntToString(temp[1],2);
+			    	checkIndex=ConvertSignedIntToString(temp[2],4);
 			    	IOAliasArr=temp[3];
 
 			    	var ol1=ONOFFIndex.length;
@@ -243,6 +243,15 @@ function TableContentInit(){
 			    }
 			}
 		}
+}
+
+function ConvertSignedIntToString(input, base){
+	if (input<0){
+		return (input>>>0).toString(base);
+	}
+	else{
+		return input.toString(base);
+	}
 }
 
 function GetIOName(cName, IOGroupName, index){
