@@ -28,10 +28,9 @@ namespace WebInterface.QueryUtilities
             int[] tr = new int[0];
             transStr = transStr.Trim('\r');
             result = true;
-            tr = transStr.Split(splitChar).Select(s => ACSTransParse(s)).ToArray();
             try
             {
-                
+                tr = transStr.Split(splitChar).Select(s => ACSTransParse(s)).ToArray();
             }
             catch
             {
