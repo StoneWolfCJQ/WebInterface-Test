@@ -2,5 +2,5 @@ New Html/
 json/
 Video/
 SourceCode/.vs/
-SourceCode/obj/
-SourceCode/bin/
+SourceCode/WebInterface/obj/
+SourceCode/WebInterface/bin/
