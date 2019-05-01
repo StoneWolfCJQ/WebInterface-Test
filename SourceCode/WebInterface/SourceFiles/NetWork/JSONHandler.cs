@@ -80,9 +80,10 @@ namespace WebInterface
             }
 
             lastModifiedTimeutc = DateTime.UtcNow;
+            DateTime tempDate = lastModifiedTimeutc;
 
             JObject o = new JObject(from er in tp
-                                    where er.time.Subtract(lastModifiedSinceutc) > IODataCollection.intervalSendNew
+                                    where er.time.Subtract(tempDate) > IODataCollection.intervalSendNew
                                     group er by er.type into g
                                     select new JProperty(g.Key, new JObject(from gi in g
                                                                             group gi by gi.cname into gs
@@ -91,7 +92,7 @@ namespace WebInterface
                                                                             )));
             if (o.Count > 0)
             {
-
+                int a;
             }
             JSON = o.ToString();
             return JSON;

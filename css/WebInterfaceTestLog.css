@@ -1,0 +1,172 @@
+:root{
+	--cbc:rgb(230, 232, 237);
+	--trans:all 0.3s ease-in-out;
+	--shadow:0 1px 5px 0px rgb(0,0,0,0.4); 
+	--border:2px solid rgb(106, 107, 109, 0.4);
+}
+
+*{
+	box-sizing: border-box;
+}
+
+div.IOLog{
+	width: 94%;
+	height: 0px;
+	margin-left: 3%;
+	margin-right: 3%;
+    position: fixed;
+    bottom: 2%;
+    right:  0;
+	z-index: 0;
+	max-width: 600px;
+    background-color: var(--cbc);
+    transition: var(--trans);
+}
+
+div.IOLog.off :not(first-child){
+	visibility: hidden;
+}
+
+div.switchButton{
+	position: absolute;
+	right: 0;
+	top: -43px;	
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	font-size: 20px;
+	line-height: 30px;
+	color: rgb(106, 107, 109);
+	background-color:  inherit;
+	box-shadow: var(--shadow);
+	border: var(--border);	
+	transition: var(--trans);
+}
+
+div.IOLog.off div.switchButton:before{
+	content: "\25b2";
+}
+
+div.IOLog.on div.switchButton:before{
+	content: "\25bc";
+}
+
+div.IOLog.off div.switchButton{
+	visibility: visible;	
+	border-radius: 25px;
+	border: var(--border);		
+	width: 50px;
+	top: -53px;	
+	height: 50px;
+	font-size: 30px;
+	line-height: 40px;
+}
+
+
+div.IOLog.on *{
+	visibility: visible;
+}
+
+div.IOLog.on{	
+	height: 40%;   
+    border-top-width:  2px solid grey;	
+    box-shadow: var(--shadow);
+}
+
+div.IOLog .controller,.valueType{
+	position: absolute;
+	left: 0;
+	top: -43px;
+	height: 40px;
+	text-align: center;
+	font-size: 20px;
+	color: rgb(106, 107, 109);
+	background-color: inherit;
+	box-shadow: inherit; 
+	overflow: hidden;
+	border: var(--border);	
+}
+
+div.IOLog .controller{
+	font-size: 15px;
+	line-height: 15px;
+}
+
+div.IOLog .controller{
+	width: 80px;
+}
+
+div.IOLog .valueType{	
+	width: 40px;
+	left: 80px;
+	line-height: 30px;
+}
+
+
+div.IOLog .mainBody{
+	display: flex;
+	flex-direction: row;
+	height:  100%;
+}
+
+div.mainBody>*{
+	border: var(--border);	
+	display: flex;
+	flex-direction: column;
+}
+
+div.mainBody .log{	
+	flex:80%;
+}
+
+div.mainBody .filter{
+	flex:20%;
+	min-width: 100px;
+}
+
+div.mainBody .head{
+	font-size:1em;
+	border-bottom: inherit;
+	text-align: center;	
+}
+
+div.mainBody .content{
+	font-size: 1.2em;
+	line-height: 1em;	
+	overflow: auto;
+	flex: 100%;
+}
+
+
+div.mainBody *{
+	margin:0;
+	padding:0;
+}
+
+div.IOLog div.filterClear{
+	margin: auto;
+	padding: auto;
+}
+
+div.IOLog textarea.filterText{
+	resize: none;
+	width: 95%;
+	margin-bottom: 0;
+	height: 90%;	
+}
+
+div.IOLog button{
+	height: 8%;
+	margin:auto 0;
+	position: absolute;
+	bottom: 5px;
+	padding: 5px auto;
+}
+
+div.IOLog button.filterClear{	
+	right:5px;
+}
+
+div.IOLog button.logClear{
+	left:5px;
+}

@@ -1,0 +1,182 @@
+*{
+	box-sizing: border-box;
+}
+
+div.IOContent{
+	margin: 0;
+	padding: 0;
+}
+
+div.IOContentHead{
+	margin: 0;
+	padding: 0;
+	height: 50px;
+	text-align: center;
+	font-size: 30px;
+}
+
+table.IOContentTableNo{
+	display: none;
+}
+
+table{
+	border-collapse: collapse;
+	border: 1px solid #eee;
+	width:100%;
+}
+
+th{
+	background: #4CAF50;
+	color: white;
+	padding:10px 50px;
+}
+
+th:first-child{
+	text-align: left;
+}
+
+th:nth-child(2){
+	text-align: right;
+}
+
+tr.IOTableHead:hover th{
+	background: #4C8F50;
+}
+
+tr.IOContentList{
+	display: none;
+}
+
+tr.IOContentListClick{
+	display: table-row;
+	
+}
+
+tr.IOContentListClick:not(:last-child){
+	border-bottom: 1px solid black;
+}
+
+tr.IOContentList td{
+	padding: 5px;
+	text-align: center;
+	width: 25%;
+	height: 50px;
+}
+
+td.isON{
+	width: 15%;
+}
+
+td.isChecked div{
+	margin-left: -20px;
+}
+
+button.IOSwitchButtonBase{
+  width:50px;
+  height: 40px ;
+  display: inline-block;
+  padding-left: 5px;
+  font-size: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: grey;
+  border: none;
+  border-radius: 15px;
+  /*box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);*/
+}
+
+button.IOSwitchButtonON{
+	background-color: #0A5;
+    box-shadow: inset 0px 0px 5px 0 rgb(0,0,0,0.8);
+    font-size: 20px;
+	animation: IOSwitchButtonONAnimation 0.1s step-end forwards paused;
+}
+
+
+button.IOSwitchButtonOFF{
+	background-color: red;
+    box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);
+    font-size: 20px;
+	animation: IOSwitchButtonOFFAnimation 0.2s step-end forwards paused;
+}
+
+@keyframes IOSwitchButtonONAnimation{
+	10%{
+		background-color: #085;
+	    box-shadow: inset 0px 0px 8px 2px rgb(0,0,0,1);
+	    font-size: 18px;
+	}
+	100%{
+		background-color: #0A5;
+	    box-shadow: inset 0px 0px 5px 0 rgb(0,0,0,0.8);
+	    font-size: 20px;
+	}
+}
+
+@keyframes IOSwitchButtonOFFAnimation{
+	10%{
+		background-color: #085;
+	    box-shadow: inset 0px 0px 8px 2px rgb(0,0,0,1);
+	    font-size: 18px;
+	}
+	100%{
+		background-color: red;
+	    box-shadow: 0px 0px 5px 0 rgb(0,0,0,0.5);
+	    font-size: 20px;
+	}
+}
+
+td.IOName, td.IOAlias{
+	font-size: 15px;
+}
+
+button.IOSwitchButton:hover{
+	opacity: 0.7;
+}
+
+div.checkMarkBox{
+    z-index: 0;
+	position: relative;
+	left: 50%;
+	width: 50px;
+	height: 50px;	
+	vertical-align: middle;	
+	box-shadow: 0 0px 3px rgb(0,0,0,0.5), inset 0 0px 3px rgb(0,0,0,0.5);
+	border:3px solid white;
+}
+
+div.checkMarkBox span{
+	font:40px bold;
+	color: white;
+	text-shadow: 0 0px 3px rgb(0,0,0,0.5);
+	position: relative;
+	top: -5px;
+	user-select: none;
+}
+
+div.checkMarkBoxChecked{
+	border-color: #0A5;
+}
+
+div.checkMarkBoxChecked span{
+	color: #0A5;
+}
+
+div.checkMarkBoxError{
+	border-color: orangered;
+}
+
+div.checkMarkBoxError span{
+	color: orangered;
+}
+
+div.checkMarkBoxProblem{
+	border-color: gold;
+}
+
+div.checkMarkBoxProblem span{
+	color: gold;
+}

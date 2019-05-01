@@ -11,12 +11,8 @@ var querytext="";
 var controllerS="";
 var selectIOType="";
 var sendBeforeText="";
-//Log related
-var maxLogNum=30;
-var logDict={};
-var filterP={"IO" : { "include" :[], "exclude":[]}};
-var selectedLogControllerName="";
 //TODO 阻塞Button, off掉button事件直到返回成功
+
 $(document).ready(function() {
 	AJAXInit();
 });
@@ -54,11 +50,6 @@ function AJAXSuccesFunction(){
 	ToggleSideBar();
 	ToggleONOFFButton();	
 	ToggleCheckBox();
-	ToggleSwitchButton();
-	ChangeLogTarget(selectedLogControllerName);
-	TextAreaChange();
-	FilterClearButtonEvent();
-	LogClearButtonEvent()
 	AJAXQuery();
 }
 
@@ -102,7 +93,8 @@ function HTMLChange()
 	for (IOType in newJson)
 	{
 		for (controllerName in newJson[IOType])
-		{			
+		{
+
 			for (value in newJson[IOType][controllerName])
 			{
 				value=newJson[IOType][controllerName][value];
@@ -110,26 +102,21 @@ function HTMLChange()
 				var v=value.split('=')[1];
 				var filter="table.IOContentTableNo."+controllerName+' td.IOName';
 				var IONameFilter=$(filter).filter(function(){return $(this).text()==IOName;});
-				var IOAlias=IONameFilter.nextAll("td.IOAlias");
-				var aliasStr=IOAlias.text();
 				switch (IOType) {
 					case "ONOFF":
 						var isON=IONameFilter.nextAll("td.isOn").find("button");
 						var x= (v=="ON")? (isON.text("ON").addClass('IOSwitchButtonON')
                         	 .removeClass('IOSwitchButtonOFF'))
-                             :(isON.text("OFF").addClass('IOSwitchButtonOFF').removeClass('IOSwitchButtonON'));                        
-                        var logStr=IOName + " " + aliasStr +  " is $" + v;
-                        AddLogItem(controllerName, logStr);
+                             :(isON.text("OFF").addClass('IOSwitchButtonOFF').removeClass('IOSwitchButtonON'));
 						break;
-					case "IOAlias":					    
+					case "IOAlias":
+					    var IOAlias=IONameFilter.nextAll("td.IOAlias");
 					    IOAlias.text(v);
 					    break;
 					case "CheckStatus":
 					    var isCheck=IONameFilter.nextAll("td.isChecked").find("div.checkMarkBox");
 					    isCheck.removeClass().addClass('checkMarkBox')
                              .find('span').html('&#x2713');
-                        var logStr=IOName + " " + aliasStr +  " is $" + v;
-                        AddLogItem(controllerName, logStr);
                          switch (v)
                          	{
                          		case "Uncheck":break;
@@ -174,19 +161,12 @@ function TableContentInit(){
 	var temp, validIOIndex, ONOFFIndex, checkIndex, IOAliasArr, 
 	    firstSelectorChild, tempIndex, tempONOFF, tempIsChecked;
 	var  IOIndex, IOIsChecked, IOIsOn, IOAlias;
-	var first=true;
 	for (controllerName in testJson)
 		{
 			firstSelector=$("li.sideBarControllerList").first();
 			lastSelector=$("li.sideBarControllerList").last()
 			firstSelector.clone().css('display', 'block').insertAfter(lastSelector).
 			   find('p.sideBarControllerName').text(controllerName);
-			var logContent={"log":["Initializing"], "filter":""};
-			logDict[controllerName]=logContent;	
-			if (first){
-				selectedLogControllerName=controllerName;	
-				first=false;	
-			}			
 
 			for (IOType in testJson[controllerName])
 			{				
@@ -257,12 +237,11 @@ function TableContentInit(){
                          		default:break;
                          	}
                          }
-			    		cloneEle.appendTo(lastSelector);
+			    		cloneEle.appendTo(lastSelector);	
 			    		l++;		    		
 			        }
 			    }
 			}
-			AddLogItem(controllerName, "Success");
 		}
 }
 
@@ -380,12 +359,10 @@ function SideBarRespond(){
 		event.preventDefault();
 		/* Act on the event */
 		controllerS=$(this).parent().prev().children("p.sideBarControllerName").text();
-		selectedLogControllerName=controllerS;
 		selectIOType=$(this).text();
 		var classFilter="."+controllerS+"."+selectIOType;		
 		$("div.IOContentHead span").text(classFilter.split('.')[1]+"  "+classFilter.split('.')[2]);
-		$("table.IOContentTableNo").hide().filter(classFilter).show();
-		ChangeLogTarget(controllerS);
+		$("table.IOContentTableNo").hide().filter(classFilter).show();;
 	});
 }
 
@@ -397,151 +374,4 @@ function DisableClickAJAX(){
 function EnableClickAJAX(){
 	ToggleONOFFButton();	
 	ToggleCheckBox();	
-}
-
-function ToggleSwitchButton(){
-	$("div.switchButton").on('click', function(event) {
-		event.preventDefault();
-		$("div.IOLog").toggleClass('on').toggleClass('off');;
-		/* Act on the event */
-	});
-}
-
-function TextAreaChange(){
-	var t=$("div.filter .content .filterText");
-	t.change(function(event) {
-		/* Act on the event */
-		TextAreaChangeEvent();
-	});		
-}
-
-function TextAreaChangeEvent(){
-	var t=$("div.filter .content .filterText");
-	logDict[selectedLogControllerName]["filter"]=t.val();
-	ParseFilter(t.val());	
-	RewriteHtmlLog(selectedLogControllerName);
-}
-
-function HtmlLogWrite(s){
-	if (HtmlLogFilterBeforeWrite(s)){		
-		$("div.log .content").append("<p class='item'>>"+s+"</p>");
-	}
-}
-
-function HtmlLogFilterBeforeWrite(s){
-	var ex=filterP["IO"]["exclude"];
-	var ix=filterP["IO"]["include"];
-	var result=true;
-	for (var ixsi in ix){
-		var ixs=ix[ixsi];
-		result=false;
-		if ((ixs!="")&&(ixs!=" ")){
-			if (s.indexOf(ixs, 0)!=-1){
-				result=true;
-				break;
-			}
-		}
-	}
-
-	for (var exsi in ex){
-		var exs=ex[exsi];
-		if ((exs!="")&&(exs!=" ")){
-			if (s.indexOf(exs, 0)!=-1){
-				result=false;
-				break;
-			}
-		}
-	}
-	return result;
-}
-
-function HtmlLogClear(){
-	$("div.log .content").text("");
-}
-
-function HtmlFilterWrite(s){
-	$("div.filter .content textarea").val(s);
-}
-
-function ParseFilter(s){
-	if (s==null){
-		return;
-	}
-	var ss = s.split(/[\s \r\n]+/);
-	var ex=[];
-	var ix=[];
-	if (ss!=""){
-		for (var csi in ss){	
-            var cs=ss[csi];
-			if (cs.startsWith('-', 0)){
-			    cs=cs.substring(1); 
-			    if (ex.indexOf(cs, 0)==-1){			    	
-					ex.push(cs);
-			    }
-			}
-			else {
-				if (ix.indexOf(cs, 0)==-1){
-					ix.push(cs);
-				}
-			}
-		}
-	}
-	filterP["IO"]["include"]=ix;
-	filterP["IO"]["exclude"]=ex;
-}
-
-function ChangeLogTarget(controllerName){
-	var ch=$("div.IOLog .controller");
-	HtmlFilterWrite(logDict[controllerName]["filter"]);
-    TextAreaChangeEvent();
-	if (ch.text()!=controllerName){		
-		RewriteHtmlLog(controllerName);
-	}
-}
-
-function RewriteHtmlLog(controllerName){
-	    HtmlLogClear();
-		$("div.IOLog .controller").text(controllerName);
-		for (s in logDict[controllerName]["log"]){
-			HtmlLogWrite(logDict[controllerName]["log"][s]);
-		}
-}
-
-function AddLogItem(controllerName, logStr){
-	var logSel=logDict[controllerName]["log"];
-	if (logSel[logSel.length-1]==logStr){
-		return
-	}
-	logSel.push(logStr);
-	if (logSel.length>maxLogNum){
-		logSel.splice(0, 1);
-	}
-	if (controllerName==selectedLogControllerName){
-		HtmlLogWrite(logStr)
-		var c=$("div.log .content").children();
-		if (c.length>maxLogNum){
-			c[0].remove();
-		}
-	}
-}
-
-function FilterClearButtonEvent(){
-	$("div.IOLog .filterClear").on('click',  function(event) {
-		event.preventDefault();
-		filterP["IO"]["include"]=[];
-		filterP["IO"]["exclude"]=[];
-		logDict[selectedLogControllerName]["filter"]="";
-		HtmlFilterWrite(logDict[selectedLogControllerName]["filter"]);
-		RewriteHtmlLog(selectedLogControllerName);
-		/* Act on the event */
-	});
-}
-
-function LogClearButtonEvent(){
-	$("div.IOLog .logClear").on('click',  function(event) {
-		event.preventDefault();
-		logDict[selectedLogControllerName]["log"]=[];
-		HtmlLogClear();
-		/* Act on the event */
-	});
 }
