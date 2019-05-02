@@ -16,6 +16,9 @@ var maxLogNum=30;
 var logDict={};
 var filterP={"IO" : { "include" :[], "exclude":[]}};
 var selectedLogControllerName="";
+//storage
+var filterStorage={}
+var storageName="filter";
 //TODO 阻塞Button, off掉button事件直到返回成功
 $(document).ready(function() {
 	// AJAXSuccesFunction();
@@ -164,9 +167,28 @@ function CheckJsonInit(){
 }
 
 function Init(){
+	GetStorage();
 	TableContentInit();
 	TableDisplayInit();
+	SetStorage();
 	isInit=true;
+}
+
+function GetStorage(){
+	if (typeof(Storage)!==undefined){
+		filterStorage=JSON.parse(localStorage.getItem(storageName));
+	}
+	else {
+		alert("浏览器不支持本地存储");
+	}
+}
+
+function SetStorage(){
+	filterStorage={};
+	for (var cName in logDict){
+		filterStorage[cName] = logDict[cName]["filter"];
+	}
+	localStorage.setItem(storageName, JSON.stringify(filterStorage));
 }
 
 function TableContentInit(){
@@ -183,6 +205,9 @@ function TableContentInit(){
 			firstSelector.clone().css('display', 'block').insertAfter(lastSelector).
 			   find('p.sideBarControllerName').text(controllerName);
 			var logContent={"log":["Initializing"], "filter":""};
+		    if (filterStorage&&(filterStorage[controllerName])){
+		    	logContent["filter"]=filterStorage[controllerName];
+		    }
 			logDict[controllerName]=logContent;	
 			if (first){
 				selectedLogControllerName=controllerName;	
@@ -421,11 +446,14 @@ function TextAreaChangeEvent(){
 	logDict[selectedLogControllerName]["filter"]=t.val();
 	ParseFilter(t.val());	
 	RewriteHtmlLog(selectedLogControllerName);
+	SetStorage();
 }
 
 function HtmlLogWrite(s){
-	if (HtmlLogFilterBeforeWrite(s)){		
-		$("div.log .content").append("<p class='item'>>"+s+"</p>");
+	if (HtmlLogFilterBeforeWrite(s)){	
+	    var c=	$("div.log .content");
+		c.append("<p class='item'>>"+s+"</p>");
+		c.animate({scrollTop: 9999}, 1000);
 	}
 }
 
