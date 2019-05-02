@@ -18,6 +18,7 @@ var filterP={"IO" : { "include" :[], "exclude":[]}};
 var selectedLogControllerName="";
 //TODO 阻塞Button, off掉button事件直到返回成功
 $(document).ready(function() {
+	// AJAXSuccesFunction();
 	AJAXInit();
 });
 
