@@ -471,8 +471,11 @@ function ParseFilter(s){
 	var ss = s.split(/[\s \r\n]+/);
 	var ex=[];
 	var ix=[];
-	if (ss!=""){
-		for (var csi in ss){	
+	if (ss.length>0){
+		for (var csi in ss){
+			if (ss[csi]==="")	{
+				break;
+			}
             var cs=ss[csi];
 			if (cs.startsWith('-', 0)){
 			    cs=cs.substring(1); 
