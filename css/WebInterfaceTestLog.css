@@ -1,11 +1,14 @@
 :root{
-	--light-backgroundcolor:#d3d3d3;
-	--heavy-backgroundcolor:#f4f2f2;	
-	--button-active-bgc:#565656;
-	--button-idle-bgc:var(--heavy-backgroundcolor);
+	--light-backgroundcolor:navajowhite	;
+	--heavy-backgroundcolor:wheat;	
+	--button-active-bgc:tan;
+	--button-idle-bgc:orange;
+	--border-color:navajowhite;
+	--logItemHover-background:burlywood;
+	--logItemClick-background:chocolate;
 	--trans:all 0.3s ease-in-out;
 	--shadow:0 3px 5px 0px rgb(0,0,0,0.4); 
-	--border:2px solid var(--button-active-bgc);
+	--border:2px solid var(--border-color);
 }
 
 *{
@@ -122,6 +125,14 @@ div.mainBody .log{
 	flex:80%;
 }
 
+div.mainBody .log .content .item:hover{
+	background-color: var(--logItemHover-background);
+}
+
+div.mainBody .log .content .item:active{
+	background-color: var(--logItemClick-background);
+}
+
 div.mainBody .filter{
 	flex:20%;
 	min-width: 100px;
@@ -131,7 +142,7 @@ div.mainBody .head{
 	font-size:1.5em;
 	border-bottom: inherit;
 	text-align: center;	
-	color:white;
+	color:black;
 	-webkit-text-stroke: 1px black;
 	text-shadow: 0 2px 2px 0 rgb(0,0,0,0.5);
 }

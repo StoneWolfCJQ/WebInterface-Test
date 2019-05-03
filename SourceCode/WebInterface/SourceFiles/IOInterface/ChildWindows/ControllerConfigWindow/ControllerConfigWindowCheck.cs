@@ -21,9 +21,9 @@ namespace WebInterface
 
         private bool CheckControllerNameLegal(String cn, int rowIndex, int colIndex)
         {
-            if (cn.EndsWith(" ") || cn.StartsWith(" "))
+            if (cn.Contains(' '))
             {
-                MessageBox.Show("名称前后不能带有空格", "名称格式错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("名称不能带有空格", "名称格式错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
             if (IODataCollection.controllerDict.ContainsKey(IODataCollection.MergeTypeNameAndControllerName(selectControllerTypeName, cn)))

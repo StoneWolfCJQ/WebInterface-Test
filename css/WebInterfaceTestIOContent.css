@@ -131,6 +131,7 @@ button.IOSwitchButtonOFF{
 
 td.IOName, td.IOAlias{
 	font-size: 15px;
+	word-break:break-all;
 }
 
 button.IOSwitchButton:hover{

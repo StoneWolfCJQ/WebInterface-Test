@@ -1,0 +1,12 @@
+:root{	
+	--button-active-bgc:tan;
+	--button-idle-bgc:orange;
+	--border-color:navajowhite;
+	--shadow:0 3px 5px 0px rgb(0,0,0,0.4); 
+	--border:2px solid var(--border-color);
+}
+
+*{
+	box-sizing: border-box;
+}
+
