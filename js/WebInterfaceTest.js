@@ -76,6 +76,7 @@ function AJAXSuccesFunction(){
 	window.location.hash="";
 	RestoreLastScroll();
 	WindowScrollEvent();
+	UnloadEvent();
 	AJAXQuery();
 }
 
@@ -489,13 +490,6 @@ function SideBarRespond(){
 	});
 }
 
-function WindowScrollEvent(){
-	$(window).on('scroll',  function(event) {
-		event.preventDefault();		
-	    scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
-	});
-}
-
 function SideBarRespondAction(selector){
 	controllerS=selector.parent().prev().children("p.sideBarControllerName").text();
 	selectedLogControllerName=controllerS;
@@ -575,6 +569,13 @@ function URLChangeEventAction(fromHistory=true){
 	}
 }
 
+function WindowScrollEvent(){
+	$(window).on('scroll',  function(event) {
+		event.preventDefault();		
+	    scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
+	});
+}
+
 function UnloadEvent(){
 	$(window).on('unload',  function(event) {
 		event.preventDefault();
@@ -600,8 +601,10 @@ function ScrollToIO1(controllerName, IOName, fromHistory = false){
 				s=s+'#'+IDMap.get(controllerName+'-'+IOName);
 			}
 			$(window).off('hashchange');
+			$(window).off('scroll');
 			window.location=s;	
-			URLChangeEvent();		
+			URLChangeEvent();	
+			WindowScrollEvent();
 		}
 	}
 }
