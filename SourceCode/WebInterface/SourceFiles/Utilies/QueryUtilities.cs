@@ -8,24 +8,19 @@ namespace WebInterface.QueryUtilities
 {
     public static partial class Utilities
     {
-        public static String ConvertDateTimeUTCToHTTPGMT(DateTime utctime)
+        public static String ConvertDateTimeUTCToRoundTripTime(DateTime utctime)
         {
-            return utctime.ToString("R");            
+            return utctime.ToString("O");            
         }
 
-        public static DateTime ConvertHTTPGMTTODateTimeUTC(String utctimes)
+        public static DateTime ConvertRoundTripTimeDateTimeUTC(String utctimes)
         {
-            return DateTime.ParseExact(utctimes, "R", System.Globalization.CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(utctimes, "O", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         public static String ConvertDateTimeUTCNowToHTTPGMT()
         {
-            return DateTime.UtcNow.ToString("R");
-        }
-
-        public static String ConvertDateTimeMinUTCToHTTP()
-        {
-            return DateTime.MinValue.ToString("R");
+            return DateTime.UtcNow.ToString("O");
         }
     }
 

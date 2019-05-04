@@ -140,9 +140,9 @@ namespace WebInterface
                 }
                 else
                 {
-                    lastModifiedSinceutcStr = Utilities.ConvertDateTimeMinUTCToHTTP();
+                    lastModifiedSinceutcStr = DateTime.MinValue.ToString("O");
                 }
-                DateTime lastModifiedSinceutc = Utilities.ConvertHTTPGMTTODateTimeUTC(lastModifiedSinceutcStr);
+                DateTime lastModifiedSinceutc = Utilities.ConvertRoundTripTimeDateTimeUTC(lastModifiedSinceutcStr);
                 HTTPRequestHandler.AJAXAction(response, queryContent, lastModifiedSinceutc);
             }
         }

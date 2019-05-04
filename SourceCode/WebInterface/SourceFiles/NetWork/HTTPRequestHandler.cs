@@ -20,12 +20,9 @@ namespace WebInterface
             byte[] content_to_bytes = File.ReadAllBytes("WebInterfaceTest.html"); //Encoding.UTF8.GetBytes(content);
 
             string header = string.Format("Content-Type:text/html;charset=UTF-8\r\nContent-Length:{0}\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCNowToHTTPGMT());
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
-            byte[] modifiedToBytes = Encoding.UTF8.GetBytes(modified);
 
             response.Send(statusline_to_bytes);  //发送状态行
-            response.Send(modifiedToBytes);
             response.Send(header_to_bytes);  //发送应答头
             response.Send(new byte[] { (byte)'\r', (byte)'\n' });  //发送空行
             response.Send(content_to_bytes);  //发送正文（html）
@@ -51,12 +48,9 @@ namespace WebInterface
             }
 
             string header = string.Format(contentTypeStr+ "charset=UTF-8\r\nContent-Length:{0}\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCNowToHTTPGMT());
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
-            byte[] modifiedToBytes = Encoding.UTF8.GetBytes(modified);
 
             response.Send(statusline_to_bytes);  //发送状态行
-            response.Send(modifiedToBytes);
             response.Send(header_to_bytes);  //发送应答头
             response.Send(new byte[] { (byte)'\r', (byte)'\n' });  //发送空行
             response.Send(content_to_bytes);  //发送正文（html）
@@ -71,7 +65,7 @@ namespace WebInterface
             
             byte[] content_to_bytes = Encoding.UTF8.GetBytes(JSONHandler.SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc));
             string header = string.Format("Content-Type:application/json;charset=UTF-8\r\nContent-Length:{0}\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToHTTPGMT(lastModifiedTimeutc));
+            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
             byte[] modifiedToBytes = Encoding.UTF8.GetBytes(modified);
 
@@ -109,7 +103,7 @@ namespace WebInterface
             byte[] statusline_to_bytes = Encoding.UTF8.GetBytes(statusline);
             byte[] content_to_bytes = Encoding.UTF8.GetBytes(JSONHandler.SendChangeJSONFromDataCollection(lastModifiedSinceutc, out DateTime lastModifiedTimeutc));
             string header = string.Format("Content-Type:application/json;charset=UTF-8\r\nContent-Length:{0}\r\nConnection: keep-alive\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToHTTPGMT(lastModifiedTimeutc));
+            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
             byte[] modifiedToBytes= Encoding.UTF8.GetBytes(modified);
 

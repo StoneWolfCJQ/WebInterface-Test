@@ -26,6 +26,7 @@ var scrollPosStorageName="scroll";
 var IDMap=new Map();
 var IDMapReverse=new Map();
 var IDMapFirstChar='IDMap';
+var lastModifiedSince="";
 //TODO 阻塞Button, off掉button事件直到返回成功
 $(document).ready(function() {
 	// AJAXSuccesFunction();
@@ -35,17 +36,18 @@ $(document).ready(function() {
 function AJAXInit(){
 	$("div.beforeAJAX").nextAll().hide();	
 	// ajax call
-	$.ajax({
+	var xhr = $.ajax({
 		url: '/init/init.json',
 		type: 'GET',
 		dataType: 'json',
-		timeout:10000,
+		timeout:5000,
 	})
 	.done(function(data) {
 		console.log("success");		
 		testJson=data;		
 		$("div.beforeAJAX").hide().nextAll().show();	
 		AJAXSuccess=true;	
+		lastModifiedSince = xhr.getResponseHeader('Last-Modified');
 		AJAXSuccesFunction();		
 	})
 	.fail(function() {
@@ -82,8 +84,11 @@ function AJAXSuccesFunction(){
 
 function AJAXQuery(){
     sendBeforeText=querytext;
-	$.ajax({
+	var xhrs = $.ajax({
 		url: '/query?'+querytext,
+		beforeSend:function(xhr){
+			xhr.setRequestHeader('If-Modified-Since', lastModifiedSince);
+		},
 		type: 'GET',
 		dataType: 'json',
 		timeout:2000,
@@ -99,6 +104,7 @@ function AJAXQuery(){
 		{
 			
 		}
+		lastModifiedSince=xhrs.getResponseHeader('Last-Modified');
 		//if server send "refresh", require user to refresh the entire page
 		HTMLChange();
 		setTimeout(AJAXQuery, 100);		
@@ -226,7 +232,6 @@ function RestoreLastScroll(){
 				ToggleIOTableAction(o, 'click');
 			}
 		}
-		LogWindowsRestore(cName);
 	}
 	var ocn=s["open"]["controllerName"];
 	var oi=s["open"]["IOType"];	
@@ -236,7 +241,8 @@ function RestoreLastScroll(){
 		selectIOType=oi;			
 		var o2=FindSideBarFromControllerNameAndIOType(ocn, oi);
 		SideBarRespondAction(o2);
-		$(window).animate({scrollTop: s["list"][ocn]["scroll"][oi]});
+		$(window).animate({scrollTop: s["list"][ocn]["scroll"][oi]});		
+		LogWindowsRestore(ocn);
 	}
 }
 

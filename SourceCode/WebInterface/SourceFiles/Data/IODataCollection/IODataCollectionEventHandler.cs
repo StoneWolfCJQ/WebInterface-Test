@@ -65,7 +65,7 @@ namespace WebInterface
                 {
                     content = e.Row[e.Column.ColumnName] as String;
                 }
-                DateTime now = DateTime.UtcNow;
+                DateTime now = DateTime.Now;
                 IODataChangeContainer id = new IODataChangeContainer(now, cn, cln, IOName, content);
                 AddChangeDict(id);
             }
@@ -109,7 +109,7 @@ namespace WebInterface
             }
             
             var od = from d in tp
-                     where DateTime.UtcNow.Subtract(d.time) > intervalRemoveOld
+                     where DateTime.Now.Subtract(d.time) > intervalRemoveOld
                      select d.time;
 
             lock (dataUpdateList)
@@ -131,7 +131,7 @@ namespace WebInterface
     static partial class IODataCollection
     {
         public static List<IODataChangeContainer> dataUpdateList = new List<IODataChangeContainer>();
-        private static TimeSpan intervalRemoveOld = new TimeSpan(1, 0, 0, 10);
+        private static TimeSpan intervalRemoveOld = new TimeSpan(0, 0, 0, 10);
         public static TimeSpan intervalSendNew = new TimeSpan(0, 0, 0, 0, -500);
         public static bool initJsonSent = false;
         public static SaveFileFlag SaveFile=new SaveFileFlag(0);

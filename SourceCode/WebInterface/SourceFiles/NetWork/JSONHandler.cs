@@ -16,7 +16,7 @@ namespace WebInterface
         public static String SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc)
         {
             Dictionary<String, DataSet> tdd = new Dictionary<string, DataSet>(IODataCollection.dataDict);
-            lastModifiedTimeutc = DateTime.UtcNow;
+            lastModifiedTimeutc = DateTime.Now;
             IODataUpdater.AddChangeEventForIODataCollection();
 
             String JSON = "";
@@ -79,7 +79,7 @@ namespace WebInterface
                 tp = new List<IODataChangeContainer>(IODataCollection.dataUpdateList);
             }
 
-            lastModifiedTimeutc = DateTime.UtcNow;
+            lastModifiedTimeutc = DateTime.Now;
             DateTime tempDate = lastModifiedTimeutc;
 
             JObject o = new JObject(from er in tp
