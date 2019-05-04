@@ -1,5 +1,7 @@
 # WebInterface-Test
 
+__Note:Major update is now discontinued__
+
 ***
 # 简介  
 A simple UI for IO check on local and remote devices  
@@ -8,11 +10,7 @@ A simple UI for IO check on local and remote devices
 `注2：这只是一个试验版程序，代码写得比较乱，没有注释，性能也很差，以后有时间会重写`
 
 ***
-# 使用说明  
-暂时懒得写，试着弄或者看代码吧（如果你有毅力的话。。。）
-
-***
-# 效果  
+# 使用说明及效果  
 [YouTube](https://www.youtube.com/watch?v=T_jWpfXBp4c&feature=youtu.be)  
 [BiliBili](https://www.bilibili.com/video/av49327405/)
 

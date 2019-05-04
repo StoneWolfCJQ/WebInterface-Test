@@ -1,12 +1,8 @@
-var checkState=false;
-var outState="off";
 var testJson={};
 var newJson={};
 var isInit=false;
 var firstJson=[];
 var AJAXSuccess=false;
-var AJAXFailFlag=0;
-var AJAXQueryInterval;
 var querytext="";
 var controllerS="";
 var selectIOType="";
@@ -20,16 +16,16 @@ var selectedLogControllerName="";
 var filterStorage={};//{c:f}
 var storageName="filter";
 var scrollPosStorage={};
-//{open:{controllerName:c, IOType:io}, list:{c:{IOGroup:[iogroup],logOpen:true,scroll:height}}}
+//{open:{controllerName:c, IOType:io},list:{c:{IOGroup:[iog],logOpen:true,scroll:{iot:height}}}
 var scrollPosStorageName="scroll";
 //ID
 var IDMap=new Map();
 var IDMapReverse=new Map();
 var IDMapFirstChar='IDMap';
 var lastModifiedSince="";
-//TODO 阻塞Button, off掉button事件直到返回成功
+
 $(document).ready(function() {
-	// AJAXSuccesFunction();
+
 	AJAXInit();
 });
 
@@ -65,7 +61,7 @@ function AJAXSuccesFunction(){
 	SideBarRespond();
 	ToggleIOTable();
 	ToggleSideBar();
-	ToggleONOFFButton();	
+	ToggleONOFFButton();
 	ToggleCheckBox();
 	ToggleLogSwitchButton();
 	ChangeLogTarget(selectedLogControllerName);
@@ -220,6 +216,9 @@ function SetStorage(){
 }
 
 function SetScrollStorage(){
+	if (typeof(Storage)===undefined){
+		return;
+	}
 	localStorage.setItem(scrollPosStorageName, JSON.stringify(scrollPosStorage));
 }
 
