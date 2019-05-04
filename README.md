@@ -1,6 +1,6 @@
 # WebInterface-Test
 
-__Note:Major update is now discontinued__
+__Note:Major update is now discontinued 2019/5/4__
 
 ***
 # 简介  
