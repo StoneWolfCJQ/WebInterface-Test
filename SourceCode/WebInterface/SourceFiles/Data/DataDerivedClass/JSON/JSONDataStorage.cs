@@ -14,9 +14,9 @@ namespace WebInterface
         {
             jb = new JSONBase();
             defaultFileName = "ACSJson.json";
-            defaultDir = @"\json\";
             String cp = Directory.GetCurrentDirectory();
-            defaultPath = cp + defaultDir + defaultFileName;
+            defaultDir = cp + @"\json\";
+            defaultPath = defaultDir + defaultFileName;
         }
 
         public override bool HasStorage()
@@ -50,6 +50,10 @@ namespace WebInterface
         {
             jb.FillStorer();
             String s = jb.ConvertStorer<String>();
+            if (!Directory.Exists(defaultDir))
+            {
+                Directory.CreateDirectory(defaultDir);
+            }
             File.WriteAllText(defaultPath, s);
         }
 
