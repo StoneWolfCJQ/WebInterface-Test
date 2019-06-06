@@ -496,6 +496,7 @@ function SideBarRespond(){
 }
 
 function SideBarRespondAction(selector){
+	var tcontroller=controllerS
 	controllerS=selector.parent().prev().children("p.sideBarControllerName").text();
 	selectedLogControllerName=controllerS;
 	selectIOType=selector.text();	
@@ -505,7 +506,9 @@ function SideBarRespondAction(selector){
 	var classFilter="."+controllerS+"."+selectIOType;		
 	$("div.IOContentHead span").text(classFilter.split('.')[1]+"  "+classFilter.split('.')[2]);
 	$("table.IOContentTableNo").hide().filter(classFilter).show();
-	ChangeLogTarget(controllerS);	
+	if (tcontroller!=controllerS){
+		ChangeLogTarget(controllerS);	
+	}
 	$(window).scrollTop(s["list"][controllerS]["scroll"][selectIOType]);
 	SetScrollStorage();
 }
