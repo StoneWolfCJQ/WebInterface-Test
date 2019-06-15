@@ -50,11 +50,12 @@ namespace WebInterface
                 return true;
             }
 
-            if (checkList.FindAll(c=>c==IP).Count>1)
+            //Remove Duplication Warning
+            /*if (checkList.FindAll(c=>c==IP).Count>1)
             {
                 MessageBox.Show("IP重复！", "名称错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
-            }
+            }*/
 
             List<String> s = IP.Split('.').ToList();
             if (s.Count != 4)
@@ -91,11 +92,12 @@ namespace WebInterface
                 return true;
             }
 
-            if (checkList.FindAll(c => c == number).Count > 1)
+            //Removed
+            /*if (checkList.FindAll(c => c == number).Count > 1)
             {
                 MessageBox.Show("站号重复！", "地址错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
-            }
+            }*/
 
             int i;
             try
