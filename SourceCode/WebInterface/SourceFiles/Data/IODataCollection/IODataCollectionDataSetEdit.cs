@@ -47,6 +47,7 @@ namespace WebInterface
             controllerDict.Remove(oldMergeName);
             dataDict.Add(newMergeName, dataDict[oldMergeName]);
             dataDict.Remove(oldMergeName);
+            dataDict[newMergeName].DataSetName = newMergeName;
             if (updateBind)
             {
                 ControllerListSource cls = FindNameListItemByName(oldMergeName);
