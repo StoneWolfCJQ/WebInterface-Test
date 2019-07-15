@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using WebInterface.QueryUtilities;
+using System.Web;
 
 namespace WebInterface
 {
@@ -82,6 +83,7 @@ namespace WebInterface
         {
             if (queryContent != "")
             {
+                queryContent = Uri.UnescapeDataString(queryContent);
                 String[] sourceStr = queryContent.Split('&');
                 String cName = sourceStr[0].Split('=')[1];
                 String IOName = sourceStr[1].Split('=')[0];

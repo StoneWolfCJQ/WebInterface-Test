@@ -80,6 +80,10 @@ function AJAXSuccesFunction(){
 
 function AJAXQuery(){
     sendBeforeText=querytext;
+    if (querytext!="")
+    {
+    	var a=0;
+    }
 	var xhrs = $.ajax({
 		url: '/query?'+querytext,
 		beforeSend:function(xhr){
