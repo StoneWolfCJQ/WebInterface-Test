@@ -78,6 +78,7 @@ function AJAXSuccesFunction(){
 	AJAXQuery();
 }
 
+var ajaxError=false;
 function AJAXQuery(){
     sendBeforeText=querytext;
     if (querytext!="")
@@ -111,6 +112,7 @@ function AJAXQuery(){
 	})
 	.fail(function() {
 		console.log("error");
+		ajaxError=true;
 		//tell user serve not response 
 		//click button to retry
 		$("div").hide();		
@@ -584,15 +586,20 @@ function URLChangeEventAction(fromHistory=true){
 function WindowScrollEvent(){
 	$(window).on('scroll',  function(event) {
 		event.preventDefault();		
-	    scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
+		if (!ajaxError){			
+	        scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
+	        SetScrollStorage();
+		}
 	});
 }
 
 function UnloadEvent(){
 	$(window).on('unload',  function(event) {
 		event.preventDefault();
-		scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
-		SetScrollStorage();
+		if (!ajaxError){			
+			scrollPosStorage["list"][controllerS]["scroll"][selectIOType]=$(window).scrollTop();
+			SetScrollStorage();
+		}
 	});
 }
 
