@@ -27,7 +27,7 @@ namespace WebInterface
                                     new JObject(from DataTable table in ds
                                                 select new JProperty(table.TableName,
                                                 new JObject(from DataRow rr in table.Rows
-                                                            let rs = (String)rr["IOName"]
+                                                            let rs = rr["IOName"] as string
                                                             where rs != ""
                                                             let rss = GetIOName(tt.Key, rs)
                                                             group rss by rss into rsg
@@ -55,6 +55,7 @@ namespace WebInterface
                      let onoff = ((String)rs["ONOFF"]) == "ON" ? 1 : 0
                      let check = (int)rs["CheckStatus"]
                      let alias = rs["IOAlias"] as string
+                     orderby index ascending
                      select new { index, onoff, check, alias };
 
             int jindex = 0, jonoff = 0, jcheck = 0;

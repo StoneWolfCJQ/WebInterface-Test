@@ -33,6 +33,8 @@
             this.confirmButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.appendButton = new System.Windows.Forms.Button();
+            this.getCheckButton = new System.Windows.Forms.Button();
+            this.clearCheckButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pDGV)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,13 +53,13 @@
             this.pDGV.Name = "pDGV";
             this.pDGV.RowHeadersVisible = false;
             this.pDGV.RowTemplate.Height = 24;
-            this.pDGV.Size = new System.Drawing.Size(429, 377);
+            this.pDGV.Size = new System.Drawing.Size(440, 402);
             this.pDGV.TabIndex = 0;
             // 
             // confirmButton
             // 
             this.confirmButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.confirmButton.Location = new System.Drawing.Point(244, 12);
+            this.confirmButton.Location = new System.Drawing.Point(255, 12);
             this.confirmButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(101, 38);
@@ -69,7 +71,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(355, 12);
+            this.cancelButton.Location = new System.Drawing.Point(366, 12);
             this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(101, 38);
@@ -81,7 +83,7 @@
             // appendButton
             // 
             this.appendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.appendButton.Location = new System.Drawing.Point(132, 12);
+            this.appendButton.Location = new System.Drawing.Point(143, 12);
             this.appendButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.appendButton.Name = "appendButton";
             this.appendButton.Size = new System.Drawing.Size(101, 38);
@@ -90,11 +92,37 @@
             this.appendButton.UseVisualStyleBackColor = true;
             this.appendButton.Click += new System.EventHandler(this.appendButton_Click);
             // 
+            // getCheckButton
+            // 
+            this.getCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.getCheckButton.Location = new System.Drawing.Point(255, 463);
+            this.getCheckButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.getCheckButton.Name = "getCheckButton";
+            this.getCheckButton.Size = new System.Drawing.Size(101, 38);
+            this.getCheckButton.TabIndex = 4;
+            this.getCheckButton.Text = "GetCheck";
+            this.getCheckButton.UseVisualStyleBackColor = true;
+            this.getCheckButton.Click += new System.EventHandler(this.getCheckButton_Click);
+            // 
+            // clearCheckButton
+            // 
+            this.clearCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.clearCheckButton.Location = new System.Drawing.Point(366, 463);
+            this.clearCheckButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.clearCheckButton.Name = "clearCheckButton";
+            this.clearCheckButton.Size = new System.Drawing.Size(101, 38);
+            this.clearCheckButton.TabIndex = 5;
+            this.clearCheckButton.Text = "ClearCheck";
+            this.clearCheckButton.UseVisualStyleBackColor = true;
+            this.clearCheckButton.Click += new System.EventHandler(this.clearCheckButton_Click);
+            // 
             // PasteFormPreviewWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 463);
+            this.ClientSize = new System.Drawing.Size(495, 510);
+            this.Controls.Add(this.clearCheckButton);
+            this.Controls.Add(this.getCheckButton);
             this.Controls.Add(this.appendButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.confirmButton);
@@ -114,5 +142,7 @@
         private System.Windows.Forms.Button confirmButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button appendButton;
+        private System.Windows.Forms.Button getCheckButton;
+        private System.Windows.Forms.Button clearCheckButton;
     }
 }

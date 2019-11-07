@@ -271,5 +271,29 @@ namespace WebInterface
         {
             return !(String.IsNullOrWhiteSpace(s) || String.IsNullOrEmpty(s));
         }
+
+        private void getCheckButton_Click(object sender, EventArgs e)
+        {
+            foreach (DataRow r in pTable.Rows)
+            {
+                string rs = r["IOName"] as string;
+                foreach (DataGridViewRow dr in dgv.Rows)
+                {
+                    string drs = dr.Cells["IOName"].Value as string;
+                    if (rs == drs)
+                    {
+                        r["CheckStatus"] = (IODataCollection.checkStatusType)dr.Cells["CheckStatus"].Value;
+                    }
+                }
+            }
+        }
+
+        private void clearCheckButton_Click(object sender, EventArgs e)
+        {
+            foreach (DataRow r in pTable.Rows)
+            {
+                r["CheckStatus"] = IODataCollection.checkStatusType.Uncheck;
+            }
+        }
     }
 }
