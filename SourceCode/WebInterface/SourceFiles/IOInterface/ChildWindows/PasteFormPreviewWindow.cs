@@ -295,5 +295,10 @@ namespace WebInterface
                 r["CheckStatus"] = IODataCollection.checkStatusType.Uncheck;
             }
         }
+
+        private void AddRowButton_Click(object sender, EventArgs e)
+        {
+            pTable.Rows.Add("", "", "OFF", IODataCollection.checkStatusType.Uncheck);
+        }
     }
 }

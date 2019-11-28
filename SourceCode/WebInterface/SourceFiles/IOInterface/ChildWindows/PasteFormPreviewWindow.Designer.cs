@@ -35,6 +35,7 @@
             this.appendButton = new System.Windows.Forms.Button();
             this.getCheckButton = new System.Windows.Forms.Button();
             this.clearCheckButton = new System.Windows.Forms.Button();
+            this.AddRowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pDGV)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,11 +117,23 @@
             this.clearCheckButton.UseVisualStyleBackColor = true;
             this.clearCheckButton.Click += new System.EventHandler(this.clearCheckButton_Click);
             // 
+            // AddRowButton
+            // 
+            this.AddRowButton.Location = new System.Drawing.Point(27, 24);
+            this.AddRowButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AddRowButton.Name = "AddRowButton";
+            this.AddRowButton.Size = new System.Drawing.Size(27, 25);
+            this.AddRowButton.TabIndex = 6;
+            this.AddRowButton.Text = "+";
+            this.AddRowButton.UseVisualStyleBackColor = true;
+            this.AddRowButton.Click += new System.EventHandler(this.AddRowButton_Click);
+            // 
             // PasteFormPreviewWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(495, 510);
+            this.Controls.Add(this.AddRowButton);
             this.Controls.Add(this.clearCheckButton);
             this.Controls.Add(this.getCheckButton);
             this.Controls.Add(this.appendButton);
@@ -144,5 +157,6 @@
         private System.Windows.Forms.Button appendButton;
         private System.Windows.Forms.Button getCheckButton;
         private System.Windows.Forms.Button clearCheckButton;
+        private System.Windows.Forms.Button AddRowButton;
     }
 }
