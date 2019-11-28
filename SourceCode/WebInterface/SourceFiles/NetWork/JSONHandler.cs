@@ -11,6 +11,23 @@ using WebInterface.DataUpdater;
 
 namespace WebInterface
 {
+    public class CustomCompare : IComparer<string>
+    {
+        public int Compare(string x, string y)
+        {
+            int s = x.Length-y.Length;
+            if (s != 0)
+            {
+                s = s / Math.Abs(s);
+            }
+            else
+            {
+                s = String.Compare(x, y);
+            }
+            return s;
+        }
+    }
+
     partial class JSONHandler
     {
         public static String SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc)
@@ -26,14 +43,15 @@ namespace WebInterface
                                     select new JProperty(tt.Key,
                                     new JObject(from DataTable table in ds
                                                 select new JProperty(table.TableName,
-                                                new JObject(from DataRow rr in table.Rows
+                                                new JObject((from DataRow rr in table.Rows
                                                             let rs = rr["IOName"] as string
                                                             where rs != ""
                                                             let rss = GetIOName(tt.Key, rs)
                                                             group rss by rss into rsg
                                                             orderby rsg.Key ascending
                                                             select new JProperty(rsg.Key,
-                                                             GenJSONJArrayFromDataCollection(tdd, tt.Key, table.TableName, rsg.Key)))))));
+                                                             GenJSONJArrayFromDataCollection(tdd, tt.Key, table.TableName, rsg.Key)
+                                                             )).OrderBy(k=>k.Name, new CustomCompare()))))));
             JSON = o.ToString();
             return JSON;
         }
