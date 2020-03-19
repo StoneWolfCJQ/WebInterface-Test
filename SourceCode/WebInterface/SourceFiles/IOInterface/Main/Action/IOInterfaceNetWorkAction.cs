@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using WebInterface.DataUpdater;
+using System.Threading;
 
 namespace WebInterface
 {
@@ -86,7 +87,8 @@ namespace WebInterface
         {
             result = true;
             IODataCollection.queryList.Clear();
-            if (!ACSUpdater.CreateQuery() || !QPLCUpdater.CreateQuery() || IODataCollection.controllerNameList.Count==0)
+            if (!ACSUpdater.CreateQuery() || !QPLCUpdater.CreateQuery() || !LSUpdater.CreateQuery() ||
+            IODataCollection.controllerNameList.Count==0)
             {
                 MessageBox.Show("无控制器或有的控制器无IO", "错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 result = false;
@@ -95,6 +97,12 @@ namespace WebInterface
             try
             {
                 DisableMenu();
+                var tokenSource=new CancellationTokenSource();
+                CancellationToken ct=tokenSource.Token;
+                Task[] tasks=new Task[3];
+                tasks[0]=Task.Run(QPLCUpdater.StartUpdate(out result),)     
+
+                if (!QPLCUpdater.StartUpdate(out result) || !ACSUpdater.StartUpdate(out result))
                 QPLCUpdater.StartUpdate(out result);
                 if (result)
                 {

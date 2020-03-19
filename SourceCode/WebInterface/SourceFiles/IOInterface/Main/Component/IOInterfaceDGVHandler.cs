@@ -145,6 +145,14 @@ namespace WebInterface
                             throw new Exception(String.Format("0xf{0:x8}", iReturnCode));
                         }
                         break;
+                    case ControllerNames.LS:
+                        int ErrCode;
+                        ErrCode=LSUpdater.LSu.WriteDevice(cName, IOName, i);
+                        if (ErrCode != 0)
+                        {
+                            throw new Exception(String.Format("0xf{0:x8}", ErrCode));
+                        }
+                        break;
                 }
                     
             }

@@ -12,21 +12,20 @@ namespace WebInterface
     {    
         public static bool CreateQuery()
         {
-            IODataCollection.GenerateQueryList("LS");
-            if ((IODataCollection.queryList.FindAll(c => c.name.StartsWith("LS-")).Count == 0) && (IODataCollection.controllerNameList.ToList().FindAll(c => c.name.StartsWith("LS-")).Count() != 0))
+            IODataCollection.GenerateQueryList(_name+'-');
+            if ((IODataCollection.queryList.FindAll(c => c.name.StartsWith(_name+'-')).Count == 0) && 
+            (IODataCollection.controllerNameList.ToList().FindAll(c => c.name.StartsWith(_name+'-')).Count() != 0))
             {
                 return false;
             }
             return true;
         }
 
-        public static void StartUpdate(out bool result)
+        public static void StartUpdate()
         {
-            result = true;
-            bool result2;
             try
             {
-                result2 = LSConnect();
+                LSConnect();
             }
             catch (Exception e)
             {
@@ -37,10 +36,7 @@ namespace WebInterface
                 return;
             }
 
-            if (result2)
-            {
-                StartThreadLSQuery();
-            }
+            StartThreadLSQuery();
         }
 
         public static void StopUpdate()
@@ -71,12 +67,13 @@ namespace WebInterface
             LSQueryThread.Start();
         }
 
-        private static void StatThreadIODataUpdate()
-        {
-            IODataUpdateThread = new Thread(IODataUpdate);
-            IODataUpdateThread.IsBackground = true;
-            IODataUpdateThread.Start();
-        }
+        // not in use, use acs's as master 
+        // private static void StatThreadIODataUpdate()
+        // {
+        //     IODataUpdateThread = new Thread(IODataUpdate);
+        //     IODataUpdateThread.IsBackground = true;
+        //     IODataUpdateThread.Start();
+        // }
 
         private static void LSQuery()
         {
@@ -135,19 +132,42 @@ namespace WebInterface
             {
                 result=false;
             }
+            else
+            {
+                ushort _num = 0;
+                ushort[] cardIDs = new ushort[8];
+                uint[] cardTypes = new uint[8];
+                short res = LTDMC.dmc_get_CardInfList(ref _num, cardTypes, cardIDs);
+
+                if (res != 0)
+                {
+                    throw new Exception($"无法获取卡信息，错误代码：{res}");
+                }
+
+                foreach (ControllerListSource cls in 
+                IODataCollection.controllerNameList.Where(c=>c.name.StartsWith(_name+'-')))
+                {
+                    if (Array.IndexOf(cardIDs, int.Parse(cls.IP))==-1)
+                    {
+                        throw new Exception($"卡号不存在：{cls.IP}");
+                    }
+                    LSu.Connect(cls.name, int.Parse(cls.IP));
+                }
+            }
 
             return result;
         }
 
-        private static void IODataUpdate()
-        {
-            while (true)
-            {
-                Thread.Sleep(10);
-                IODataCollection.UpdateDataSetIOFromQueryList();
-                IODataCollection.RemoveOldFromChangeDict();
-            }
-        }
+        // not in use, use acs's as master 
+        // private static void IODataUpdate()
+        // {
+        //     while (true)
+        //     {
+        //         Thread.Sleep(10);
+        //         IODataCollection.UpdateDataSetIOFromQueryList();
+        //         IODataCollection.RemoveOldFromChangeDict();
+        //     }
+        // }
 
         private static void StopThreadLSQuery()
         {
@@ -186,5 +206,6 @@ namespace WebInterface
         private static bool LSThreadAbort = false, LSThreadAborted = false;
         private static List<String> RunningTransaction = new List<String>();
         public static LSControllerUtilities LSu = new LSControllerUtilities();
+        public const string _name = ControllerNames.LS;
     }
 }

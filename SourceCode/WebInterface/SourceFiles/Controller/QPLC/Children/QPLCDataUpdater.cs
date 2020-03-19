@@ -20,27 +20,19 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(out bool result)
+        public static void StartUpdate()
         {
-            result = true;
-            bool result2;
             try
             {
-                result2 = QPLCConnect();
+                QPLCConnect();
             }
             catch (Exception e)
             {
-                String err = e.Message;
-                IOInterface.ShowError(err);
                 qplcu.CloseComm();
-                result = false;
-                return;
+                throw new Exception(e.Message);
             }
 
-            if (result2)
-            {
-                StartThreadQPLCQuery();
-            }
+            StartThreadQPLCQuery();
         }
 
         public static void StopUpdate()
@@ -71,12 +63,13 @@ namespace WebInterface
             QPLCQueryThread.Start();
         }
 
-        private static void StatThreadIODataUpdate()
-        {
-            IODataUpdateThread = new Thread(IODataUpdate);
-            IODataUpdateThread.IsBackground = true;
-            IODataUpdateThread.Start();
-        }
+        // not in use, use acs's as master 
+        // private static void StatThreadIODataUpdate()
+        // {
+        //     IODataUpdateThread = new Thread(IODataUpdate);
+        //     IODataUpdateThread.IsBackground = true;
+        //     IODataUpdateThread.Start();
+        // }
 
         private static void QPLCQuery()
         {
@@ -127,27 +120,40 @@ namespace WebInterface
             }            
         }
 
-        private static bool QPLCConnect()
+        private static void QPLCConnect()
         {
-            bool result = false;
+            List<Task> tasks= new List<Task>();
+            List<string> IPs=new List<string>();
+            var tks=new CancellationTokenSource();
+            var tk=tks.Token;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("QPLC-")))
             {
-                qplcu.Connect(cls.name, int.Parse(cls.IP));
-                result = true;
+                tasks.Add(Task.Run(()=>qplcu.Connect(cls.name, int.Parse(cls.IP)),tk));
+                IPs.Add(cls.IP);
             }
-
-            return result;
-        }
-
-        private static void IODataUpdate()
-        {
-            while (true)
+            Task.WaitAll(tasks.ToArray(),5000);
+            int i=0;
+            foreach (Task t in tasks)
             {
-                Thread.Sleep(10);
-                IODataCollection.UpdateDataSetIOFromQueryList();
-                IODataCollection.RemoveOldFromChangeDict();
+                if (!t.IsCompleted)
+                {
+                    tks.Cancel();
+                    throw new Exception($"QPLC连接超时，站号：{IPs.ElementAt(i)}");
+                }
+                i++;
             }
         }
+
+        //not in use, use acs's as master
+        // private static void IODataUpdate()
+        // {
+        //     while (true)
+        //     {
+        //         Thread.Sleep(10);
+        //         IODataCollection.UpdateDataSetIOFromQueryList();
+        //         IODataCollection.RemoveOldFromChangeDict();
+        //     }
+        // }
 
         private static void StopThreadQPLCQuery()
         {
