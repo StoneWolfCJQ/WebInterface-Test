@@ -29,12 +29,3 @@ namespace WebInterface.QueryUtilities
 
     }
 }
-
-namespace WebInterface
-{
-    
-    public static class ControllerNames
-    {
-        public const string LS="雷赛";
-    }
-}
