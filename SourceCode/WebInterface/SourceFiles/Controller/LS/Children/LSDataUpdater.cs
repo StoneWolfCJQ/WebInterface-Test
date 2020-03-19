@@ -12,8 +12,8 @@ namespace WebInterface
     {    
         public static bool CreateQuery()
         {
-            IODataCollection.GenerateQueryList("QPLC");
-            if ((IODataCollection.queryList.FindAll(c => c.name.StartsWith("QPLC-")).Count == 0) && (IODataCollection.controllerNameList.ToList().FindAll(c => c.name.StartsWith("QPLC-")).Count() != 0))
+            IODataCollection.GenerateQueryList("LS");
+            if ((IODataCollection.queryList.FindAll(c => c.name.StartsWith("LS-")).Count == 0) && (IODataCollection.controllerNameList.ToList().FindAll(c => c.name.StartsWith("LS-")).Count() != 0))
             {
                 return false;
             }
@@ -26,37 +26,37 @@ namespace WebInterface
             bool result2;
             try
             {
-                result2 = QPLCConnect();
+                result2 = LSConnect();
             }
             catch (Exception e)
             {
                 String err = e.Message;
                 IOInterface.ShowError(err);
-                qplcu.CloseComm();
+                LSu.CloseComm();
                 result = false;
                 return;
             }
 
             if (result2)
             {
-                StartThreadQPLCQuery();
+                StartThreadLSQuery();
             }
         }
 
         public static void StopUpdate()
         {
-            new Thread(()=> { StopThreadQPLCQuery(); }).Start();
+            new Thread(()=> { StopThreadLSQuery(); }).Start();
             //StopThreadIODataUpdate();
         }
 
         public static void ForceStopUpdate()
         {
-            if (QPLCQueryThread .IsAlive)
+            if (LSQueryThread .IsAlive)
             {
-                QPLCQueryThread .Abort();
+                LSQueryThread .Abort();
             }
            
-            qplcu.CloseComm();
+            LSu.CloseComm();
             /*if (IODataUpdateThread.IsAlive)
             {
                 IODataUpdateThread.Abort();
@@ -64,11 +64,11 @@ namespace WebInterface
             
         }
 
-        private static void StartThreadQPLCQuery()
+        private static void StartThreadLSQuery()
         {
-            QPLCQueryThread  = new Thread(QPLCQuery);
-            QPLCQueryThread.IsBackground = true;
-            QPLCQueryThread.Start();
+            LSQueryThread  = new Thread(LSQuery);
+            LSQueryThread.IsBackground = true;
+            LSQueryThread.Start();
         }
 
         private static void StatThreadIODataUpdate()
@@ -78,9 +78,9 @@ namespace WebInterface
             IODataUpdateThread.Start();
         }
 
-        private static void QPLCQuery()
+        private static void LSQuery()
         {
-            foreach (ControllerListSource cls in IODataCollection.queryList.Where(c => c.name.StartsWith("QPLC-")))
+            foreach (ControllerListSource cls in IODataCollection.queryList.Where(c => c.name.StartsWith("LS-")))
             {
                 Thread t = new Thread(() => { Update(cls.name, cls.IOList); });
                 t.IsBackground = true;
@@ -97,7 +97,7 @@ namespace WebInterface
                 try
                 {
                     Thread.Sleep(50);
-                    List<int> tl = qplcu.ReadDevice(cname, queryList);
+                    List<int> tl = LSu.ReadDevice(cname, queryList);
                     IODataCollection.UpdateIOQueryList(cname, tl);
                 }
                 catch(Exception e)
@@ -108,32 +108,32 @@ namespace WebInterface
                     RunningTransaction.Remove(cname);
                     if (RunningTransaction.Count == 0)
                     {
-                        QPLCThreadAborted = true;
+                        LSThreadAborted = true;
                     }
 
                     IOInterface.ShowError(err);
                     return;
                 }
 
-                if (QPLCThreadAbort)
+                if (LSThreadAbort)
                 {
                     RunningTransaction.Remove(cname);
                     if (RunningTransaction.Count == 0)
                     {
-                        QPLCThreadAborted = true;
+                        LSThreadAborted = true;
                     }
                     return;
                 }
             }            
         }
 
-        private static bool QPLCConnect()
+        private static bool LSConnect()
         {
-            bool result = false;
-            foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("QPLC-")))
+            bool result = true;
+            int i = LTDMC.dmc_board_init();
+            if (i <= 0 || i > 8)
             {
-                qplcu.Connect(cls.name, int.Parse(cls.IP));
-                result = true;
+                result=false;
             }
 
             return result;
@@ -149,27 +149,27 @@ namespace WebInterface
             }
         }
 
-        private static void StopThreadQPLCQuery()
+        private static void StopThreadLSQuery()
         {
-            QPLCThreadAbort = true;
+            LSThreadAbort = true;
             int i = 0;
-            while ((!QPLCThreadAborted) && (i < 10)) 
+            while ((!LSThreadAborted) && (i < 10)) 
             {
                 Thread.Sleep(100);
                 i++;
             };
             try
             {
-                QPLCQueryThread.Abort();
+                LSQueryThread.Abort();
             }
             catch
             {
 
             }
             
-            qplcu.CloseComm();
-            QPLCThreadAbort = false;
-            QPLCThreadAborted = false;
+            LSu.CloseComm();
+            LSThreadAbort = false;
+            LSThreadAborted = false;
         }        
 
         private static void StopThreadIODataUpdate()
@@ -182,9 +182,9 @@ namespace WebInterface
 
     public static partial class LSUpdater
     {
-        private static Thread QPLCQueryThread =new Thread(()=> { }), IODataUpdateThread=new Thread(()=> { });
-        private static bool QPLCThreadAbort = false, QPLCThreadAborted = false;
+        private static Thread LSQueryThread =new Thread(()=> { }), IODataUpdateThread=new Thread(()=> { });
+        private static bool LSThreadAbort = false, LSThreadAborted = false;
         private static List<String> RunningTransaction = new List<String>();
-        public static QPLCControllerUtilities qplcu = new QPLCControllerUtilities();
+        public static LSControllerUtilities LSu = new LSControllerUtilities();
     }
 }

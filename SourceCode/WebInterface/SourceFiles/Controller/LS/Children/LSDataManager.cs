@@ -10,7 +10,7 @@ namespace WebInterface
     partial class LSDataManager : DataManager
     {
         public LSDataManager()
-        {
+        {        
             gds = new JSONDataStorage();//TEMP USE　JSON
         }
 

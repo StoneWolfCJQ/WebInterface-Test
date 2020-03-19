@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.Remoting.Messaging;
+using System.Text.RegularExpressions;
 
 namespace WebInterface
 {
@@ -12,12 +13,12 @@ namespace WebInterface
     {
         public LSControllerUtilities()
         {
-            LSList = new Dictionary<string, LTDMC>();
+            LSList = new Dictionary<string, int>();
         }
 
         public LSControllerUtilities(LSControllerUtilities _ls)
         {
-            LSList = new Dictionary<string, ActUtlTypeClass>(_ls.LSList);
+            LSList = new Dictionary<string, int>(_ls.LSList);
         }
 
         ~LSControllerUtilities()
@@ -42,23 +43,36 @@ namespace WebInterface
             LSList.Clear();
         }
 
-        //queryList rule:only format same as INx.y[0<y<7] allowed, map between controller IO and this is
-        //controller:software---portid:floor(x/4),index:x*8+y
+        //queryList:when start with IN, only IN0.1~IN0.7 allowed, while others must be *(0~9).(0~7)
+        //other IOs must start at 0 and be sequential
+        //IN0-IN7 for internel IO, port0's 0-7, others for remaining port IOs
+        //other port mapping rule: *x.y-- port:floor((x+1)/4), index:(x+1)*8+y
         public List<int> ReadDevice(String cname, List<string> queryList)
         {
+            Dictionary<string, int> IOIndexList=new Dictionary<string, int>();
+            short[] result = new short[queryList.Count];
+            int i=0;
             foreach (string s in queryList)
             {
-                queryList
-            }
-            //below are useless, for reference only
-            string queryList2 = String.Join("\n", queryList);
-            short[] result = new short[queryList.Count];
-            int iReturnCode;
-            iReturnCode = LSList[cname].ReadDeviceRandom2(queryList2, queryList.Count, out result[0]);
-            
-            if (iReturnCode != 0)
-            {
-                throw new Exception(String.Format("站号{1:d}变量读取错误：0x{0:x8}", iReturnCode, LSList[cname].ActLogicalStationNumber));
+                if (Regex.IsMatch(s,@"^(?i)(in0)$"))
+                {
+                    result[i]=LTDMC.dmc_read_inport(LSList[cname], 0);
+                }
+                else
+                {
+                    Match m = Regex.Match(s, @"([0-9]|([1-9][0-9]*))$");
+                    int IOIndex=int.Parse(m.Value);
+                    if (IOIndexList.Values.ToList().Exists(ss=>ss==IOIndex)){
+                        throw new Exception(string.Format("IO Index重复！卡号：{0:d}，IO组：{1:s}",LSList[cname],s));
+                    }
+                    else
+                    {
+                        IOIndexList.Add(s, IOIndex);
+                    }
+                    int portID=(IOIndex+1)/4;
+                    result[i]=LTDMC.dmc_read_inport(LSList[cname], portID);
+                }
+                i++;
             }
 
             return result.Select(s=>(int)s).ToList();
@@ -66,7 +80,9 @@ namespace WebInterface
 
         public int WriteDevice(string cname, string device, int value)
         {
-            return LSList[cname].SetDevice(device, value);
+            Match m = Regex.Match(device, @"[0-9]|([1-9][0-9]*)\.");
+            int portID=(int.Parse(m.Value.TrimEnd())+1)/4;
+            return LTDMC.dmc_write_outbit(LSList[cname], portID, value);
         }
 
         public void Connect(String cname, int stationNumber)
@@ -96,7 +112,7 @@ namespace WebInterface
 
     public partial class LSControllerUtilities
 {
-        public Dictionary<String, LTDMC> LSList;
+        public Dictionary<String, int> LSList;
         private bool stopUpdate = false;
     }
 }
