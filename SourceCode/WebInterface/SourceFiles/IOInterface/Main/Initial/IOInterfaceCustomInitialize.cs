@@ -41,15 +41,21 @@ namespace WebInterface
         {
             if (!hasStorageData)
             {
+                //ACS
                 ACSBaseConfig.dac = ACSBaseConfig.DefaultACSChoice.Simulator;
                 IODataCollection.AddController("ACS", ACSBaseConfig.sim, "", ACSBaseConfig.dac == ACSBaseConfig.DefaultACSChoice.Simulator);
                 IODataCollection.AddController("ACS",  "Default", "10.0.0.100", ACSBaseConfig.dac == ACSBaseConfig.DefaultACSChoice.Default);
                 IODataCollection.AddControllerTable("ACS", ACSBaseConfig.dac == ACSBaseConfig.DefaultACSChoice.Simulator, ACSBaseConfig.sim, "");
                 IODataCollection.AddControllerTable("ACS", ACSBaseConfig.dac == ACSBaseConfig.DefaultACSChoice.Default, "Default", "10.0.0.100");
                 IODataCollection.DuplicateControllerTable("ACS");
+                //QPLC
                 IODataCollection.AddController("QPLC", ACSBaseConfig.sim, "");
                 IODataCollection.AddControllerTable("QPLC", false, ACSBaseConfig.sim, "");
                 IODataCollection.DuplicateControllerTable("QPLC");
+                //LeiSai
+                IODataCollection.AddController(ControllerNames.LS, "Default", "0");
+                IODataCollection.AddControllerTable(ControllerNames.LS, false, "Default", "0");
+                IODataCollection.DuplicateControllerTable(ControllerNames.LS);
             }
 
             RetrieveSelectController();
