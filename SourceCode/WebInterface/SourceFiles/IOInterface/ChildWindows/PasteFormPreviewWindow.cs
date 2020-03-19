@@ -199,7 +199,6 @@ namespace WebInterface
             {
                 case "ACS": regStr = @"^(?i)([_a-z]([_a-z0-9]*)\.(30|31|([1-2]?[0-9])))$";break;
                 case "QPLC":regStr = @"^[XY]([0-9A-F]+)$";break;
-                case ControllerNames.LS: regStr = @"^(?i)([_a-z]([_a-z0-9]*)\.(30|31|([1-2]?[0-9])))$";break;
                 default:throw new NotImplementedException();
             }
             return Regex.IsMatch(istr, regStr);
