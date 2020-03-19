@@ -20,7 +20,7 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate()
+        public static void StartUpdate(ManualResetEvent cmre, ManualResetEvent omre)
         {
             try
             {
@@ -31,7 +31,8 @@ namespace WebInterface
                 qplcu.CloseComm();
                 throw new Exception(e.Message);
             }
-
+            cmre.Set();
+            omre.WaitOne();
             StartThreadQPLCQuery();
         }
 
@@ -131,14 +132,35 @@ namespace WebInterface
                 tasks.Add(Task.Run(()=>qplcu.Connect(cls.name, int.Parse(cls.IP)),tk));
                 IPs.Add(cls.IP);
             }
-            Task.WaitAll(tasks.ToArray(),5000);
+
+            Exception e=new Exception("");
+            bool hasException = false;
+            try
+            {
+                Task.WaitAll(tasks.ToArray(), 5000);
+            }
+            catch (AggregateException ae)
+            {
+                hasException = true;
+                e = ae.InnerException;
+            }
             int i=0;
             foreach (Task t in tasks)
             {
-                if (!t.IsCompleted)
+                if (((!t.IsCompleted || !t.IsCanceled || !t.IsFaulted) && !hasException) ||
+                    (hasException && t.IsFaulted))
                 {
                     tks.Cancel();
-                    throw new Exception($"QPLC连接超时，站号：{IPs.ElementAt(i)}");
+                    Thread.Sleep(100);
+                    if (hasException)
+                    {
+                        throw new Exception($"QPLC连接错误，站号：{IPs.ElementAt(i)}，" +
+                            $"信息{e.Message}");
+                    }
+                    else
+                    {
+                        throw new Exception($"QPLC连接超时，站号：{IPs.ElementAt(i)}");
+                    }
                 }
                 i++;
             }

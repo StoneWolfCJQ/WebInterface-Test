@@ -20,26 +20,21 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(out bool result)
+        public static void StartUpdate(ManualResetEvent cmre, ManualResetEvent omre)
         {
-            result = true;
-            bool result2;
             try
             {
-                result2 = ACSConnect();
+                ACSConnect();
             }
             catch (Exception e)
             {
-                String err = e.Message;
-                IOInterface.ShowError(err);
                 acsu.CloseComm();
-                result = false;
-                return;
+                throw new Exception(e.Message);
             }
-            if (result2)
-            {
-                StartThreadACSQuery();                
-            }
+
+            cmre.Set();
+            omre.WaitOne();
+            StartThreadACSQuery();
             StatThreadIODataUpdate();
         }
 
@@ -137,21 +132,55 @@ namespace WebInterface
             
         }
 
-        private static bool ACSConnect()
+        private static void ACSConnect()
         {
-            bool result = false;
+            List<Task> tasks = new List<Task>();
+            List<string> IPs = new List<string>();
+            var tks = new CancellationTokenSource();
+            var tk = tks.Token;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("ACS-")))
             {
-                result = true;
                 if ( IODataCollection.GetControllerName(cls.name) == ACSBaseConfig.sim)
                 {
-                    acsu.SimConnect();
+                    tasks.Add(Task.Run(() => acsu.SimConnect(), tk));
+                    IPs.Add("Simulator");
                     continue;
                 }
-                acsu.TCPConnect(cls.name, cls.IP);
+                tasks.Add(Task.Run(() => acsu.TCPConnect(cls.name, cls.IP), tk));
+                IPs.Add(cls.IP);
             }
 
-            return result;
+            Exception e = new Exception("");
+            bool hasException = false;
+            try
+            {
+                Task.WaitAll(tasks.ToArray(), 5000);
+            }
+            catch (AggregateException ae)
+            {
+                hasException = true;
+                e = ae.InnerException;
+            }
+            int i = 0;
+            foreach (Task t in tasks)
+            {
+                if (((!t.IsCompleted || !t.IsCanceled || !t.IsFaulted) && !hasException) ||
+                    (hasException && t.IsFaulted))
+                {
+                    tks.Cancel();
+                    Thread.Sleep(100);
+                    if (hasException)
+                    {
+                        throw new Exception($"ACS连接错误，IP：{IPs.ElementAt(i)}，" +
+                            $"信息{e.Message}");
+                    }
+                    else
+                    {
+                        throw new Exception($"ACS连接超时，IP：{IPs.ElementAt(i)}");
+                    }
+                }
+                i++;
+            }
         }
 
         private static void IODataUpdate()

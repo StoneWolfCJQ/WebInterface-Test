@@ -97,10 +97,14 @@ namespace WebInterface
             try
             {
                 DisableMenu();
-                var tokenSource=new CancellationTokenSource();
-                CancellationToken ct=tokenSource.Token;
-                Task[] tasks=new Task[3];
-                tasks[0]=Task.Run(QPLCUpdater.StartUpdate(out result),)     
+                ManualResetEvent[] cmres = new ManualResetEvent[3]
+                {
+                    new ManualResetEvent(false),
+                    new ManualResetEvent(false),
+                    new ManualResetEvent(false),
+                };
+                ManualResetEvent omres = new ManualResetEvent(false);
+                Task.Run(QPLCUpdater.StartUpdate(out result),)     
 
                 if (!QPLCUpdater.StartUpdate(out result) || !ACSUpdater.StartUpdate(out result))
                 QPLCUpdater.StartUpdate(out result);
@@ -136,6 +140,7 @@ namespace WebInterface
         {
             ACSUpdater.StopUpdate();
             QPLCUpdater.StopUpdate();
+            LSUpdater.StopUpdate();
             ToggleListen(toggleType.CLOSE);
             connected = !connected;
             toggleConnectButton.Text = "Connect!";
