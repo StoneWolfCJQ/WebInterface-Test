@@ -17,6 +17,7 @@ namespace WebInterface
             {
                 case "ACS": controllerDGV.DataSource = IODataCollection.ACSControllerTable; break;
                 case "QPLC": controllerDGV.DataSource = IODataCollection.QPLCControllerTable; break;
+                case ControllerNames.LS: controllerDGV.DataSource = IODataCollection.LSControllerTable; break;
                 default: throw new NotImplementedException();
             }
         }
@@ -122,7 +123,8 @@ namespace WebInterface
                 switch (GetControllerTypeName(selectControllerTypeRow))
                 {
                     case "ACS": cell.ic.ReadOnly = true;break;
-                    case "QPLC":break;
+                    case "QPLC":
+                    case ControllerNames.LS:break;
                     default:throw new NotImplementedException();
                 }
                 
@@ -157,12 +159,7 @@ namespace WebInterface
         string GetAddressName()
         {
             string s = GetControllerTypeName(selectControllerTypeRow);
-            switch (s)
-            {
-                case "ACS": return "Controller IP";
-                case "QPLC":return "Station Number";
-                default:throw new NotImplementedException();
-            }
+            return GetAddressName(s);
         }
 
         string GetAddressName(string cType)
@@ -172,6 +169,7 @@ namespace WebInterface
             {
                 case "ACS": return "Controller IP";
                 case "QPLC": return "Station Number";
+                case ControllerNames.LS: return "Card Number";
                 default: throw new NotImplementedException();
             }
         }

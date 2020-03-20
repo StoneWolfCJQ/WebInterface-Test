@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using WebInterface.QueryUtilities;
+using csLTDMC;
 
 namespace WebInterface
 {
@@ -12,7 +13,7 @@ namespace WebInterface
     {    
         public static bool CreateQuery()
         {
-            IODataCollection.GenerateQueryList(_name+'-');
+            IODataCollection.GenerateQueryList(_name);
             if ((IODataCollection.queryList.FindAll(c => c.name.StartsWith(_name+'-')).Count == 0) && 
             (IODataCollection.controllerNameList.ToList().FindAll(c => c.name.StartsWith(_name+'-')).Count() != 0))
             {
@@ -21,24 +22,33 @@ namespace WebInterface
             return true;
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
-        /// <param name="cmre">current mre</param>
-        /// <param name="omre">overall mre for thread control</param>
-        public static void StartUpdate(ManualResetEvent cmre, ManualResetEvent omre)
+        public static void Connect(CancellationToken ct)
         {
-            try
+            if (ControllerNames.LSdebug)
             {
-                LSConnect();
+                foreach (ControllerListSource cls in
+                IODataCollection.controllerNameList.Where(c => c.name.StartsWith(_name + '-')))
+                {
+                    LSu.Connect(cls.name, int.Parse(cls.IP));
+                }
             }
-            catch (Exception e)
+            else
             {
-                LSu.CloseComm();
-                throw new Exception(e.Message);
+                try
+                {
+                    LSConnect(ct);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
             }
-            cmre.Set();
-            omre.WaitOne();
+
+        }
+        
+        public static void StartUpdate()
+        {
+            
             StartThreadLSQuery();
         }
 
@@ -80,7 +90,7 @@ namespace WebInterface
 
         private static void LSQuery()
         {
-            foreach (ControllerListSource cls in IODataCollection.queryList.Where(c => c.name.StartsWith("LS-")))
+            foreach (ControllerListSource cls in IODataCollection.queryList.Where(c => c.name.StartsWith(ControllerNames.LS+'-')))
             {
                 Thread t = new Thread(() => { Update(cls.name, cls.IOList); });
                 t.IsBackground = true;
@@ -127,46 +137,57 @@ namespace WebInterface
             }            
         }
 
-        private static void LSConnect()
+        private static void LSConnect(CancellationToken ct)
         {
-            var tks = new CancellationTokenSource();
-            var tk = tks.Token;
-            Task t = Task.Run(()=>LSConnectTask(), tk);
+            LSConnectTask(ct);            
+        }
 
-            Exception e = new Exception("");
-            bool hasException = false;
-            try
-            {
-                t.Wait(5000);
-            }
-            catch (AggregateException ae)
-            {
-                hasException = true;
-                e = ae.InnerException;
-            }
-
-            if (((!t.IsCompleted || !t.IsCanceled || !t.IsFaulted) && !hasException) ||
-                    (hasException && t.IsFaulted))
-            {
-                tks.Cancel();
-                Thread.Sleep(100);
-                if (hasException)
+        private static void LSConnectTask(CancellationToken ct)
+        {
+            bool exception = false;
+            string eMessage = "";
+            int i = 0;
+            ManualResetEvent mre = new ManualResetEvent(false);
+            Thread t = new Thread(() => {
+                try
                 {
-                    throw new Exception($"雷赛卡连接错误，信息{e.Message}");
+                    LSConnectDetail();
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new Exception($"雷赛卡连接超时");
+                    exception = true;
+                    eMessage = e.Message;
                 }
+                mre.Set();
+            }
+            );
+            t.IsBackground = true;
+            t.Start();
+            while (!mre.WaitOne(100))
+            {
+                i++;
+                if (i > 50 || ct.IsCancellationRequested)
+                {
+                    t.Abort();
+                    if (i > 50)
+                    {
+                        throw new Exception($"雷赛卡连接超时");
+                    }
+                    return;
+                }
+            }
+            if (exception)
+            {
+                throw new Exception(eMessage);
             }
         }
 
-        private static void LSConnectTask()
+        static void LSConnectDetail()
         {
-            int i = LTDMC.dmc_board_init();
+            short i = LTDMC.dmc_board_init();
             if (i <= 0 || i > 8)
             {
-                throw new Exception($"初始化错误，返回值：{i}");
+                throw new Exception($"雷赛卡初始化错误，返回值：{i}");
             }
             else
             {
@@ -177,7 +198,7 @@ namespace WebInterface
 
                 if (res != 0)
                 {
-                    throw new Exception($"无法获取卡信息，错误代码：{res}");
+                    throw new Exception($"雷赛卡无法获取卡信息，错误代码：{res}");
                 }
 
                 foreach (ControllerListSource cls in
@@ -185,7 +206,7 @@ namespace WebInterface
                 {
                     if (Array.IndexOf(cardIDs, int.Parse(cls.IP)) == -1)
                     {
-                        throw new Exception($"卡号不存在：{cls.IP}");
+                        throw new Exception($"雷赛卡卡号不存在：{cls.IP}");
                     }
                     LSu.Connect(cls.name, int.Parse(cls.IP));
                 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
+using csLTDMC;
 
 namespace WebInterface
 {
@@ -52,7 +53,7 @@ namespace WebInterface
                     Match m = Regex.Match(s, @"\d*$");
                     int IOIndex=int.Parse(m.Value);
                     if (IOIndexList.Values.ToList().Exists(ss=>ss==IOIndex)){
-                        throw new Exception(string.Format("IO Index重复！卡号：{0:d}，IO组：{1:s}",LSList[cname]));
+                        throw new Exception($"IO Index重复！卡号：{LSList[cname]}，IO组：{IOIndex}");
                     }
                     else
                     {
@@ -61,7 +62,8 @@ namespace WebInterface
                     int portID=(IOIndex+1)/4;
                     uint temp;
                     temp=LTDMC.dmc_read_inport((ushort)LSList[cname], (ushort)portID);
-                    result[i]=uint.Parse(temp.ToString().Substring((IOIndex-(4*portID-1))*8,8));
+                    int shiftDist= (3 - (IOIndex - (4 * portID - 1))) * 8;
+                    result[i]=(temp&(uint)(11111111<<shiftDist))>>shiftDist;
                 }
                 i++;
             }

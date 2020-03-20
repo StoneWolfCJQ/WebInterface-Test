@@ -20,20 +20,20 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(ManualResetEvent cmre, ManualResetEvent omre)
+        public static void Connect(CancellationToken ct)
         {
             try
             {
-                ACSConnect();
+                ACSConnect(ct);
             }
             catch (Exception e)
             {
-                acsu.CloseComm();
                 throw new Exception(e.Message);
             }
+        }
 
-            cmre.Set();
-            omre.WaitOne();
+        public static void StartUpdate()
+        {
             StartThreadACSQuery();
             StatThreadIODataUpdate();
         }
@@ -132,55 +132,64 @@ namespace WebInterface
             
         }
 
-        private static void ACSConnect()
+        private static void ACSConnect(CancellationToken ct)
         {
-            List<Task> tasks = new List<Task>();
-            List<string> IPs = new List<string>();
-            var tks = new CancellationTokenSource();
-            var tk = tks.Token;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("ACS-")))
             {
-                if ( IODataCollection.GetControllerName(cls.name) == ACSBaseConfig.sim)
+                ACSConnectTask(cls.name, cls.IP, ct);
+                if (ct.IsCancellationRequested)
                 {
-                    tasks.Add(Task.Run(() => acsu.SimConnect(), tk));
-                    IPs.Add("Simulator");
-                    continue;
+                    return;
                 }
-                tasks.Add(Task.Run(() => acsu.TCPConnect(cls.name, cls.IP), tk));
-                IPs.Add(cls.IP);
             }
+        }
 
-            Exception e = new Exception("");
-            bool hasException = false;
-            try
-            {
-                Task.WaitAll(tasks.ToArray(), 5000);
-            }
-            catch (AggregateException ae)
-            {
-                hasException = true;
-                e = ae.InnerException;
-            }
+        static void ACSConnectTask(string cname, string IP, CancellationToken ct)
+        {
+            bool exception = false;
+            string eMessage = "";
             int i = 0;
-            foreach (Task t in tasks)
-            {
-                if (((!t.IsCompleted || !t.IsCanceled || !t.IsFaulted) && !hasException) ||
-                    (hasException && t.IsFaulted))
+            ManualResetEvent mre = new ManualResetEvent(false);
+            Thread t = new Thread(() => {
+                try
                 {
-                    tks.Cancel();
-                    Thread.Sleep(100);
-                    if (hasException)
+                    if (IODataCollection.GetControllerName(cname) == ACSBaseConfig.sim)
                     {
-                        throw new Exception($"ACS连接错误，IP：{IPs.ElementAt(i)}，" +
-                            $"信息{e.Message}");
+                        acsu.SimConnect();
                     }
                     else
                     {
-                        throw new Exception($"ACS连接超时，IP：{IPs.ElementAt(i)}");
+                        acsu.TCPConnect(cname, IP);
                     }
                 }
-                i++;
+                catch (Exception e)
+                {
+                    exception = true;
+                    eMessage = e.Message;
+                }
+                mre.Set();
             }
+            );
+            t.IsBackground = true;
+            t.Start();
+            while (!mre.WaitOne(100))
+            {
+                i++;
+                if (i > 50 || ct.IsCancellationRequested)
+                {
+                    t.Abort();
+                    if (i > 50)
+                    {
+                        throw new Exception($"ACS连接超时，IP：{IP}");
+                    }
+                    return;
+                }
+            }
+            if (exception)
+            {
+                throw new Exception($"ACS连接错误，IP：{IP}，代码：{eMessage}");
+            }
+
         }
 
         private static void IODataUpdate()

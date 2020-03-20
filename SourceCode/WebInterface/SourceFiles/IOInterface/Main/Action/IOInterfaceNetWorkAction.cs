@@ -12,7 +12,7 @@ using WebInterface.DataUpdater;
 using System.Threading;
 
 namespace WebInterface
-{
+{ 
     partial class IOInterface
     {
         private void ToggleListen(toggleType type)
@@ -94,45 +94,73 @@ namespace WebInterface
                 result = false;
                 return;
             }
+            
+            DisableMenu();
+            CancellationTokenSource ts = new CancellationTokenSource();
+            CancellationToken tk = ts.Token;
+
+            Task[] tasks = new Task[3]
+            {
+                Task.Run(() => ACSUpdater.Connect(tk)),
+                Task.Run(() => QPLCUpdater.Connect(tk)),
+                Task.Run(() => LSUpdater.Connect(tk)),
+            };
+
+            bool connected = false, hasErr = false;
             try
             {
-                DisableMenu();
-                ManualResetEvent[] cmres = new ManualResetEvent[3]
-                {
-                    new ManualResetEvent(false),
-                    new ManualResetEvent(false),
-                    new ManualResetEvent(false),
-                };
-                ManualResetEvent omres = new ManualResetEvent(false);
-                Task.Run(QPLCUpdater.StartUpdate(out result),)     
-
-                if (!QPLCUpdater.StartUpdate(out result) || !ACSUpdater.StartUpdate(out result))
-                QPLCUpdater.StartUpdate(out result);
-                if (result)
-                {
-                    ACSUpdater.StartUpdate(out result);
-                }
-                
-                if (!result)
-                {
-                    EnableMenu();
-                    return;
-                }
-                CheckUpdateErrorThread();
-                connected = !connected;
-                toggleConnectButton.Text = "Disconnect";
-                ThreadUpdateUI();
-                if (LimitWizardThread.IsAlive)
-                {
-                    LimitWizardThread.Abort();
-                }
-               
+                Task.WaitAll(tasks);
+                connected = true;
             }
-            catch (Exception error)
+            catch (AggregateException ae)
+            {
+                hasErr = true;
+                ts.Cancel();
+                try
+                {
+                    Task.WaitAll(tasks);
+                }
+                catch
+                {
+
+                }
+                Invoke(new Action(() =>
+                MessageBox.Show(ae.InnerException.Message.ToString())));
+            }
+
+            while (!connected && !hasErr)
+            {
+                Thread.Sleep(100);                
+            }
+
+            if (connected)
+            {
+                try
+                {
+                    ACSUpdater.StartUpdate();
+                    QPLCUpdater.StartUpdate();
+                    LSUpdater.StartUpdate();
+                    CheckUpdateErrorThread();
+                    connected = !connected;
+                    toggleConnectButton.Text = "Disconnect";
+                    ThreadUpdateUI();
+                    if (LimitWizardThread.IsAlive)
+                    {
+                        LimitWizardThread.Abort();
+                    }
+                    this.connected = true;
+                }
+                catch (Exception e)
+                {
+                    hasErr = true;
+                    MessageBox.Show(e.Message);
+                }
+            }
+
+            if (hasErr)
             {
                 result = false;
-                MessageBox.Show(error.ToString());
-                EnableMenu();
+                StopConnect();
             }
         }
 
@@ -142,7 +170,7 @@ namespace WebInterface
             QPLCUpdater.StopUpdate();
             LSUpdater.StopUpdate();
             ToggleListen(toggleType.CLOSE);
-            connected = !connected;
+            connected = false;
             toggleConnectButton.Text = "Connect!";
             UpdateUIThread.Abort();
             EnableMenu();

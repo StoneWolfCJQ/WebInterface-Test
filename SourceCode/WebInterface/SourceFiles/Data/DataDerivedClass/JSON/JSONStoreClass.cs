@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace WebInterface
 {
-    class JSONStoreClass:StoreClass
+    class JSONStoreClass : StoreClass
     {
         public Dictionary<String, DataSet> dataDict;
         public Dictionary<String, String> controllerDict;
@@ -16,5 +16,6 @@ namespace WebInterface
         public DataTable ACSControllerTable { get; set; }
         public DataTable ControllerTypeTable { get; set; }
         public BindingList<ControllerListSource> controllerNameList;
+        public DataTable LSControllerTable { get; set; }
     }
 }

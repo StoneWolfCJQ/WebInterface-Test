@@ -20,19 +20,20 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(ManualResetEvent cmre, ManualResetEvent omre)
+        public static void Connect(CancellationToken ct)
         {
             try
             {
-                QPLCConnect();
+                QPLCConnect(ct);
             }
             catch (Exception e)
             {
-                qplcu.CloseComm();
                 throw new Exception(e.Message);
             }
-            cmre.Set();
-            omre.WaitOne();
+        }
+
+        public static void StartUpdate()
+        {
             StartThreadQPLCQuery();
         }
 
@@ -121,48 +122,56 @@ namespace WebInterface
             }            
         }
 
-        private static void QPLCConnect()
+        private static void QPLCConnect(CancellationToken ct)
         {
-            List<Task> tasks= new List<Task>();
-            List<string> IPs=new List<string>();
-            var tks=new CancellationTokenSource();
-            var tk=tks.Token;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("QPLC-")))
             {
-                tasks.Add(Task.Run(()=>qplcu.Connect(cls.name, int.Parse(cls.IP)),tk));
-                IPs.Add(cls.IP);
+                QPLCConnectTask(cls.name, int.Parse(cls.IP), ct);
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
             }
 
-            Exception e=new Exception("");
-            bool hasException = false;
-            try
-            {
-                Task.WaitAll(tasks.ToArray(), 5000);
-            }
-            catch (AggregateException ae)
-            {
-                hasException = true;
-                e = ae.InnerException;
-            }
+        }
+
+        static void QPLCConnectTask(string cname, int stationNumber, CancellationToken ct)
+        {
+            bool exception = false;
+            string eMessage = "";
             int i=0;
-            foreach (Task t in tasks)
-            {
-                if (((!t.IsCompleted || !t.IsCanceled || !t.IsFaulted) && !hasException) ||
-                    (hasException && t.IsFaulted))
+            ManualResetEvent mre = new ManualResetEvent(false);
+            Thread t = new Thread(()=> {
+                try
                 {
-                    tks.Cancel();
-                    Thread.Sleep(100);
-                    if (hasException)
-                    {
-                        throw new Exception($"QPLC连接错误，站号：{IPs.ElementAt(i)}，" +
-                            $"信息{e.Message}");
-                    }
-                    else
-                    {
-                        throw new Exception($"QPLC连接超时，站号：{IPs.ElementAt(i)}");
-                    }
+                    qplcu.Connect(cname, stationNumber);
                 }
+                catch (Exception e)
+                {
+                    exception = true;
+                    eMessage = e.Message;
+                }
+                mre.Set();
+                }
+            );
+            t.IsBackground = true;
+            t.Start();
+            while (!mre.WaitOne(100))
+            {
                 i++;
+                if (i > 50 || ct.IsCancellationRequested)
+                {
+                    t.Abort();
+                    if (i > 50)
+                    {
+                        throw new Exception($"QPLC连接超时，站号：{stationNumber}");
+                    }
+                    return;
+                }
+            }
+            if (exception)
+            {
+                throw new Exception($"QPLC连接错误，站号：{stationNumber}，代码：{eMessage}");
             }
         }
 
