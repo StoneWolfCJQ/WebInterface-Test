@@ -34,13 +34,18 @@ namespace WebInterface
             }
             else
             {
-                try
+                foreach (ControllerListSource cls in
+                IODataCollection.controllerNameList.Where(c => c.name.StartsWith(_name + '-')))
                 {
-                    LSConnect(ct);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
+                    try
+                    {
+                        LSConnect(ct);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(e.Message);
+                    }
+                    break;
                 }
             }
 
