@@ -122,7 +122,8 @@ namespace WebInterface
             string cType = mergeName.Split('-')[0];
             switch (cType)
             {
-                case "ACS": return int.Parse(IOName.Split('.')[1]);
+                case "ACS":
+                case ControllerNames.LS: return int.Parse(IOName.Split('.')[1]);
                 case "QPLC": return int.Parse(IOName.Substring(IOName.Length-1),System.Globalization.NumberStyles.HexNumber);
                 default: throw new NotImplementedException();
             }
@@ -133,7 +134,8 @@ namespace WebInterface
             string cType = mergeName.Split('-')[0];
             switch (cType)
             {
-                case "ACS":return IOName.Split('.')[0];
+                case "ACS":
+                case ControllerNames.LS: return IOName.Split('.')[0];
                 case "QPLC": return $"{IOName.Substring(0, IOName.Length - 1)}0-{IOName.Substring(0, IOName.Length - 1)}F";
                 default:throw new NotImplementedException();
             }

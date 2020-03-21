@@ -416,6 +416,7 @@ function GetIOName(cName, IOGroupName, index){
 	var cType=cName.split('-')[0];
 	switch (cType) {
 		case "ACS":
+		case "雷赛":
 			return IOGroupName+"."+index;
 		case "QPLC":
 			return IOGroupName.split('-')[0].substring(0, IOGroupName.split('-')[0].length-1)+index.toString(16).toUpperCase();

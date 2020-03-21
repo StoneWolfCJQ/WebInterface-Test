@@ -62,8 +62,12 @@ namespace WebInterface
                     int portID=(IOIndex+1)/4;
                     uint temp;
                     temp=LTDMC.dmc_read_inport((ushort)LSList[cname], (ushort)portID);
+                    if (ControllerNames.LSdebug)
+                    {
+                        temp = 0x85F26B3E;
+                    }
                     int shiftDist= (3 - (IOIndex - (4 * portID - 1))) * 8;
-                    result[i]=(temp&(uint)(11111111<<shiftDist))>>shiftDist;
+                    result[i]=(temp&(uint)(0xFF<<shiftDist))>>shiftDist;
                 }
                 i++;
             }
@@ -81,7 +85,7 @@ namespace WebInterface
             else
             {
                 Match m = Regex.Match(device, @"\d*\.");
-                bitNo=int.Parse(m.Value.TrimEnd())*8 + 8
+                bitNo=int.Parse(m.Value.TrimEnd('.'))*8 + 8
                      + int.Parse(device.Substring(device.IndexOf('.')+1));
             }
             
