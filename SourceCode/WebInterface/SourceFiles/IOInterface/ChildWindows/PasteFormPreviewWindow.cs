@@ -301,5 +301,19 @@ namespace WebInterface
         {
             pTable.Rows.Add("", "", "OFF", IODataCollection.checkStatusType.Uncheck);
         }
+
+        private void DeleteRowButton_Click(object sender, EventArgs e)
+        {
+            List<DataGridViewRow> cc = new List<DataGridViewRow>();
+            foreach (DataGridViewCell c in pDGV.SelectedCells)
+            {
+                cc.Add(c.OwningRow);
+            }
+
+            for (int i = 0; i < cc.Count; i++)
+            {
+                pDGV.Rows.Remove(cc[i]);
+            }
+        }
     }
 }
