@@ -44,26 +44,42 @@ namespace WebInterface
             int i=0;
             foreach (string s in queryList)
             {
-                if (Regex.IsMatch(s,@"^(?i)((in0)||(out0))$"))
+                if (Regex.IsMatch(s,@"^(?i)(\w+\\in0)$"))
                 {
                     result[i]= ControllerNames.LSdebug?
                                0x85F26B3E :
                                LTDMC.dmc_read_inport((ushort)LSList[cname], 0);
                 }
+                else if (Regex.IsMatch(s, @"^(?i)(\w+\\out0)$"))
+                {
+                    result[i] = ControllerNames.LSdebug ?
+                               0x85F26B3E :
+                               LTDMC.dmc_read_outport((ushort)LSList[cname], 0);
+                }
                 else
                 {
                     Match m = Regex.Match(s, @"\d+$");
                     int IOIndex=int.Parse(m.Value);
-                    if (IOIndexList.Values.ToList().Exists(ss=>ss==IOIndex)){
-                        //throw new Exception($"IO Index重复！卡号：{LSList[cname]}，IO组：{IOIndex}");
+                   /* if (IOIndexList.Values.ToList().Exists(ss=>ss==IOIndex)){
+                        throw new Exception($"IO Index重复！卡号：{LSList[cname]}，IO组：{IOIndex}");
                     }
                     else
                     {
                         IOIndexList.Add(s, IOIndex);
-                    }
+                    }*/
                     int portID=(IOIndex+1)/4;
-                    uint temp;
-                    temp=LTDMC.dmc_read_inport((ushort)LSList[cname], (ushort)portID);
+                    uint temp = 0;
+                    if (s.StartsWith(IODataCollection.dataTableType.Input.ToString() + '\\') ||
+                        s.StartsWith(IODataCollection.dataTableType.Limit.ToString() + '\\'))
+                    {
+                        temp = LTDMC.dmc_read_inport((ushort)LSList[cname], (ushort)portID);
+                    }
+                    else if (s.StartsWith(IODataCollection.dataTableType.Output.ToString() + '\\'))
+                    {
+                        temp = LTDMC.dmc_read_outport((ushort)LSList[cname], (ushort)portID);
+                    }
+                    else throw new Exception("内部错误，雷赛查询字符串错误");
+
                     if (ControllerNames.LSdebug)
                     {
                         temp = 0x85F26B3E;
