@@ -44,16 +44,18 @@ namespace WebInterface
             int i=0;
             foreach (string s in queryList)
             {
-                if (Regex.IsMatch(s,@"^(?i)(in0)$"))
+                if (Regex.IsMatch(s,@"^(?i)((in0)||(out0))$"))
                 {
-                    result[i]=LTDMC.dmc_read_inport((ushort)LSList[cname], 0);
+                    result[i]= ControllerNames.LSdebug?
+                               0x85F26B3E :
+                               LTDMC.dmc_read_inport((ushort)LSList[cname], 0);
                 }
                 else
                 {
-                    Match m = Regex.Match(s, @"\d*$");
+                    Match m = Regex.Match(s, @"\d+$");
                     int IOIndex=int.Parse(m.Value);
                     if (IOIndexList.Values.ToList().Exists(ss=>ss==IOIndex)){
-                        throw new Exception($"IO Index重复！卡号：{LSList[cname]}，IO组：{IOIndex}");
+                        //throw new Exception($"IO Index重复！卡号：{LSList[cname]}，IO组：{IOIndex}");
                     }
                     else
                     {
@@ -66,8 +68,8 @@ namespace WebInterface
                     {
                         temp = 0x85F26B3E;
                     }
-                    int shiftDist= (3 - (IOIndex - (4 * portID - 1))) * 8;
-                    result[i]=(temp&(uint)(0xFF<<shiftDist))>>shiftDist;
+                    int shiftDist= (IOIndex - (4 * portID - 1)) * 8;
+                    result[i]=(temp>>shiftDist)&0xFF;
                 }
                 i++;
             }
@@ -78,7 +80,7 @@ namespace WebInterface
         public int WriteDevice(string cname, string device, int value)
         {
             int bitNo;
-            if (Regex.IsMatch(device,@"^(?i)(in0)\."))
+            if (Regex.IsMatch(device, @"^(?i)((in0)||(out0))\."))
             {
                 bitNo=int.Parse(device.Substring(device.IndexOf('.')+1));           
             }

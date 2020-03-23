@@ -209,9 +209,14 @@ namespace WebInterface
                 foreach (ControllerListSource cls in
                 IODataCollection.controllerNameList.Where(c => c.name.StartsWith(_name + '-')))
                 {
-                    if (Array.IndexOf(cardIDs, int.Parse(cls.IP)) == -1)
+                    string s = string.Join("，", cardIDs).TrimEnd('，');
+                    if (Array.IndexOf(cardIDs, ushort.Parse(cls.IP)) == -1)
                     {
-                        throw new Exception($"雷赛卡卡号不存在：{cls.IP}");
+                        throw new Exception($"雷赛卡卡号不存在：{cls.IP}，卡号列表:{s}");
+                    }
+                    else if (int.Parse(cls.IP) == 0)
+                    {
+                        throw new Exception($"雷赛卡号不能为0，卡号列表:{s}");
                     }
                     LSu.Connect(cls.name, int.Parse(cls.IP));
                 }
