@@ -210,13 +210,10 @@ namespace WebInterface
                 IODataCollection.controllerNameList.Where(c => c.name.StartsWith(_name + '-')))
                 {
                     string s = string.Join("，", cardIDs).TrimEnd('，');
-                    if (Array.IndexOf(cardIDs, ushort.Parse(cls.IP)) == -1)
+                    if ((Array.IndexOf(cardIDs, ushort.Parse(cls.IP)) == -1) ||
+                        ((int.Parse(cls.IP) == 0) && (cardIDs[0] != 0)))
                     {
                         throw new Exception($"雷赛卡卡号不存在：{cls.IP}，卡号列表:{s}");
-                    }
-                    else if (int.Parse(cls.IP) == 0)
-                    {
-                        throw new Exception($"雷赛卡号不能为0，卡号列表:{s}");
                     }
                     LSu.Connect(cls.name, int.Parse(cls.IP));
                 }

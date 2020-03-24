@@ -46,15 +46,15 @@ namespace WebInterface
             {
                 if (Regex.IsMatch(s,@"^(?i)(\w+\\in0)$"))
                 {
-                    result[i]= ControllerNames.LSdebug?
+                    result[i]= ~(ControllerNames.LSdebug?
                                0x85F26B3E :
-                               LTDMC.dmc_read_inport((ushort)LSList[cname], 0);
+                               LTDMC.dmc_read_inport((ushort)LSList[cname], 0));
                 }
                 else if (Regex.IsMatch(s, @"^(?i)(\w+\\out0)$"))
                 {
-                    result[i] = ControllerNames.LSdebug ?
+                    result[i] = ~(ControllerNames.LSdebug ?
                                0x85F26B3E :
-                               LTDMC.dmc_read_outport((ushort)LSList[cname], 0);
+                               LTDMC.dmc_read_outport((ushort)LSList[cname], 0));
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace WebInterface
                         temp = 0x85F26B3E;
                     }
                     int shiftDist= (IOIndex - (4 * portID - 1)) * 8;
-                    result[i]=(temp>>shiftDist)&0xFF;
+                    result[i]=((~temp)>>shiftDist)&0xFF;
                 }
                 i++;
             }
@@ -96,7 +96,7 @@ namespace WebInterface
         public int WriteDevice(string cname, string device, int value)
         {
             int bitNo;
-            if (Regex.IsMatch(device, @"^(?i)((in0)||(out0))\."))
+            if (Regex.IsMatch(device, @"^(?i)(out0)\."))
             {
                 bitNo=int.Parse(device.Substring(device.IndexOf('.')+1));           
             }
@@ -106,6 +106,7 @@ namespace WebInterface
                 bitNo=int.Parse(m.Value.TrimEnd('.'))*8 + 8
                      + int.Parse(device.Substring(device.IndexOf('.')+1));
             }
+            value = value == 0 ? 1 : 0;
             
             return LTDMC.dmc_write_outbit((ushort)LSList[cname], (ushort)bitNo, (ushort)value);
         }
