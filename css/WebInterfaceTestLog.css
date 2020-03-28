@@ -27,6 +27,7 @@ div.IOLog{
 	max-width: 600px;
     background-color: var(--light-backgroundcolor);
     transition: var(--trans);
+    -webkit-transition:var(--trans);
 }
 
 div.IOLog.off :not(first-child){
@@ -47,6 +48,7 @@ div.switchButton{
 	box-shadow: var(--shadow);
 	border: var(--border);	
 	transition: var(--trans);
+	-webkit-transition:var(--trans);
 }
 
 div.IOLog.off div.switchButton:before{
