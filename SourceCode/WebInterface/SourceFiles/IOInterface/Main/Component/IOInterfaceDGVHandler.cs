@@ -181,12 +181,7 @@ namespace WebInterface
                         foreach (DataGridViewCell cell in dgv.SelectedCells)
                         {
                             DataGridViewRow row = cell.OwningRow;
-                            string s = row.Cells["IOName"].Value as string;
-                            rl.Add(row);                            
-                        }
-                        for (int i = 0; i < rl.Count; i++)
-                        {
-                            dgv.Rows.Remove(rl[i]);
+                            dgv.Rows.Remove(row);                         
                         }
                         string cname = controllerDropList.SelectedValue as string;
                         String IOType = IOTab.SelectedTab.Text;
