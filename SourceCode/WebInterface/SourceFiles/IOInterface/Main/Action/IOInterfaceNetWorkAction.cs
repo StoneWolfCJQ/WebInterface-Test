@@ -9,9 +9,10 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using WebInterface.DataUpdater;
+using System.Threading;
 
 namespace WebInterface
-{
+{ 
     partial class IOInterface
     {
         private void ToggleListen(toggleType type)
@@ -86,41 +87,80 @@ namespace WebInterface
         {
             result = true;
             IODataCollection.queryList.Clear();
-            if (!ACSUpdater.CreateQuery() || !QPLCUpdater.CreateQuery() || IODataCollection.controllerNameList.Count==0)
+            if (!ACSUpdater.CreateQuery() || !QPLCUpdater.CreateQuery() || !LSUpdater.CreateQuery() ||
+            IODataCollection.controllerNameList.Count==0)
             {
                 MessageBox.Show("无控制器或有的控制器无IO", "错误", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 result = false;
                 return;
             }
+            
+            DisableMenu();
+            CancellationTokenSource ts = new CancellationTokenSource();
+            CancellationToken tk = ts.Token;
+
+            Task[] tasks = new Task[3]
+            {
+                Task.Run(() => ACSUpdater.Connect(tk)),
+                Task.Run(() => QPLCUpdater.Connect(tk)),
+                Task.Run(() => LSUpdater.Connect(tk)),
+            };
+
+            bool connected = false, hasErr = false;
             try
             {
-                DisableMenu();
-                QPLCUpdater.StartUpdate(out result);
-                if (result)
-                {
-                    ACSUpdater.StartUpdate(out result);
-                }
-                
-                if (!result)
-                {
-                    EnableMenu();
-                    return;
-                }
-                CheckUpdateErrorThread();
-                connected = !connected;
-                toggleConnectButton.Text = "Disconnect";
-                ThreadUpdateUI();
-                if (LimitWizardThread.IsAlive)
-                {
-                    LimitWizardThread.Abort();
-                }
-               
+                Task.WaitAll(tasks);
+                connected = true;
             }
-            catch (Exception error)
+            catch (AggregateException ae)
+            {
+                hasErr = true;
+                ts.Cancel();
+                try
+                {
+                    Task.WaitAll(tasks);
+                }
+                catch
+                {
+
+                }
+                Invoke(new Action(() =>
+                MessageBox.Show(ae.InnerException.Message.ToString())));
+            }
+
+            while (!connected && !hasErr)
+            {
+                Thread.Sleep(100);                
+            }
+
+            if (connected)
+            {
+                try
+                {
+                    ACSUpdater.StartUpdate();
+                    QPLCUpdater.StartUpdate();
+                    LSUpdater.StartUpdate();
+                    CheckUpdateErrorThread();
+                    connected = !connected;
+                    toggleConnectButton.Text = "Disconnect";
+                    ThreadUpdateUI();
+                    if (LimitWizardThread.IsAlive)
+                    {
+                        LimitWizardThread.Abort();
+                    }
+                    this.connected = true;
+                }
+                catch (Exception e)
+                {
+                    hasErr = true;
+                    MessageBox.Show(e.Message);
+                }
+            }
+
+            if (hasErr)
             {
                 result = false;
-                MessageBox.Show(error.ToString());
-                EnableMenu();
+                StopConnect();
             }
         }
 
@@ -128,8 +168,9 @@ namespace WebInterface
         {
             ACSUpdater.StopUpdate();
             QPLCUpdater.StopUpdate();
+            LSUpdater.StopUpdate();
             ToggleListen(toggleType.CLOSE);
-            connected = !connected;
+            connected = false;
             toggleConnectButton.Text = "Connect!";
             UpdateUIThread.Abort();
             EnableMenu();

@@ -70,6 +70,7 @@ namespace WebInterface
             {
                 { "ACS", CheckType.IP },
                 { "QPLC", CheckType.Number},
+                {ControllerNames.LS,CheckType.Number }
             };
         }
 

@@ -190,7 +190,7 @@ namespace WebInterface
 
         private bool RegCheck(String istr)
         {
-            if (istr== "TheAbsoluteCorrectIOName")
+            if (istr== "TheAbsolutelyCorrectIOName")
             {
                 return true;
             }
@@ -199,6 +199,7 @@ namespace WebInterface
             {
                 case "ACS": regStr = @"^(?i)([_a-z]([_a-z0-9]*)\.(30|31|([1-2]?[0-9])))$";break;
                 case "QPLC":regStr = @"^[XY]([0-9A-F]+)$";break;
+                case ControllerNames.LS: regStr = @"^(?i)((in0\.[0-7])|(out0\.[0-7])|([_a-z][_a-z0-9]*\d+\.[0-7]))$";break;
                 default:throw new NotImplementedException();
             }
             return Regex.IsMatch(istr, regStr);
@@ -299,6 +300,14 @@ namespace WebInterface
         private void AddRowButton_Click(object sender, EventArgs e)
         {
             pTable.Rows.Add("", "", "OFF", IODataCollection.checkStatusType.Uncheck);
+        }
+
+        private void DeleteRowButton_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewCell c in pDGV.SelectedCells)
+            {
+                pDGV.Rows.Remove(c.OwningRow);
+            }
         }
     }
 }

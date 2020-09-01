@@ -145,6 +145,14 @@ namespace WebInterface
                             throw new Exception(String.Format("0xf{0:x8}", iReturnCode));
                         }
                         break;
+                    case ControllerNames.LS:
+                        int ErrCode;
+                        ErrCode=LSUpdater.LSu.WriteDevice(cName, IOName, i);
+                        if (ErrCode != 0)
+                        {
+                            throw new Exception(String.Format("0xf{0:x8}", ErrCode));
+                        }
+                        break;
                 }
                     
             }
@@ -173,12 +181,7 @@ namespace WebInterface
                         foreach (DataGridViewCell cell in dgv.SelectedCells)
                         {
                             DataGridViewRow row = cell.OwningRow;
-                            string s = row.Cells["IOName"].Value as string;
-                            rl.Add(row);                            
-                        }
-                        for (int i = 0; i < rl.Count; i++)
-                        {
-                            dgv.Rows.Remove(rl[i]);
+                            dgv.Rows.Remove(row);                         
                         }
                         string cname = controllerDropList.SelectedValue as string;
                         String IOType = IOTab.SelectedTab.Text;

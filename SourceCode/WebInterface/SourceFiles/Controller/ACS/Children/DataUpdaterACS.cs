@@ -20,26 +20,21 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(out bool result)
+        public static void Connect(CancellationToken ct)
         {
-            result = true;
-            bool result2;
             try
             {
-                result2 = ACSConnect();
+                ACSConnect(ct);
             }
             catch (Exception e)
             {
-                String err = e.Message;
-                IOInterface.ShowError(err);
-                acsu.CloseComm();
-                result = false;
-                return;
+                throw new Exception(e.Message);
             }
-            if (result2)
-            {
-                StartThreadACSQuery();                
-            }
+        }
+
+        public static void StartUpdate()
+        {
+            StartThreadACSQuery();
             StatThreadIODataUpdate();
         }
 
@@ -137,21 +132,64 @@ namespace WebInterface
             
         }
 
-        private static bool ACSConnect()
+        private static void ACSConnect(CancellationToken ct)
         {
-            bool result = false;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("ACS-")))
             {
-                result = true;
-                if ( IODataCollection.GetControllerName(cls.name) == ACSBaseConfig.sim)
+                ACSConnectTask(cls.name, cls.IP, ct);
+                if (ct.IsCancellationRequested)
                 {
-                    acsu.SimConnect();
-                    continue;
+                    return;
                 }
-                acsu.TCPConnect(cls.name, cls.IP);
+            }
+        }
+
+        static void ACSConnectTask(string cname, string IP, CancellationToken ct)
+        {
+            bool exception = false;
+            string eMessage = "";
+            int i = 0;
+            ManualResetEvent mre = new ManualResetEvent(false);
+            Thread t = new Thread(() => {
+                try
+                {
+                    if (IODataCollection.GetControllerName(cname) == ACSBaseConfig.sim)
+                    {
+                        acsu.SimConnect();
+                    }
+                    else
+                    {
+                        acsu.TCPConnect(cname, IP);
+                    }
+                }
+                catch (Exception e)
+                {
+                    exception = true;
+                    eMessage = e.Message;
+                }
+                mre.Set();
+            }
+            );
+            t.IsBackground = true;
+            t.Start();
+            while (!mre.WaitOne(100))
+            {
+                i++;
+                if (i > 50 || ct.IsCancellationRequested)
+                {
+                    t.Abort();
+                    if (i > 50)
+                    {
+                        throw new Exception($"ACS连接超时，IP：{IP}");
+                    }
+                    return;
+                }
+            }
+            if (exception)
+            {
+                throw new Exception($"ACS连接错误，IP：{IP}，代码：{eMessage}");
             }
 
-            return result;
         }
 
         private static void IODataUpdate()

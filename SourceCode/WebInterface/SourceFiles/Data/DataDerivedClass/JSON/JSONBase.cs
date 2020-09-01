@@ -25,6 +25,7 @@ namespace WebInterface
             jsonStorer.ACSControllerTable = IODataCollection.ACSControllerTable;
             jsonStorer.controllerDict = IODataCollection.controllerDict;
             jsonStorer.QPLCControllerTable = IODataCollection.QPLCControllerTable;
+            jsonStorer.LSControllerTable = IODataCollection.LSControllerTable;
             jsonStorer.controllerNameList = IODataCollection.controllerNameList;
             jsonStorer.dataDict = IODataCollection.dataDict;
             jsonStorer.ControllerTypeTable = IODataCollection.ControllerTypeTable;
@@ -41,6 +42,7 @@ namespace WebInterface
 
         public override void FillData()
         {
+            IODataCollection.LSControllerTable = jsonStorer.LSControllerTable;
             IODataCollection.ACSControllerTable = jsonStorer.ACSControllerTable;
             IODataCollection.QPLCControllerTable = jsonStorer.QPLCControllerTable;
             IODataCollection.controllerDict = jsonStorer.controllerDict;

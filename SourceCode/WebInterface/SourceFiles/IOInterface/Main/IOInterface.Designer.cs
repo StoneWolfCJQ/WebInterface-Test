@@ -66,10 +66,9 @@
             // toggleListenButton
             // 
             this.toggleListenButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.toggleListenButton.Location = new System.Drawing.Point(696, 14);
-            this.toggleListenButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.toggleListenButton.Location = new System.Drawing.Point(557, 11);
             this.toggleListenButton.Name = "toggleListenButton";
-            this.toggleListenButton.Size = new System.Drawing.Size(100, 28);
+            this.toggleListenButton.Size = new System.Drawing.Size(80, 22);
             this.toggleListenButton.TabIndex = 0;
             this.toggleListenButton.Text = "Start Listen!";
             this.toggleListenButton.UseVisualStyleBackColor = true;
@@ -78,20 +77,18 @@
             // IPTextBox
             // 
             this.IPTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.IPTextBox.Location = new System.Drawing.Point(489, 15);
-            this.IPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.IPTextBox.Location = new System.Drawing.Point(391, 12);
             this.IPTextBox.Name = "IPTextBox";
-            this.IPTextBox.Size = new System.Drawing.Size(119, 22);
+            this.IPTextBox.Size = new System.Drawing.Size(96, 20);
             this.IPTextBox.TabIndex = 1;
             this.IPTextBox.Text = "127.0.0.1";
             // 
             // portTextBox
             // 
             this.portTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.portTextBox.Location = new System.Drawing.Point(618, 15);
-            this.portTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.portTextBox.Location = new System.Drawing.Point(494, 12);
             this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(69, 22);
+            this.portTextBox.Size = new System.Drawing.Size(56, 20);
             this.portTextBox.TabIndex = 2;
             this.portTextBox.Text = "4000";
             // 
@@ -174,21 +171,21 @@
             this.IOTab.Controls.Add(this.inputPage);
             this.IOTab.Controls.Add(this.outputPage);
             this.IOTab.Controls.Add(this.limitPage);
-            this.IOTab.Location = new System.Drawing.Point(29, 49);
+            this.IOTab.Location = new System.Drawing.Point(23, 39);
             this.IOTab.Margin = new System.Windows.Forms.Padding(2);
             this.IOTab.Name = "IOTab";
             this.IOTab.SelectedIndex = 0;
-            this.IOTab.Size = new System.Drawing.Size(768, 785);
+            this.IOTab.Size = new System.Drawing.Size(614, 628);
             this.IOTab.TabIndex = 8;
             // 
             // inputPage
             // 
             this.inputPage.Controls.Add(this.inputDGV);
-            this.inputPage.Location = new System.Drawing.Point(4, 25);
+            this.inputPage.Location = new System.Drawing.Point(4, 22);
             this.inputPage.Margin = new System.Windows.Forms.Padding(2);
             this.inputPage.Name = "inputPage";
             this.inputPage.Padding = new System.Windows.Forms.Padding(2);
-            this.inputPage.Size = new System.Drawing.Size(760, 756);
+            this.inputPage.Size = new System.Drawing.Size(606, 602);
             this.inputPage.TabIndex = 0;
             this.inputPage.Text = "Input";
             this.inputPage.UseVisualStyleBackColor = true;
@@ -201,22 +198,22 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.inputDGV.Location = new System.Drawing.Point(11, 18);
+            this.inputDGV.Location = new System.Drawing.Point(9, 14);
             this.inputDGV.Margin = new System.Windows.Forms.Padding(2);
             this.inputDGV.Name = "inputDGV";
             this.inputDGV.RowTemplate.Height = 24;
-            this.inputDGV.Size = new System.Drawing.Size(742, 732);
+            this.inputDGV.Size = new System.Drawing.Size(594, 586);
             this.inputDGV.TabIndex = 0;
             this.inputDGV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.inputDGV_CellContentClick);
             // 
             // outputPage
             // 
             this.outputPage.Controls.Add(this.outputDGV);
-            this.outputPage.Location = new System.Drawing.Point(4, 25);
+            this.outputPage.Location = new System.Drawing.Point(4, 22);
             this.outputPage.Margin = new System.Windows.Forms.Padding(2);
             this.outputPage.Name = "outputPage";
             this.outputPage.Padding = new System.Windows.Forms.Padding(2);
-            this.outputPage.Size = new System.Drawing.Size(760, 756);
+            this.outputPage.Size = new System.Drawing.Size(606, 602);
             this.outputPage.TabIndex = 1;
             this.outputPage.Text = "Output";
             this.outputPage.UseVisualStyleBackColor = true;
@@ -229,21 +226,21 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outputDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.outputDGV.Location = new System.Drawing.Point(11, 18);
+            this.outputDGV.Location = new System.Drawing.Point(9, 14);
             this.outputDGV.Margin = new System.Windows.Forms.Padding(2);
             this.outputDGV.Name = "outputDGV";
             this.outputDGV.RowTemplate.Height = 24;
-            this.outputDGV.Size = new System.Drawing.Size(742, 730);
+            this.outputDGV.Size = new System.Drawing.Size(594, 584);
             this.outputDGV.TabIndex = 1;
             // 
             // limitPage
             // 
             this.limitPage.Controls.Add(this.limitDGV);
-            this.limitPage.Location = new System.Drawing.Point(4, 25);
+            this.limitPage.Location = new System.Drawing.Point(4, 22);
             this.limitPage.Margin = new System.Windows.Forms.Padding(2);
             this.limitPage.Name = "limitPage";
             this.limitPage.Padding = new System.Windows.Forms.Padding(2);
-            this.limitPage.Size = new System.Drawing.Size(760, 756);
+            this.limitPage.Size = new System.Drawing.Size(606, 602);
             this.limitPage.TabIndex = 2;
             this.limitPage.Text = "Limit";
             this.limitPage.UseVisualStyleBackColor = true;
@@ -256,29 +253,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.limitDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.limitDGV.Location = new System.Drawing.Point(11, 18);
+            this.limitDGV.Location = new System.Drawing.Point(9, 14);
             this.limitDGV.Margin = new System.Windows.Forms.Padding(2);
             this.limitDGV.Name = "limitDGV";
             this.limitDGV.RowTemplate.Height = 24;
-            this.limitDGV.Size = new System.Drawing.Size(742, 730);
+            this.limitDGV.Size = new System.Drawing.Size(594, 584);
             this.limitDGV.TabIndex = 2;
             // 
             // controllerDropList
             // 
             this.controllerDropList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.controllerDropList.FormattingEnabled = true;
-            this.controllerDropList.Location = new System.Drawing.Point(29, 14);
+            this.controllerDropList.Location = new System.Drawing.Point(23, 11);
             this.controllerDropList.Margin = new System.Windows.Forms.Padding(2);
             this.controllerDropList.Name = "controllerDropList";
-            this.controllerDropList.Size = new System.Drawing.Size(122, 24);
+            this.controllerDropList.Size = new System.Drawing.Size(98, 21);
             this.controllerDropList.TabIndex = 9;
             // 
             // toggleConnectButton
             // 
-            this.toggleConnectButton.Location = new System.Drawing.Point(160, 12);
-            this.toggleConnectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.toggleConnectButton.Location = new System.Drawing.Point(128, 10);
             this.toggleConnectButton.Name = "toggleConnectButton";
-            this.toggleConnectButton.Size = new System.Drawing.Size(98, 28);
+            this.toggleConnectButton.Size = new System.Drawing.Size(78, 22);
             this.toggleConnectButton.TabIndex = 10;
             this.toggleConnectButton.Text = "Connect!";
             this.toggleConnectButton.UseVisualStyleBackColor = true;
@@ -287,10 +283,10 @@
             // deleteRowButton
             // 
             this.deleteRowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteRowButton.Location = new System.Drawing.Point(796, 74);
+            this.deleteRowButton.Location = new System.Drawing.Point(637, 59);
             this.deleteRowButton.Margin = new System.Windows.Forms.Padding(2);
             this.deleteRowButton.Name = "deleteRowButton";
-            this.deleteRowButton.Size = new System.Drawing.Size(75, 42);
+            this.deleteRowButton.Size = new System.Drawing.Size(60, 34);
             this.deleteRowButton.TabIndex = 11;
             this.deleteRowButton.Text = "Delete Row";
             this.deleteRowButton.UseVisualStyleBackColor = true;
@@ -299,10 +295,10 @@
             // clearTableButton
             // 
             this.clearTableButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clearTableButton.Location = new System.Drawing.Point(798, 122);
+            this.clearTableButton.Location = new System.Drawing.Point(638, 98);
             this.clearTableButton.Margin = new System.Windows.Forms.Padding(2);
             this.clearTableButton.Name = "clearTableButton";
-            this.clearTableButton.Size = new System.Drawing.Size(75, 42);
+            this.clearTableButton.Size = new System.Drawing.Size(60, 34);
             this.clearTableButton.TabIndex = 12;
             this.clearTableButton.Text = "Clear Table";
             this.clearTableButton.UseVisualStyleBackColor = true;
@@ -310,9 +306,9 @@
             // 
             // IOInterface
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(878, 848);
+            this.ClientSize = new System.Drawing.Size(702, 678);
             this.Controls.Add(this.clearTableButton);
             this.Controls.Add(this.deleteRowButton);
             this.Controls.Add(this.toggleConnectButton);
@@ -322,7 +318,6 @@
             this.Controls.Add(this.IPTextBox);
             this.Controls.Add(this.toggleListenButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Menu = this.mainMenu1;
             this.Name = "IOInterface";
             this.Text = "WebInterface";

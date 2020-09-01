@@ -36,6 +36,7 @@
             this.getCheckButton = new System.Windows.Forms.Button();
             this.clearCheckButton = new System.Windows.Forms.Button();
             this.AddRowButton = new System.Windows.Forms.Button();
+            this.DeleteRowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pDGV)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,21 +50,21 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pDGV.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.pDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.pDGV.Location = new System.Drawing.Point(27, 57);
-            this.pDGV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pDGV.Location = new System.Drawing.Point(20, 46);
+            this.pDGV.Margin = new System.Windows.Forms.Padding(2);
             this.pDGV.Name = "pDGV";
             this.pDGV.RowHeadersVisible = false;
             this.pDGV.RowTemplate.Height = 24;
-            this.pDGV.Size = new System.Drawing.Size(440, 402);
+            this.pDGV.Size = new System.Drawing.Size(330, 327);
             this.pDGV.TabIndex = 0;
             // 
             // confirmButton
             // 
             this.confirmButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.confirmButton.Location = new System.Drawing.Point(255, 12);
-            this.confirmButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.confirmButton.Location = new System.Drawing.Point(191, 10);
+            this.confirmButton.Margin = new System.Windows.Forms.Padding(2);
             this.confirmButton.Name = "confirmButton";
-            this.confirmButton.Size = new System.Drawing.Size(101, 38);
+            this.confirmButton.Size = new System.Drawing.Size(76, 31);
             this.confirmButton.TabIndex = 1;
             this.confirmButton.Text = "Replace";
             this.confirmButton.UseVisualStyleBackColor = true;
@@ -72,10 +73,10 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(366, 12);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cancelButton.Location = new System.Drawing.Point(274, 10);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(2);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(101, 38);
+            this.cancelButton.Size = new System.Drawing.Size(76, 31);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -84,10 +85,10 @@
             // appendButton
             // 
             this.appendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.appendButton.Location = new System.Drawing.Point(143, 12);
-            this.appendButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.appendButton.Location = new System.Drawing.Point(107, 10);
+            this.appendButton.Margin = new System.Windows.Forms.Padding(2);
             this.appendButton.Name = "appendButton";
-            this.appendButton.Size = new System.Drawing.Size(101, 38);
+            this.appendButton.Size = new System.Drawing.Size(76, 31);
             this.appendButton.TabIndex = 3;
             this.appendButton.Text = "Append";
             this.appendButton.UseVisualStyleBackColor = true;
@@ -96,10 +97,10 @@
             // getCheckButton
             // 
             this.getCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.getCheckButton.Location = new System.Drawing.Point(255, 463);
-            this.getCheckButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.getCheckButton.Location = new System.Drawing.Point(191, 376);
+            this.getCheckButton.Margin = new System.Windows.Forms.Padding(2);
             this.getCheckButton.Name = "getCheckButton";
-            this.getCheckButton.Size = new System.Drawing.Size(101, 38);
+            this.getCheckButton.Size = new System.Drawing.Size(76, 31);
             this.getCheckButton.TabIndex = 4;
             this.getCheckButton.Text = "GetCheck";
             this.getCheckButton.UseVisualStyleBackColor = true;
@@ -108,10 +109,10 @@
             // clearCheckButton
             // 
             this.clearCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.clearCheckButton.Location = new System.Drawing.Point(366, 463);
-            this.clearCheckButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.clearCheckButton.Location = new System.Drawing.Point(274, 376);
+            this.clearCheckButton.Margin = new System.Windows.Forms.Padding(2);
             this.clearCheckButton.Name = "clearCheckButton";
-            this.clearCheckButton.Size = new System.Drawing.Size(101, 38);
+            this.clearCheckButton.Size = new System.Drawing.Size(76, 31);
             this.clearCheckButton.TabIndex = 5;
             this.clearCheckButton.Text = "ClearCheck";
             this.clearCheckButton.UseVisualStyleBackColor = true;
@@ -119,20 +120,32 @@
             // 
             // AddRowButton
             // 
-            this.AddRowButton.Location = new System.Drawing.Point(27, 24);
-            this.AddRowButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AddRowButton.Location = new System.Drawing.Point(20, 20);
+            this.AddRowButton.Margin = new System.Windows.Forms.Padding(2);
             this.AddRowButton.Name = "AddRowButton";
-            this.AddRowButton.Size = new System.Drawing.Size(27, 25);
+            this.AddRowButton.Size = new System.Drawing.Size(20, 20);
             this.AddRowButton.TabIndex = 6;
             this.AddRowButton.Text = "+";
             this.AddRowButton.UseVisualStyleBackColor = true;
             this.AddRowButton.Click += new System.EventHandler(this.AddRowButton_Click);
             // 
+            // DeleteRowButton
+            // 
+            this.DeleteRowButton.Location = new System.Drawing.Point(44, 20);
+            this.DeleteRowButton.Margin = new System.Windows.Forms.Padding(2);
+            this.DeleteRowButton.Name = "DeleteRowButton";
+            this.DeleteRowButton.Size = new System.Drawing.Size(20, 20);
+            this.DeleteRowButton.TabIndex = 7;
+            this.DeleteRowButton.Text = "-";
+            this.DeleteRowButton.UseVisualStyleBackColor = true;
+            this.DeleteRowButton.Click += new System.EventHandler(this.DeleteRowButton_Click);
+            // 
             // PasteFormPreviewWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 510);
+            this.ClientSize = new System.Drawing.Size(371, 414);
+            this.Controls.Add(this.DeleteRowButton);
             this.Controls.Add(this.AddRowButton);
             this.Controls.Add(this.clearCheckButton);
             this.Controls.Add(this.getCheckButton);
@@ -141,7 +154,7 @@
             this.Controls.Add(this.confirmButton);
             this.Controls.Add(this.pDGV);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "PasteFormPreviewWindow";
             this.Text = "Table Preview";
             ((System.ComponentModel.ISupportInitialize)(this.pDGV)).EndInit();
@@ -158,5 +171,6 @@
         private System.Windows.Forms.Button getCheckButton;
         private System.Windows.Forms.Button clearCheckButton;
         private System.Windows.Forms.Button AddRowButton;
+        private System.Windows.Forms.Button DeleteRowButton;
     }
 }

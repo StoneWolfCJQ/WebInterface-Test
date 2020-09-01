@@ -54,7 +54,7 @@ namespace WebInterface
                             {
                                 index = 0;
                             }
-                            IOName = IOName.Split('.')[0];
+                            IOName = GetIOGroupString(controllerName.Split('-')[0], dt.TableName, IOName);
                             ONOFF = ((String)row["ONOFF"]) == "ON" ? 1 : 0;
                             IOResult = queryList.Find(q => q.name == controllerName).IOResult;
                             lindex = queryList.Find(q => q.name == controllerName).IOList.FindIndex(s => s == IOName);
@@ -82,12 +82,21 @@ namespace WebInterface
                                    from DataRow rr in tt.Rows
                                    let rs = (String)rr["IOName"]
                                    where rs != ""
-                                   let rss = rs.Split('.')[0]
+                                   let rss = GetIOGroupString(cType, tt.TableName, rs)
                                    group rss by rss into rsg
                                    select rsg.Key).ToList()
                          } into lg
                          where lg.ss.Count != 0
                          select new ControllerListSource(lg.Key, lg.IP, lg.ss)).ToList());
+        }
+
+        static string GetIOGroupString(string cType, string tType, string IOName)
+        {
+            switch (cType)
+            {
+                case ControllerNames.LS:return tType + '\\' + IOName.Split('.')[0];
+                default:return IOName.Split('.')[0];
+            }
         }
         #endregion
 

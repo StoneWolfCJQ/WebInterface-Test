@@ -20,27 +20,21 @@ namespace WebInterface
             return true;
         }
 
-        public static void StartUpdate(out bool result)
+        public static void Connect(CancellationToken ct)
         {
-            result = true;
-            bool result2;
             try
             {
-                result2 = QPLCConnect();
+                QPLCConnect(ct);
             }
             catch (Exception e)
             {
-                String err = e.Message;
-                IOInterface.ShowError(err);
-                qplcu.CloseComm();
-                result = false;
-                return;
+                throw new Exception(e.Message);
             }
+        }
 
-            if (result2)
-            {
-                StartThreadQPLCQuery();
-            }
+        public static void StartUpdate()
+        {
+            StartThreadQPLCQuery();
         }
 
         public static void StopUpdate()
@@ -71,12 +65,13 @@ namespace WebInterface
             QPLCQueryThread.Start();
         }
 
-        private static void StatThreadIODataUpdate()
-        {
-            IODataUpdateThread = new Thread(IODataUpdate);
-            IODataUpdateThread.IsBackground = true;
-            IODataUpdateThread.Start();
-        }
+        // not in use, use acs's as master 
+        // private static void StatThreadIODataUpdate()
+        // {
+        //     IODataUpdateThread = new Thread(IODataUpdate);
+        //     IODataUpdateThread.IsBackground = true;
+        //     IODataUpdateThread.Start();
+        // }
 
         private static void QPLCQuery()
         {
@@ -127,27 +122,69 @@ namespace WebInterface
             }            
         }
 
-        private static bool QPLCConnect()
+        private static void QPLCConnect(CancellationToken ct)
         {
-            bool result = false;
             foreach (ControllerListSource cls in IODataCollection.controllerNameList.Where(c=>c.name.StartsWith("QPLC-")))
             {
-                qplcu.Connect(cls.name, int.Parse(cls.IP));
-                result = true;
+                QPLCConnectTask(cls.name, int.Parse(cls.IP), ct);
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
             }
 
-            return result;
         }
 
-        private static void IODataUpdate()
+        static void QPLCConnectTask(string cname, int stationNumber, CancellationToken ct)
         {
-            while (true)
+            bool exception = false;
+            string eMessage = "";
+            int i=0;
+            ManualResetEvent mre = new ManualResetEvent(false);
+            Thread t = new Thread(()=> {
+                try
+                {
+                    qplcu.Connect(cname, stationNumber);
+                }
+                catch (Exception e)
+                {
+                    exception = true;
+                    eMessage = e.Message;
+                }
+                mre.Set();
+                }
+            );
+            t.IsBackground = true;
+            t.Start();
+            while (!mre.WaitOne(100))
             {
-                Thread.Sleep(10);
-                IODataCollection.UpdateDataSetIOFromQueryList();
-                IODataCollection.RemoveOldFromChangeDict();
+                i++;
+                if (i > 50 || ct.IsCancellationRequested)
+                {
+                    t.Abort();
+                    if (i > 50)
+                    {
+                        throw new Exception($"QPLC连接超时，站号：{stationNumber}");
+                    }
+                    return;
+                }
+            }
+            if (exception)
+            {
+                throw new Exception($"QPLC连接错误，站号：{stationNumber}，代码：{eMessage}");
             }
         }
+
+        //not in use, use acs's as master
+        // private static void IODataUpdate()
+        // {
+        //     while (true)
+        //     {
+        //         Thread.Sleep(10);
+        //         IODataCollection.UpdateDataSetIOFromQueryList();
+        //         IODataCollection.RemoveOldFromChangeDict();
+        //     }
+        // }
 
         private static void StopThreadQPLCQuery()
         {
