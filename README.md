@@ -1,6 +1,7 @@
 # WebInterface-Test
 
 __Note:Major update is now discontinued 2019/5/4__
+__Please use new project : [ELEAuto](https://github.com/StoneWolfCJQ/ELEAuto)__
 
 ***
 # 简介  
