@@ -48,10 +48,18 @@ namespace WebInterface
             cAddress = new DataColumn("Station Number", typeof(string));
             QPLCControllerTable.Columns.AddRange(new[] { aupdate, cname, cAddress });
             QPLCControllerTable.TableName = "QPLC";
+            //LS
+            LSControllerTable = new DataTable();
+            aupdate = new DataColumn("Update", typeof(bool));
+            cname = new DataColumn("Controller Name", typeof(String));
+            cAddress = new DataColumn("Card Number", typeof(string));
+            LSControllerTable.Columns.AddRange(new[] { aupdate, cname, cAddress });
+            LSControllerTable.TableName = "LS";
             //DataSet
             ControllerDataTableList = new List<DataTable>();
             ControllerDataTableList.Add(ACSControllerTable);
             ControllerDataTableList.Add(QPLCControllerTable);
+            ControllerDataTableList.Add(LSControllerTable);
         }
 
         
@@ -77,6 +85,7 @@ namespace WebInterface
             ControllerTypeTable.Columns.AddRange(new[] { aupdate, cType });
             ControllerTypeTable.Rows.Add(true, "ACS");
             ControllerTypeTable.Rows.Add(false, "QPLC");
+            ControllerTypeTable.Rows.Add(false, "LS");
         }
         
     }
@@ -87,6 +96,7 @@ namespace WebInterface
         public static Dictionary<String, String> controllerDict;
         public static DataTable ACSControllerTable { get;set; }
         public static DataTable QPLCControllerTable { get; set; }
+        public static DataTable LSControllerTable { get; set; }
         public static List<DataTable> ControllerDataTableList { get; set; }
         public static DataTable ControllerTypeTable { get; set; }
         public static DataTable templateEmptyTable=new DataTable();

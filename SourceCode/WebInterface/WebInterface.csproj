@@ -125,9 +125,7 @@
     <Compile Include="SourceFiles\Controller\LS\Children\LSControllerUtilities.cs" />
     <Compile Include="SourceFiles\Controller\LS\Children\LSDataManager.cs" />
     <Compile Include="SourceFiles\Controller\LS\Children\LSDataUpdater.cs" />
-    <Compile Include="SourceFiles\Controller\LS\Children\LSQueryUtilities.cs" />
     <Compile Include="SourceFiles\Controller\LS\Library\LTDMC.cs" />
-    <Compile Include="SourceFiles\Controller\LS\LSMaster.cs" />
     <Compile Include="SourceFiles\Controller\QPLC\Children\QPLCDataUpdater.cs" />
     <Compile Include="SourceFiles\Controller\QPLC\Children\QPLCControllerUtilities.cs" />
     <Compile Include="SourceFiles\Controller\QPLC\Children\QPLCDataManager.cs" />

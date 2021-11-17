@@ -34,7 +34,7 @@ namespace WebInterface
 {    
     public static class ControllerNames
     {
-        public const string LS="雷赛";
+        public const string LS="LS";
         public static bool LSdebug = false;
     }
 }

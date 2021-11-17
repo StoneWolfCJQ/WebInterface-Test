@@ -208,9 +208,11 @@ namespace WebInterface
         {
             ACSControllerTable.TableName = "ACS";
             QPLCControllerTable.TableName = "QPLC";
+            LSControllerTable.TableName = "LS";
             ControllerDataTableList.Clear();
             ControllerDataTableList.Add(ACSControllerTable);
             ControllerDataTableList.Add(QPLCControllerTable);
+            ControllerDataTableList.Add(LSControllerTable);
         }
     }
 }
