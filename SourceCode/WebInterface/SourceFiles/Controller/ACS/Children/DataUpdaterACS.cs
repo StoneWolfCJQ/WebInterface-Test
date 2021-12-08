@@ -77,7 +77,7 @@ namespace WebInterface
         {
             foreach (ControllerListSource cls in IODataCollection.queryList.Where(c => c.name.StartsWith("ACS-")))
             {
-                String queryStr = ACSQueryUtilities.GenACSSimQueryStr(cls.IOList);
+                string queryStr = ACSQueryUtilities.GenACSSimQueryStr(cls.IOList);
                 acsu.BeginTransaction(cls.name, queryStr, new AsyncCallback(OnTransaction), acsu);
                 RunningTransaction.Add(cls.name);
             }
@@ -86,16 +86,16 @@ namespace WebInterface
         private static void OnTransaction(IAsyncResult ar)
         {
             object[] os = (object[])ar.AsyncState;
-            String cname = (String)os[0];
+            string cname = (string)os[0];
             ACSControllerUtilities _acsu = (ACSControllerUtilities)os[1];
-            String queryStr = ACSQueryUtilities.GenACSSimQueryStr(IODataCollection.queryList.Find(cls => cls.name == cname).IOList);
+            string queryStr = ACSQueryUtilities.GenACSSimQueryStr(IODataCollection.queryList.Find(cls => cls.name == cname).IOList);
             try
             {
-                String transStr = _acsu.EndTransaction(ar);
+                string transStr = _acsu.EndTransaction(ar);
                 List<int> tl = ACSQueryUtilities.ConvertACSTransStr(transStr, out bool result);
                 if (!result)
                 {
-                    String err = $"变量名错误或未定义：{cname}@{queryStr}=>{transStr}";                    
+                    string err = $"变量名错误或未定义：{cname}@{queryStr}=>{transStr}";                    
                     IOInterface.updateError = true;
                     RunningTransaction.Remove(cname);
                     IOInterface.ShowError(err);
@@ -118,7 +118,7 @@ namespace WebInterface
             }
             catch (Exception e)
             {
-                String err = $"{e.Message}：{cname}@{queryStr}";
+                string err = $"{e.Message}：{cname}@{queryStr}";
                 IOInterface.updateError = true;
                 RunningTransaction.Remove(cname);
                 if (RunningTransaction.Count == 0)
@@ -237,7 +237,7 @@ namespace WebInterface
     {
         private static Thread ACSQueryThread=new Thread(()=> { }), IODataUpdateThread=new Thread(()=> { });
         private static bool ACSThreadAbort = false, ACSThreadAborted = false;
-        private static List<String> RunningTransaction = new List<String>();
+        private static List<string> RunningTransaction = new List<string>();
         public static ACSControllerUtilities acsu = new ACSControllerUtilities();
     }
 }

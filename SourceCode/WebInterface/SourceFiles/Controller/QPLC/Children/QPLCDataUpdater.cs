@@ -98,7 +98,7 @@ namespace WebInterface
                 catch(Exception e)
                 {
                     string queryStr = string.Join(",", queryList);
-                    String err = $"{e.Message} {cname}@{queryStr}";                    
+                    string err = $"{e.Message} {cname}@{queryStr}";                    
                     IOInterface.updateError = true;
                     RunningTransaction.Remove(cname);
                     if (RunningTransaction.Count == 0)
@@ -221,7 +221,7 @@ namespace WebInterface
     {
         private static Thread QPLCQueryThread =new Thread(()=> { }), IODataUpdateThread=new Thread(()=> { });
         private static bool QPLCThreadAbort = false, QPLCThreadAborted = false;
-        private static List<String> RunningTransaction = new List<String>();
+        private static List<string> RunningTransaction = new List<string>();
         public static QPLCControllerUtilities qplcu = new QPLCControllerUtilities();
     }
 }

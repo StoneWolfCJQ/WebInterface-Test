@@ -23,7 +23,7 @@ namespace WebInterface
                 ControllerDataTableList.Find(t => t.TableName == cType).Rows.Add(false, "", "");
             }
         }
-        public static void UpdateIOQueryList(String mergeName, List<int> tl)
+        public static void UpdateIOQueryList(string mergeName, List<int> tl)
         {
             ControllerListSource cls = queryList.Find(q => q.name == mergeName);
             if (!cls.IOResult.SequenceEqual(tl))
@@ -33,17 +33,17 @@ namespace WebInterface
         }
         public static void UpdateDataSetIOFromQueryList()
         {
-            String IOName;
+            string IOName;
             int index, IOint, lindex;
             int ONOFF;
             List<int> IOResult;
-            foreach (String controllerName in controllerNameList.Select(cl => cl.name))
+            foreach (string controllerName in controllerNameList.Select(cl => cl.name))
             {
                 foreach (DataTable dt in dataDict[controllerName].Tables)
                 {
                     foreach (DataRow row in dt.Rows)
                     {
-                        IOName = (String)row["IOName"];
+                        IOName = (string)row["IOName"];
                         if (IOName != "")
                         {
                             if (IOName.Contains('.'))
@@ -55,13 +55,13 @@ namespace WebInterface
                                 index = 0;
                             }
                             IOName = GetIOGroupString(controllerName.Split('-')[0], dt.TableName, IOName);
-                            ONOFF = ((String)row["ONOFF"]) == "ON" ? 1 : 0;
+                            ONOFF = ((string)row["ONOFF"]) == "ON" ? 1 : 0;
                             IOResult = queryList.Find(q => q.name == controllerName).IOResult;
                             lindex = queryList.Find(q => q.name == controllerName).IOList.FindIndex(s => s == IOName);
                             IOint = IOResult[lindex];
                             if ((ONOFF << index) != (IOint & (1 << index)))
                             {
-                                row["ONOFF"] = ((String)row["ONOFF"]) == "ON" ? "OFF" : "ON";
+                                row["ONOFF"] = ((string)row["ONOFF"]) == "ON" ? "OFF" : "ON";
                             }
                         }
                     }
@@ -80,7 +80,7 @@ namespace WebInterface
                              IP = controllerDict[s.Key],
                              ss = (from DataTable tt in t
                                    from DataRow rr in tt.Rows
-                                   let rs = (String)rr["IOName"]
+                                   let rs = (string)rr["IOName"]
                                    where rs != ""
                                    let rss = GetIOGroupString(cType, tt.TableName, rs)
                                    group rss by rss into rsg

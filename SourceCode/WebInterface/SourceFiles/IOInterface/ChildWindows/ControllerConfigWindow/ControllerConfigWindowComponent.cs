@@ -22,7 +22,7 @@ namespace WebInterface
             }
         }
 
-        private void RemoveController(String cname)
+        private void RemoveController(string cname)
         {
             IODataCollection.RemoveController(selectControllerTypeName, cname);
         }
@@ -33,8 +33,8 @@ namespace WebInterface
             int rowIndex = rrowIndex;
             int colIndex = ccolIndex;
 
-            String oldName = "";
-            String oldAddress = "";
+            string oldName = "";
+            string oldAddress = "";
             editControllerType = EditType.None;
 
             if ((illegalRowIndex >= 0))
@@ -61,7 +61,7 @@ namespace WebInterface
 
             if (colIndex == controllerDGV.Columns["Controller Name"].Index)
             {
-                if (String.IsNullOrEmpty(oldName))
+                if (string.IsNullOrEmpty(oldName))
                 {
                     editControllerType = EditType.Add;
                 }
@@ -70,7 +70,7 @@ namespace WebInterface
                     editControllerType = EditType.UpdateName;
                 }
             }
-            else if (!String.IsNullOrEmpty(oldName))
+            else if (!string.IsNullOrEmpty(oldName))
             {
                 editControllerType = EditType.UpdateAddress; 
             }
@@ -82,7 +82,7 @@ namespace WebInterface
             {
                 MessageBox.Show("有错误未修正，错误的行已恢复上一次有效值", "提示", MessageBoxButtons.OK);
             }
-            String cname;
+            string cname;
             if (controllerDGV.SelectedCells.Count > 1)
             {
                 DialogResult dr = MessageBox.Show("将删除多个控制器，是否继续", "警告", MessageBoxButtons.YesNo);
@@ -182,7 +182,7 @@ namespace WebInterface
         private void RebuildBindingList()
         {
             UncheckBadRow();
-            Dictionary<String, String> d = new Dictionary<String, String>();
+            Dictionary<string, string> d = new Dictionary<string, string>();
             d = (from DataRow dr1 in IODataCollection.ControllerTypeTable.Rows
                  where (bool)dr1["Update"] == true
                  let ct = (string)dr1["Controller Type"]
@@ -204,7 +204,7 @@ namespace WebInterface
         int selectControllerTypeRow = 0;
         string selectControllerTypeName;
         EditType editControllerType;
-        String oldStr;
+        string oldStr;
         enum EditType
         { Add, UpdateName, UpdateAddress, None };
         enum CheckType

@@ -30,7 +30,7 @@ namespace WebInterface
         private DataGridViewComboBoxColumn templateCBCol;
         private Dictionary<styleEnum, DataGridViewCellStyle> dgvStyleDict;
         private bool tableCheckResult;
-        private Dictionary<String, Dictionary<IODataCollection.dataTableType, DataGridViewCell>> errorTableDict;
+        private Dictionary<string, Dictionary<IODataCollection.dataTableType, DataGridViewCell>> errorTableDict;
         private Thread UpdateUIThread=new Thread(()=> { });
     }
 }

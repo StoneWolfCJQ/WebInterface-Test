@@ -43,16 +43,16 @@ namespace WebInterface
             qList.Clear();
         }
 
-        public List<int> ReadDevice(String cname, List<string> queryList)
+        public List<int> ReadDevice(string cname, List<string> queryList)
         {
-            string queryList2 = String.Join("\n", queryList);
+            string queryList2 = string.Join("\n", queryList);
             short[] result = new short[queryList.Count];
             int iReturnCode;
             iReturnCode = qList[cname].ReadDeviceRandom2(queryList2, queryList.Count, out result[0]);
             
             if (iReturnCode != 0)
             {
-                throw new Exception(String.Format("站号{1:d}变量读取错误：0x{0:x8}", iReturnCode, qList[cname].ActLogicalStationNumber));
+                throw new Exception(string.Format("站号{1:d}变量读取错误：0x{0:x8}", iReturnCode, qList[cname].ActLogicalStationNumber));
             }
 
             return result.Select(s=>(int)s).ToList();
@@ -63,7 +63,7 @@ namespace WebInterface
             return qList[cname].SetDevice(device, value);
         }
 
-        public void Connect(String cname, int stationNumber)
+        public void Connect(string cname, int stationNumber)
         {
             ActUtlTypeClass tapi = new ActUtlTypeClass();
             Open(ref tapi, stationNumber, cname);
@@ -77,11 +77,11 @@ namespace WebInterface
             iReturnCode = api.Open();
             if (iReturnCode!=0)
             {
-                throw new Exception(String.Format("打开{2:s}站号{0:d}错误 0x{1:x8}", stationNumber, iReturnCode, cName));
+                throw new Exception(string.Format("打开{2:s}站号{0:d}错误 0x{1:x8}", stationNumber, iReturnCode, cName));
             }
         }
 
-        public void StartUpdate(String cname, String queryStr)
+        public void StartUpdate(string cname, string queryStr)
         {
 
         }
@@ -90,7 +90,7 @@ namespace WebInterface
 
     public partial class QPLCControllerUtilities
 {
-        public Dictionary<String, ActUtlTypeClass> qList;
+        public Dictionary<string, ActUtlTypeClass> qList;
         public ActUtlTypeClass simApi;
         private bool stopUpdate = false;
     }

@@ -13,8 +13,8 @@ namespace WebInterface
     {
         static IODataCollection()
         {
-            dataDict = new Dictionary<String, DataSet>();
-            controllerDict = new Dictionary<String, String>();
+            dataDict = new Dictionary<string, DataSet>();
+            controllerDict = new Dictionary<string, string>();
             controllerNameList = new BindingList<ControllerListSource>();
             controllerNameList.AllowEdit = true;
             controllerNameList.AllowRemove = true;
@@ -28,7 +28,7 @@ namespace WebInterface
         {
             var d = from tt in Enum.GetNames(typeof(colType))
                     select new { type = (colType)Enum.Parse(typeof(colType), tt), tt};
-            colTypeDict = new Dictionary<colType, String>();
+            colTypeDict = new Dictionary<colType, string>();
             colTypeDict = d.ToDictionary(t => t.type, t => t.tt);
         }
 
@@ -37,21 +37,21 @@ namespace WebInterface
             //ACS
             ACSControllerTable = new DataTable();
             DataColumn aupdate = new DataColumn("Update", typeof(bool));
-            DataColumn cname = new DataColumn("Controller Name", typeof(String));
-            DataColumn cAddress = new DataColumn("Controller IP", typeof(String));
+            DataColumn cname = new DataColumn("Controller Name", typeof(string));
+            DataColumn cAddress = new DataColumn("Controller IP", typeof(string));
             ACSControllerTable.Columns.AddRange(new[] { aupdate, cname, cAddress });
             ACSControllerTable.TableName = "ACS";
             //QPLC
             QPLCControllerTable = new DataTable();
             aupdate = new DataColumn("Update", typeof(bool));
-            cname = new DataColumn("Controller Name", typeof(String));
+            cname = new DataColumn("Controller Name", typeof(string));
             cAddress = new DataColumn("Station Number", typeof(string));
             QPLCControllerTable.Columns.AddRange(new[] { aupdate, cname, cAddress });
             QPLCControllerTable.TableName = "QPLC";
             //LS
             LSControllerTable = new DataTable();
             aupdate = new DataColumn("Update", typeof(bool));
-            cname = new DataColumn("Controller Name", typeof(String));
+            cname = new DataColumn("Controller Name", typeof(string));
             cAddress = new DataColumn("Card Number", typeof(string));
             LSControllerTable.Columns.AddRange(new[] { aupdate, cname, cAddress });
             LSControllerTable.TableName = "LS";
@@ -65,9 +65,9 @@ namespace WebInterface
         
         private static void InitializeTemplateEmptyTable()
         {
-            DataColumn nd = new DataColumn(colTypeDict[colType.IOName], typeof(String));
-            DataColumn na = new DataColumn(colTypeDict[colType.IOAlias], typeof(String));
-            DataColumn of = new DataColumn(colTypeDict[colType.ONOFF], typeof(String));
+            DataColumn nd = new DataColumn(colTypeDict[colType.IOName], typeof(string));
+            DataColumn na = new DataColumn(colTypeDict[colType.IOAlias], typeof(string));
+            DataColumn of = new DataColumn(colTypeDict[colType.ONOFF], typeof(string));
             DataColumn cl = new DataColumn(colTypeDict[colType.CheckStatus], typeof(checkStatusType));
             templateEmptyTable.Columns.AddRange(new DataColumn[] { nd, na, of, cl });
 
@@ -81,7 +81,7 @@ namespace WebInterface
         {
             ControllerTypeTable = new DataTable();
             DataColumn aupdate = new DataColumn("Update", typeof(bool));
-            DataColumn cType = new DataColumn("Controller Type", typeof(String));
+            DataColumn cType = new DataColumn("Controller Type", typeof(string));
             ControllerTypeTable.Columns.AddRange(new[] { aupdate, cType });
             ControllerTypeTable.Rows.Add(true, "ACS");
             ControllerTypeTable.Rows.Add(false, "QPLC");
@@ -92,8 +92,8 @@ namespace WebInterface
 
     static partial class IODataCollection
     {
-        public static Dictionary<String,DataSet> dataDict;
-        public static Dictionary<String, String> controllerDict;
+        public static Dictionary<string,DataSet> dataDict;
+        public static Dictionary<string, string> controllerDict;
         public static DataTable ACSControllerTable { get;set; }
         public static DataTable QPLCControllerTable { get; set; }
         public static DataTable LSControllerTable { get; set; }
@@ -104,7 +104,7 @@ namespace WebInterface
         public enum dataTableType { Input, Output, Limit };
         public enum checkStatusType { Uncheck, Checked, Error, Problem };
         public enum colType { IOName, IOAlias, ONOFF, CheckStatus};
-        public static Dictionary<colType, String> colTypeDict;
+        public static Dictionary<colType, string> colTypeDict;
         public static DataTable errorTable;
     }
 }

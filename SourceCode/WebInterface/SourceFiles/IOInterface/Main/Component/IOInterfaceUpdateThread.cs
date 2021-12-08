@@ -95,11 +95,11 @@ namespace WebInterface
             }
             else
             {
-                String ONOFF;
+                string ONOFF;
                 IODataCollection.checkStatusType cst;
                 foreach (DataGridViewRow row in dgv.Rows)
                 {
-                    ONOFF = (String)row.Cells["ONOFF"].Value;
+                    ONOFF = (string)row.Cells["ONOFF"].Value;
                     cst = (IODataCollection.checkStatusType)row.Cells["CheckStatus"].Value;
                     row.Cells["ONOFF"].Style = ONOFF == "ON" ? dgvStyleDict[styleEnum.Nogood] : dgvStyleDict[styleEnum.Good];
                     switch (cst)

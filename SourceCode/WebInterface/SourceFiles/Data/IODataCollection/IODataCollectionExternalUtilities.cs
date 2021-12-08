@@ -11,11 +11,11 @@ namespace WebInterface
 {    
     static partial class IODataCollection
     {
-        public static void ChangeCheckStatus(String cName, String IOName, String checkStatus)
+        public static void ChangeCheckStatus(string cName, string IOName, string checkStatus)
         {
             DataRow row = (from DataTable t in dataDict[cName].Tables
                           from DataRow rs in t.Rows
-                          where (String)rs["IOName"] == IOName
+                          where (string)rs["IOName"] == IOName
                           select rs).First();
 
             row["CheckStatus"] = (IODataCollection.checkStatusType)Enum.Parse(typeof(IODataCollection.checkStatusType), checkStatus);

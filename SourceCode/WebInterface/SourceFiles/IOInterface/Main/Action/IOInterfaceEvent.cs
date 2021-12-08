@@ -109,9 +109,9 @@ namespace WebInterface
             }
             else if ((e.ColumnIndex == dgv.Columns["ONOFF"].Index) && (dgv == outputDGV))
             {
-                String cn = controllerDropList.SelectedValue as String;
-                String IOName = dgv.Rows[e.RowIndex].Cells["IOName"].Value as String;
-                String ONOFF = ((String)dgv.Rows[e.RowIndex].Cells["ONOFF"].Value == "ON" ? "OFF" : "ON");
+                string cn = controllerDropList.SelectedValue as string;
+                string IOName = dgv.Rows[e.RowIndex].Cells["IOName"].Value as string;
+                string ONOFF = ((string)dgv.Rows[e.RowIndex].Cells["ONOFF"].Value == "ON" ? "OFF" : "ON");
                 ChangeOnOFF(cn, IOName, ONOFF);
             }
         }

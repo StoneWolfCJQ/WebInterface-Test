@@ -8,17 +8,17 @@ namespace WebInterface.QueryUtilities
 {
     public static partial class Utilities
     {
-        public static String ConvertDateTimeUTCToRoundTripTime(DateTime utctime)
+        public static string ConvertDateTimeUTCToRoundTripTime(DateTime utctime)
         {
             return utctime.ToString("O");            
         }
 
-        public static DateTime ConvertRoundTripTimeDateTimeUTC(String utctimes)
+        public static DateTime ConvertRoundTripTimeDateTimeUTC(string utctimes)
         {
             return DateTime.ParseExact(utctimes, "O", System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        public static String ConvertDateTimeUTCNowToHTTPGMT()
+        public static string ConvertDateTimeUTCNowToHTTPGMT()
         {
             return DateTime.UtcNow.ToString("O");
         }

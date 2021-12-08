@@ -56,7 +56,7 @@ namespace WebInterface
 
                 if (read > 0)
                 {
-                    String str = Encoding.UTF8.GetString(so.buffer, 0, read);
+                    string str = Encoding.UTF8.GetString(so.buffer, 0, read);
                     Console.WriteLine(str);  //将请求显示到界面
                     Resolve(str, clientSocket);  //解析、路由、处理
                     if (s.Connected)
@@ -93,12 +93,12 @@ namespace WebInterface
             {
                 string[] items = strs[0].Split(' ');  //items[1]表示请求url中的路径部分（不含主机部分）
                 Dictionary<string, string> param = new Dictionary<string, string>();// 解析头部其他部分，比如Cookie, Last Modified等
-                foreach (String sl in strs)
+                foreach (string sl in strs)
                 {
                     if (sl.Contains(':'))
                     {
-                        String key = sl.Substring(0, sl.IndexOf(':'));
-                        String value = sl.Substring(sl.IndexOf(':') + 1);
+                        string key = sl.Substring(0, sl.IndexOf(':'));
+                        string value = sl.Substring(sl.IndexOf(':') + 1);
                         param.Add(key, value);
                     }
                 }
@@ -115,14 +115,14 @@ namespace WebInterface
         /// <param name="response"></param>
         void Route(string path, Dictionary<string, string> param, Socket response)
         {
-            String firstDir = path.Split('/')[1];
+            string firstDir = path.Split('/')[1];
             if (path.EndsWith("index.html") || path.EndsWith("/"))  //请求首页
             {
                 HTTPRequestHandler.HomePage(response);
             }
             else if ((firstDir != "init") && (!firstDir.StartsWith("query")))
             {
-                String requestFileType = firstDir;
+                string requestFileType = firstDir;
                 HTTPRequestHandler.SendHeadFile(response, requestFileType, path);
             }
             else if (firstDir == "init")
@@ -131,9 +131,9 @@ namespace WebInterface
             }
             else if (firstDir.StartsWith("query"))
             {
-                String[] queryStr = firstDir.Split('?');
-                String queryContent = queryStr[1];
-                String lastModifiedSinceutcStr;
+                string[] queryStr = firstDir.Split('?');
+                string queryContent = queryStr[1];
+                string lastModifiedSinceutcStr;
                 if (param.ContainsKey("If-Modified-Since"))
                 {
                     lastModifiedSinceutcStr = param["If-Modified-Since"].TrimStart(' ');

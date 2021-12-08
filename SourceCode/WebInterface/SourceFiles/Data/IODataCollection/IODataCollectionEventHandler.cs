@@ -14,7 +14,7 @@ namespace WebInterface
         public static void AddChangeEvent()
         {
             ClearChangeDict();
-            foreach (String s in controllerNameList.Select(cl=>cl.name))
+            foreach (string s in controllerNameList.Select(cl=>cl.name))
             {
                 DataSet ds = dataDict[s];
                 foreach (DataTable dt in ds.Tables)
@@ -26,7 +26,7 @@ namespace WebInterface
 
         public static void RemoveChangeEvent()
         {
-            foreach (String s in controllerNameList.Select(cl => cl.name))
+            foreach (string s in controllerNameList.Select(cl => cl.name))
             {
                 DataSet ds = dataDict[s];
                 foreach (DataTable dt in ds.Tables)
@@ -49,13 +49,13 @@ namespace WebInterface
                 }
             }).Start();
             
-            String IOName = e.Row["IOName"] as String;
+            string IOName = e.Row["IOName"] as string;
             if (IOName != "")
             {
                 DataTable dt = sender as DataTable;
-                String cn = dt.DataSet.DataSetName;
-                String cln = e.Column.ColumnName;
-                String content = "";
+                string cn = dt.DataSet.DataSetName;
+                string cln = e.Column.ColumnName;
+                string content = "";
                 if ("CheckStatus" == cln)
                 {
                     checkStatusType ct = (checkStatusType)e.Row[e.Column.ColumnName];
@@ -63,7 +63,7 @@ namespace WebInterface
                 }
                 else
                 {
-                    content = e.Row[e.Column.ColumnName] as String;
+                    content = e.Row[e.Column.ColumnName] as string;
                 }
                 DateTime now = DateTime.Now;
                 IODataChangeContainer id = new IODataChangeContainer(now, cn, cln, IOName, content);
@@ -150,13 +150,13 @@ namespace WebInterface
     public class IODataChangeContainer
     {
         public DateTime time { get; set; }
-        public String cname { get; set; }
-        public String type { get; set; }
-        public String iname { get; set; }
-        public String value { get; set; }
-        public String cvalue { get; set; }
+        public string cname { get; set; }
+        public string type { get; set; }
+        public string iname { get; set; }
+        public string value { get; set; }
+        public string cvalue { get; set; }
 
-        public IODataChangeContainer(DateTime _time, String _cname, String _type, String _iname, String _value)
+        public IODataChangeContainer(DateTime _time, string _cname, string _type, string _iname, string _value)
         {
             time = _time;
             cname = _cname;

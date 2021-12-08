@@ -14,14 +14,14 @@ namespace WebInterface
     public partial class PasteFormPreviewWindow : Form
     {
         public DataTable pTable= new DataTable();
-        public String pText;
+        public string pText;
         public bool result = false;
-        public List<String> IONameList = new List<String>();
-        public List<String> DGVIONameList = new List<string>();
+        public List<string> IONameList = new List<string>();
+        public List<string> DGVIONameList = new List<string>();
         private DataGridView dgv;
         private List<DataGridView> dgvList;
         string cType;
-        public PasteFormPreviewWindow(String _pText, DataGridView _dgv, List<DataGridView> _dgvList, string cType)
+        public PasteFormPreviewWindow(string _pText, DataGridView _dgv, List<DataGridView> _dgvList, string cType)
         {            
             pText = _pText;
             InitializeComponent();
@@ -158,7 +158,7 @@ namespace WebInterface
         private bool ConflictDuplicationCheck(DataGridViewRow row)
         {
             bool result = true;
-            String str = row.Cells["IOName"].Value as string;
+            string str = row.Cells["IOName"].Value as string;
             if (DGVIONameList.Contains(str)) 
             {
                 result = false;
@@ -170,7 +170,7 @@ namespace WebInterface
         private bool NonConflictDuplicationCheck(DataGridViewRow row)
         {
             bool result = true;
-            String str = row.Cells["IOName"].Value as string;
+            string str = row.Cells["IOName"].Value as string;
             if (IONameList.Contains(str))
             {
                 result = false;
@@ -188,7 +188,7 @@ namespace WebInterface
             return RegCheck(GetString(pDGV.Rows[ri].Cells[ci].Value));
         }
 
-        private bool RegCheck(String istr)
+        private bool RegCheck(string istr)
         {
             if (istr== "TheAbsolutelyCorrectIOName")
             {
@@ -210,12 +210,12 @@ namespace WebInterface
             return RegCheck(GetString(row.Cells["IOName"].Value));
         }
 
-        private String GetString(Object cv)
+        private string GetString(Object cv)
         {
-            String s = "";
+            string s = "";
             try
             {
-                s = (String)cv;
+                s = (string)cv;
             }
             catch
             {
@@ -270,7 +270,7 @@ namespace WebInterface
 
         bool ValidStr(string s)
         {
-            return !(String.IsNullOrWhiteSpace(s) || String.IsNullOrEmpty(s));
+            return !(string.IsNullOrWhiteSpace(s) || string.IsNullOrEmpty(s));
         }
 
         private void getCheckButton_Click(object sender, EventArgs e)

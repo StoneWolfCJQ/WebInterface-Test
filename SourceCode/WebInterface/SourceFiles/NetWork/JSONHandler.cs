@@ -22,7 +22,7 @@ namespace WebInterface
             }
             else
             {
-                s = String.Compare(x, y);
+                s = string.Compare(x, y);
             }
             return s;
         }
@@ -30,13 +30,13 @@ namespace WebInterface
 
     partial class JSONHandler
     {
-        public static String SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc)
+        public static string SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc)
         {
-            Dictionary<String, DataSet> tdd = new Dictionary<string, DataSet>(IODataCollection.dataDict);
+            Dictionary<string, DataSet> tdd = new Dictionary<string, DataSet>(IODataCollection.dataDict);
             lastModifiedTimeutc = DateTime.Now;
             IODataUpdater.AddChangeEventForIODataCollection();
 
-            String JSON = "";
+            string JSON = "";
             JObject o = new JObject(from tt in tdd
                                     where IODataCollection.FindNameListItemByName(tt.Key) != null
                                     let ds = tt.Value.Tables
@@ -56,7 +56,7 @@ namespace WebInterface
             return JSON;
         }
 
-        private static JArray GenJSONJArrayFromDataCollection(Dictionary<String, DataSet> tdd, String cname, String tname, String iname)
+        private static JArray GenJSONJArrayFromDataCollection(Dictionary<string, DataSet> tdd, string cname, string tname, string iname)
         {
             var ja = from d in tdd
                      where d.Key == cname
@@ -65,12 +65,12 @@ namespace WebInterface
                      where table.TableName == tname
                      select table.Rows into r
                      from DataRow rs in r
-                     let rn = (String)rs["IOName"]
+                     let rn = (string)rs["IOName"]
                      where rn != ""
                      let rnn = GetIOName(cname, rn)
                      where rnn == iname
                      let index = GetIndex(cname, rn)
-                     let onoff = ((String)rs["ONOFF"]) == "ON" ? 1 : 0
+                     let onoff = ((string)rs["ONOFF"]) == "ON" ? 1 : 0
                      let check = (int)rs["CheckStatus"]
                      let alias = rs["IOAlias"] as string
                      orderby index ascending
@@ -89,9 +89,9 @@ namespace WebInterface
             return new JArray( new JValue(jindex), new JValue(jonoff), new JValue(jcheck), jalias);
         }
 
-        public static String SendChangeJSONFromDataCollection(DateTime lastModifiedSinceutc, out DateTime lastModifiedTimeutc)
+        public static string SendChangeJSONFromDataCollection(DateTime lastModifiedSinceutc, out DateTime lastModifiedTimeutc)
         {
-            String JSON = "";
+            string JSON = "";
             List<IODataChangeContainer> tp;
             lock (IODataCollection.dataUpdateList)
             {
@@ -145,7 +145,7 @@ namespace WebInterface
     public partial class JSONHandler
     {
         public bool JSONIsInit = false;
-        public String InitJSONStr;
-        public String lastJSON;
+        public string InitJSONStr;
+        public string lastJSON;
     }
 }

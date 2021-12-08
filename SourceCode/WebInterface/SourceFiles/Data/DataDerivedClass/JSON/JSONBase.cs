@@ -33,7 +33,7 @@ namespace WebInterface
 
         public override bool FillObjectFromInput<T>(T io)
         {
-            String s = (String)Convert.ChangeType(io, typeof(String));
+            string s = (string)Convert.ChangeType(io, typeof(string));
             jsonStorer = JsonConvert.DeserializeObject<JSONStoreClass>(s);
             
             ConvertCheckStatusType();
@@ -53,7 +53,7 @@ namespace WebInterface
 
         public void ConvertCheckStatusType()
         {            
-            foreach (KeyValuePair<String, DataSet> o in jsonStorer.dataDict)
+            foreach (KeyValuePair<string, DataSet> o in jsonStorer.dataDict)
             {
                 DataSet ds = o.Value;
                 ds.DataSetName = o.Key;

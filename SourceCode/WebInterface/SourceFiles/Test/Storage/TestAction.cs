@@ -13,8 +13,8 @@ namespace WebInterface
 {
     class TestStoreClass
     {
-        public  Dictionary<String, DataSet> dataDict;
-        public  Dictionary<String, String> controllerDict;
+        public  Dictionary<string, DataSet> dataDict;
+        public  Dictionary<string, string> controllerDict;
         public  DataTable ACSControllerTable { get; set; }
         public  BindingList<ControllerListSource> controllerNameList;
     }
@@ -22,15 +22,15 @@ namespace WebInterface
     {
         public TestStoreClass jsonStorer;
         //Store Data with json
-        public TestAction(String path)
+        public TestAction(string path)
         {
             Save2File(path);
         }
 
-        private void Save2File(String path)
+        private void Save2File(string path)
         {
             FillStorer();
-            String s = CreateJSON();
+            string s = CreateJSON();
             File.WriteAllText(path, s);
         }
 
@@ -43,9 +43,9 @@ namespace WebInterface
             jsonStorer.ACSControllerTable = IODataCollection.ACSControllerTable;
         }
 
-        private String CreateJSON()
+        private string CreateJSON()
         {
-            String s = "";
+            string s = "";
             s = JsonConvert.SerializeObject(jsonStorer, Formatting.Indented);
 
             return s;

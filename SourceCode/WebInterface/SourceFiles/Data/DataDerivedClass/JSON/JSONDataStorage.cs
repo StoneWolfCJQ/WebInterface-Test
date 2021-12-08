@@ -14,7 +14,7 @@ namespace WebInterface
         {
             jb = new JSONBase();
             defaultFileName = "ACSJson.json";
-            String cp = Directory.GetCurrentDirectory();
+            string cp = Directory.GetCurrentDirectory();
             defaultDir = cp + @"\json\";
             defaultPath = defaultDir + defaultFileName;
         }
@@ -33,23 +33,23 @@ namespace WebInterface
         {
             bool result;
 
-            String s = ReadFile<String>();
-            result = jb.FillObjectFromInput<String>(s);
+            string s = ReadFile<string>();
+            result = jb.FillObjectFromInput<string>(s);
 
             return result;
         }
 
         public override T ReadFile<T>()
         {
-            String fs = File.ReadAllText(defaultPath);
+            string fs = File.ReadAllText(defaultPath);
 
-            return (T)Convert.ChangeType(fs, typeof(String));
+            return (T)Convert.ChangeType(fs, typeof(string));
         }
 
         public override void Save2File()
         {
             jb.FillStorer();
-            String s = jb.ConvertStorer<String>();
+            string s = jb.ConvertStorer<string>();
             if (!Directory.Exists(defaultDir))
             {
                 Directory.CreateDirectory(defaultDir);

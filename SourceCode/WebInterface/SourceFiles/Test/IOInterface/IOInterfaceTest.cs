@@ -173,31 +173,31 @@ namespace WebInterface
         //{
         //    Invoke(new Action(() =>
         //    {                
-        //        testDGV.Rows[index].Cells["Button"].Value = onoff == "" ? ((String)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? "ON" : "OFF") : onoff;
+        //        testDGV.Rows[index].Cells["Button"].Value = onoff == "" ? ((string)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? "ON" : "OFF") : onoff;
         //        DataGridViewCellStyle style = new DataGridViewCellStyle();
-        //        style.BackColor = (String)testDGV.Rows[index].Cells["Button"].Value == "ON" ? System.Drawing.Color.OrangeRed : System.Drawing.Color.ForestGreen;
+        //        style.BackColor = (string)testDGV.Rows[index].Cells["Button"].Value == "ON" ? System.Drawing.Color.OrangeRed : System.Drawing.Color.ForestGreen;
         //        testDGV.Rows[index].Cells["Button"].Style = style;
         //        if (index <= 7)
         //        {
         //            char[] old = X0TextBox.Text.ToCharArray();
-        //            old[7 - index] = (String)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? '0' : '1';
-        //           X0TextBox.Text = new String(old);
+        //            old[7 - index] = (string)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? '0' : '1';
+        //           X0TextBox.Text = new string(old);
         //        }
         //        else
         //        {
         //            char[] old = X1TextBox.Text.ToCharArray();
-        //            old[15 - index] = (String)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? '0' : '1';
-        //            X1TextBox.Text = new String(old);
+        //            old[15 - index] = (string)testDGV.Rows[index].Cells["Button"].Value == "OFF" ? '0' : '1';
+        //            X1TextBox.Text = new string(old);
         //        }
         //    }));
         //}
 
-        //public int GetRowIndex(String IOName)
+        //public int GetRowIndex(string IOName)
         //{
         //    int index=-1;
         //    foreach (DataGridViewRow row in testDGV.Rows)
         //    {
-        //        if (((String)row.Cells["input"].Value)==IOName)
+        //        if (((string)row.Cells["input"].Value)==IOName)
         //        {
         //            index = testDGV.Rows.IndexOf(row);
         //        }
@@ -240,18 +240,18 @@ namespace WebInterface
 
         //private void ResponseHTTPQuery()
         //{
-        //    String[] _actionArr;
+        //    string[] _actionArr;
         //    while (true)
         //    {
         //        Thread.Sleep(10);
         //        _actionArr = HTTPRequestHandler.action;                
         //        if (_actionArr.Length != 0)
         //        {
-        //            HTTPRequestHandler.action = new String[0];
+        //            HTTPRequestHandler.action = new string[0];
         //            try
         //            {
-        //                String IOName = _actionArr[0];
-        //                String action = _actionArr[1];
+        //                string IOName = _actionArr[0];
+        //                string action = _actionArr[1];
         //                switch (action)
         //                {
         //                    case "Check":

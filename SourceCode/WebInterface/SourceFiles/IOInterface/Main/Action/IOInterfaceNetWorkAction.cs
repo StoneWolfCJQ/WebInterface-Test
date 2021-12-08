@@ -37,8 +37,8 @@ namespace WebInterface
                     return;
                 }
             }
-            String IPAddressStr = IPTextBox.Text;
-            String PortStr = portTextBox.Text;
+            string IPAddressStr = IPTextBox.Text;
+            string PortStr = portTextBox.Text;
             try
             {
                 IPEndPoint IPAddressProg = new IPEndPoint(IPAddress.Parse(IPAddressStr), int.Parse(PortStr));

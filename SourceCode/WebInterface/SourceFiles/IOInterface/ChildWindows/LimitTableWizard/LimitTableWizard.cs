@@ -81,7 +81,7 @@ namespace WebInterface
 
         bool CBIsNull()
         {
-            return String.IsNullOrEmpty(controllerName);
+            return string.IsNullOrEmpty(controllerName);
         }
 
         void GetTable()

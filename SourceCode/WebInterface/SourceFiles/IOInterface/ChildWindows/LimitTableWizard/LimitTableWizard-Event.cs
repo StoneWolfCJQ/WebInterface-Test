@@ -81,7 +81,7 @@ namespace WebInterface
         void GetDescriptionTextBox()
         {
             string text = descriptionTextBox.Text;
-            String[][] textLines = GetArrayFromDescription(text);
+            string[][] textLines = GetArrayFromDescription(text);
             bool result;
             int i;
             int max = 1;
@@ -108,7 +108,7 @@ namespace WebInterface
                 }
                 else
                 {
-                    s = String.Empty;
+                    s = string.Empty;
                 }
 
                 if (axisDesp.ContainsKey(i))
@@ -138,7 +138,7 @@ namespace WebInterface
             foreach (DataRow row in table.Rows)
             {
                 name = row["IOName"] as string;
-                if (!(String.IsNullOrEmpty(name)|| String.IsNullOrWhiteSpace(name)))
+                if (!(string.IsNullOrEmpty(name)|| string.IsNullOrWhiteSpace(name)))
                 {
                     return false;
                 }
@@ -200,12 +200,12 @@ namespace WebInterface
 
         bool IsStringEmpty(string s)
         {
-            return (String.IsNullOrEmpty(s) || String.IsNullOrWhiteSpace(s));
+            return (string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s));
         }
 
         bool IsStringValid(string s)
         {
-            string reg = String.Format(@"^{0}[0-9]+\.[0-1]$", preFix);
+            string reg = string.Format(@"^{0}[0-9]+\.[0-1]$", preFix);
             return Regex.IsMatch(s, reg);
         }
 
@@ -232,7 +232,7 @@ namespace WebInterface
                 }                
             }
             head = head.TrimEnd(',');
-            scriptTextBox.Text = String.Join("\r\n", head, body, end);
+            scriptTextBox.Text = string.Join("\r\n", head, body, end);
         }
 
         int GetAxisNumber(DataRow row)
@@ -264,10 +264,10 @@ namespace WebInterface
             string[] sl = s.Split(sChar);
             if (sl.Length <= 1)
             {
-                return String.Empty;
+                return string.Empty;
             }
             sl[sl.Length - 1] = "";
-            return String.Join(sChar.ToString(), sl);
+            return string.Join(sChar.ToString(), sl);
         }
 
         #endregion

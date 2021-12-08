@@ -30,13 +30,13 @@ namespace WebInterface
             response.Close();
         }
 
-        public static void SendHeadFile(Socket response, String requestFileType, String requestFileName)
+        public static void SendHeadFile(Socket response, string requestFileType, string requestFileName)
         {
             string statusline = "HTTP/1.1 200 OK\r\n";   //状态行
             byte[] statusline_to_bytes = Encoding.UTF8.GetBytes(statusline);
 
             byte[] content_to_bytes = File.ReadAllBytes(Directory.GetCurrentDirectory()+requestFileName.Replace('/','\\'));
-            String contentTypeStr = "";
+            string contentTypeStr = "";
             switch (requestFileType)
             {
                 case "css":contentTypeStr = "Content-Type:text/css;";
@@ -66,7 +66,7 @@ namespace WebInterface
             
             byte[] content_to_bytes = Encoding.UTF8.GetBytes(JSONHandler.SendInitialJSONFromDataCollection(out DateTime lastModifiedTimeutc));
             string header = string.Format("Content-Type:application/json;charset=UTF-8\r\nContent-Length:{0}\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
+            string modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
             byte[] modifiedToBytes = Encoding.UTF8.GetBytes(modified);
 
@@ -79,15 +79,15 @@ namespace WebInterface
 
         }
 
-        public static void AJAXAction(Socket response, String queryContent, DateTime lastModifiedSinceutc)
+        public static void AJAXAction(Socket response, string queryContent, DateTime lastModifiedSinceutc)
         {
             if (queryContent != "")
             {
                 queryContent = Uri.UnescapeDataString(queryContent);
-                String[] sourceStr = queryContent.Split('&');
-                String cName = sourceStr[0].Split('=')[1];
-                String IOName = sourceStr[1].Split('=')[0];
-                String aAction = sourceStr[1].Split('=')[1];
+                string[] sourceStr = queryContent.Split('&');
+                string cName = sourceStr[0].Split('=')[1];
+                string IOName = sourceStr[1].Split('=')[0];
+                string aAction = sourceStr[1].Split('=')[1];
 
                 switch (aAction)
                 {
@@ -105,7 +105,7 @@ namespace WebInterface
             byte[] statusline_to_bytes = Encoding.UTF8.GetBytes(statusline);
             byte[] content_to_bytes = Encoding.UTF8.GetBytes(JSONHandler.SendChangeJSONFromDataCollection(lastModifiedSinceutc, out DateTime lastModifiedTimeutc));
             string header = string.Format("Content-Type:application/json;charset=UTF-8\r\nContent-Length:{0}\r\nConnection: keep-alive\r\n", content_to_bytes.Length);
-            String modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
+            string modified = string.Format("Last-Modified:{0}\r\n", Utilities.ConvertDateTimeUTCToRoundTripTime(lastModifiedTimeutc));
             byte[] header_to_bytes = Encoding.UTF8.GetBytes(header);  //应答头
             byte[] modifiedToBytes= Encoding.UTF8.GetBytes(modified);
 
@@ -120,7 +120,7 @@ namespace WebInterface
 
     static partial class HTTPRequestHandler
     {
-        public static String[] action = { };
+        public static string[] action = { };
         public static IOInterface IO;
     }
 }

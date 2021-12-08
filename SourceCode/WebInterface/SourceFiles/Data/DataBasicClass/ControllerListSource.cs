@@ -8,11 +8,11 @@ namespace WebInterface
 {
     public class ControllerListSource
     {
-        public String name { get; set; }
-        public String IP { get; set; }
-        public List<String> IOList { get; set; }
+        public string name { get; set; }
+        public string IP { get; set; }
+        public List<string> IOList { get; set; }
         public List<int> IOResult { get; set; }
-        public ControllerListSource(String _name, String _IP, List<String> _IOLIst = null)
+        public ControllerListSource(string _name, string _IP, List<string> _IOLIst = null)
         {
             name = _name;
             IP = _IP;

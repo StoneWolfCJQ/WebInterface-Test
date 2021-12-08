@@ -9,7 +9,7 @@ namespace WebInterface
     public static partial class ACSBaseConfig
     {
         public static DefaultACSChoice dac = DefaultACSChoice.Simulator;
-        public static String sim = "Simulator";
+        public static string sim = "Simulator";
     }
 
     public static partial class ACSBaseConfig

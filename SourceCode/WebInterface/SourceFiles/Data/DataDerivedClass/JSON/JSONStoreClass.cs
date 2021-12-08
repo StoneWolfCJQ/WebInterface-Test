@@ -10,8 +10,8 @@ namespace WebInterface
 {
     class JSONStoreClass : StoreClass
     {
-        public Dictionary<String, DataSet> dataDict;
-        public Dictionary<String, String> controllerDict;
+        public Dictionary<string, DataSet> dataDict;
+        public Dictionary<string, string> controllerDict;
         public DataTable QPLCControllerTable { get; set; }
         public DataTable ACSControllerTable { get; set; }
         public DataTable ControllerTypeTable { get; set; }

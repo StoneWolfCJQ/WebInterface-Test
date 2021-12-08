@@ -19,8 +19,8 @@ namespace WebInterface
         {
             if (controllerDropList.Items.Count > 0)
             {
-                String pasteText = Clipboard.GetText();
-                String IOType = IOTab.SelectedTab.Text;
+                string pasteText = Clipboard.GetText();
+                string IOType = IOTab.SelectedTab.Text;
                 IODataCollection.dataTableType dtt = (IODataCollection.dataTableType)Array.IndexOf(
                         Enum.GetNames(typeof(IODataCollection.dataTableType)), IOType);
                 DataGridView dgv= new DataGridView();
@@ -36,7 +36,7 @@ namespace WebInterface
                         dgv = limitDGV;
                         break;
                 }
-                String controllerName = controllerDropList.SelectedValue as String;
+                string controllerName = controllerDropList.SelectedValue as string;
                 PasteFormPreviewWindow pfp = new PasteFormPreviewWindow(pasteText, dgv, dgvList, controllerName.Split('-')[0]);
                 pfp.ShowDialog();
                 if (pfp.result)
@@ -69,7 +69,7 @@ namespace WebInterface
         private void ShowLimitTableWizard()
         {            
             string name = controllerDropList.SelectedValue as string;
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 if (LimitWizardThread.IsAlive)
                 {

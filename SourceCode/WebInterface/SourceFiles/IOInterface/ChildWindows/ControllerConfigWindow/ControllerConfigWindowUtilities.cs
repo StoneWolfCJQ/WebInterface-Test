@@ -9,13 +9,13 @@ namespace WebInterface
 {
     public partial class ControllerConfigWindow
     {
-        private String GetCellValueString<T>(int rowIndex, T colIndex)
+        private string GetCellValueString<T>(int rowIndex, T colIndex)
         {
-            String rs = "";
+            string rs = "";
             int ci = 0;
-            if (typeof(T) == typeof(String))
+            if (typeof(T) == typeof(string))
             {
-                String cs = (String)Convert.ChangeType(colIndex, typeof(String));
+                string cs = (string)Convert.ChangeType(colIndex, typeof(string));
                 ci = controllerDGV.Columns[cs].Index;
             }
             else
@@ -25,7 +25,7 @@ namespace WebInterface
 
             try
             {
-                rs = (String)controllerDGV.Rows[rowIndex].Cells[ci].Value;
+                rs = (string)controllerDGV.Rows[rowIndex].Cells[ci].Value;
             }
             catch
             {
@@ -33,13 +33,13 @@ namespace WebInterface
             return rs;
         }
 
-        private String GetCellValueAndChange<T>(int rowIndex, T colIndex)
+        private string GetCellValueAndChange<T>(int rowIndex, T colIndex)
         {
-            String rs = "";
+            string rs = "";
             int ci = 0;
-            if (typeof(T) == typeof(String))
+            if (typeof(T) == typeof(string))
             {
-                String cs = (String)Convert.ChangeType(colIndex, typeof(String));
+                string cs = (string)Convert.ChangeType(colIndex, typeof(string));
                 ci = controllerDGV.Columns[cs].Index;
             }
             else
@@ -49,7 +49,7 @@ namespace WebInterface
 
             try
             {
-                rs = (String)controllerDGV.Rows[rowIndex].Cells[ci].Value;
+                rs = (string)controllerDGV.Rows[rowIndex].Cells[ci].Value;
             }
             catch
             {

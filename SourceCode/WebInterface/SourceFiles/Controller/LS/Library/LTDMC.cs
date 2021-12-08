@@ -70,10 +70,10 @@ namespace csLTDMC //命名空间根据应用程序修改
 
         //下载参数文件
         [DllImport("LTDMC.dll", EntryPoint = "dmc_download_configfile", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dmc_download_configfile(UInt16 CardNo, String FileName);
+        public static extern short dmc_download_configfile(UInt16 CardNo, string FileName);
         //下载固件文件
         [DllImport("LTDMC.dll", EntryPoint = "dmc_download_firmware", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public static extern short dmc_download_firmware(UInt16 CardNo, String FileName);
+        public static extern short dmc_download_firmware(UInt16 CardNo, string FileName);
 
         //----------------------限位异常设置-------------------------------	
         [DllImport("LTDMC.dll", EntryPoint = "dmc_set_softlimit", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
@@ -1091,11 +1091,11 @@ namespace csLTDMC //命名空间根据应用程序修改
 
         //总线参数
         [DllImport("LTDMC.dll", EntryPoint = "nmc_download_configfile", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public static extern short nmc_download_configfile(UInt16 CardNo, UInt16 PortNum, String FileName);//总线ENI配置文件
+        public static extern short nmc_download_configfile(UInt16 CardNo, UInt16 PortNum, string FileName);//总线ENI配置文件
         [DllImport("LTDMC.dll", EntryPoint = "nmc_download_mapfile", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public static extern short nmc_download_mapfile(UInt16 CardNo, String FileName);
+        public static extern short nmc_download_mapfile(UInt16 CardNo, string FileName);
         [DllImport("LTDMC.dll")]
-        public static extern short nmc_upload_configfile(UInt16 CardNo, UInt16 PortNum, String FileName);
+        public static extern short nmc_upload_configfile(UInt16 CardNo, UInt16 PortNum, string FileName);
         [DllImport("LTDMC.dll", EntryPoint = "nmc_set_manager_para", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
         public static extern short nmc_set_manager_para(UInt16 CardNo, UInt16 PortNum, Int32 baudrate, UInt16 ManagerID);
         [DllImport("LTDMC.dll", EntryPoint = "nmc_get_manager_para", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]

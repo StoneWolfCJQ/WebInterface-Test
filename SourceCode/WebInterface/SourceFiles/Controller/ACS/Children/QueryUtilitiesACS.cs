@@ -8,21 +8,21 @@ namespace WebInterface.QueryUtilities
 {
     public static partial class ACSQueryUtilities
     {
-        public static String GenACSSimQueryStr(List<String> IOList)
+        public static string GenACSSimQueryStr(List<string> IOList)
         {
-            String queryStr;
-            List<String> ls;
-            String[] la;
+            string queryStr;
+            List<string> ls;
+            string[] la;
 
             ls = new List<string>(IOList);
             ls.Insert(0, "?");
             la = ls.ToArray();
-            queryStr = String.Join(",", la).Remove(1, 1);
+            queryStr = string.Join(",", la).Remove(1, 1);
 
             return queryStr;
         }
 
-        public static List<int> ConvertACSTransStr(String transStr, out bool result)
+        public static List<int> ConvertACSTransStr(string transStr, out bool result)
         {
             char splitChar = '\r';
             int[] tr = new int[0];

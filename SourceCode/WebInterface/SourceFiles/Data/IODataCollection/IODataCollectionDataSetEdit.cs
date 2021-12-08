@@ -11,7 +11,7 @@ namespace WebInterface
 {
     static partial class IODataCollection
     {
-        public static void AddController(string controllerType, String controllerName, String controllerAddress, bool bindingAdd = false)
+        public static void AddController(string controllerType, string controllerName, string controllerAddress, bool bindingAdd = false)
         {
             string mergeName = MergeTypeNameAndControllerName(controllerType, controllerName);
             controllerDict.Add(mergeName, controllerAddress);
@@ -26,12 +26,12 @@ namespace WebInterface
             }
         }
 
-        public static void AddControllerTable(string cType, bool check, String controllerName, String controllerAddress)
+        public static void AddControllerTable(string cType, bool check, string controllerName, string controllerAddress)
         {
             ControllerDataTableList.Find(t=>t.TableName==cType).Rows.Add(check, controllerName, controllerAddress);
         }
 
-        public static void InitialControllerDataSet(String controllerName)
+        public static void InitialControllerDataSet(string controllerName)
         {
             foreach (dataTableType dtt in Enum.GetValues(typeof(dataTableType)))
             {
@@ -39,7 +39,7 @@ namespace WebInterface
             }
         }
 
-        public static void UpdateControllerName(string cType, String oldKey, String newKey, bool updateBind = false)
+        public static void UpdateControllerName(string cType, string oldKey, string newKey, bool updateBind = false)
         {
             string newMergeName = MergeTypeNameAndControllerName(cType, newKey);
             string oldMergeName = MergeTypeNameAndControllerName(cType, oldKey);
@@ -58,7 +58,7 @@ namespace WebInterface
             }
         }
 
-        public static void UpdateControllerAddress(string cType, String newIP, String controllerName)
+        public static void UpdateControllerAddress(string cType, string newIP, string controllerName)
         {
             string oldMergeName = MergeTypeNameAndControllerName(cType, controllerName);
             controllerDict[oldMergeName] = newIP;
@@ -69,7 +69,7 @@ namespace WebInterface
             }
         }
 
-        public static void AddTable(dataTableType DTType, String controllerName, DataTable table)
+        public static void AddTable(dataTableType DTType, string controllerName, DataTable table)
         {
             DataTable copyTable = table.Copy();
             if (dataDict[controllerName].Tables.Contains(DTType.ToString()))
@@ -86,7 +86,7 @@ namespace WebInterface
             }
         }
 
-        public static void AppendToTable(dataTableType DTType, String controllerName, DataTable table)
+        public static void AppendToTable(dataTableType DTType, string controllerName, DataTable table)
         {
             DataTable copyTable = table.Copy();
             DataTable sourceTable = dataDict[controllerName].Tables[DTType.ToString()];
@@ -101,7 +101,7 @@ namespace WebInterface
             {
                 name = row["IOName"] as string;
                 alias = row["IOAlias"] as string;
-                if (String.IsNullOrEmpty(name + alias) || String.IsNullOrWhiteSpace(name + alias))
+                if (string.IsNullOrEmpty(name + alias) || string.IsNullOrWhiteSpace(name + alias))
                 {
                     rr.Add(row);
                 }
@@ -113,7 +113,7 @@ namespace WebInterface
             }
         }
 
-        public static void RemoveController(string cType, String controllerName, bool removeBind = false)
+        public static void RemoveController(string cType, string controllerName, bool removeBind = false)
         {
             string oldMergeName = MergeTypeNameAndControllerName(cType, controllerName);
             controllerDict.Remove(oldMergeName);
@@ -124,12 +124,12 @@ namespace WebInterface
                 controllerNameList.Remove(cls);
             }
             /*ACSControllerTable.Rows.Remove((from DataRow r in ACSControllerTable.Rows
-                                        where (String)r["Controller Name"] == controllerName
+                                        where (string)r["Controller Name"] == controllerName
                                         select r).First());
             ACSControllerTable.Rows.Add(false, "", "");*/
         }
 
-        public static DataTable CreateTableFromClipboardText(String clipBoardText, out bool result)
+        public static DataTable CreateTableFromClipboardText(string clipBoardText, out bool result)
         {
             DataTable table;
             result = true;
@@ -138,12 +138,12 @@ namespace WebInterface
 
             try
             {
-                String[][] textLines = clipBoardText.Split(new string[] { "\r\n" }, StringSplitOptions.None)
+                string[][] textLines = clipBoardText.Split(new string[] { "\r\n" }, StringSplitOptions.None)
                 .Select(s => s.Split('\t')).ToArray();
 
-                String[] cstr = Enum.GetNames(typeof(checkStatusType));
+                string[] cstr = Enum.GetNames(typeof(checkStatusType));
 
-                foreach (String[] textStr in textLines)
+                foreach (string[] textStr in textLines)
                 {
                     if ((textStr.Count() > 1))
                     {
@@ -161,16 +161,16 @@ namespace WebInterface
 
         public static bool ValidStr(string s)
         {
-            return !(String.IsNullOrWhiteSpace(s) || String.IsNullOrEmpty(s));
+            return !(string.IsNullOrWhiteSpace(s) || string.IsNullOrEmpty(s));
         }
 
 
-        public static void CreateTableFromClipboardHTML(String clipBoardHTML)
+        public static void CreateTableFromClipboardHTML(string clipBoardHTML)
         {
 
         }
 
-        public static ControllerListSource FindNameListItemByName(String controllerName)
+        public static ControllerListSource FindNameListItemByName(string controllerName)
         {
             var s = from c in controllerNameList
                     where c.name == controllerName
@@ -188,7 +188,7 @@ namespace WebInterface
 
         }
 
-        public static void RebuildBindList(Dictionary<String, String> d)
+        public static void RebuildBindList(Dictionary<string, string> d)
         {
             controllerNameList.Clear();
             List<ControllerListSource> c = (from dp in d

@@ -19,7 +19,7 @@ namespace WebInterface
             return true;
         }
 
-        private bool CheckControllerNameLegal(String cn, int rowIndex, int colIndex)
+        private bool CheckControllerNameLegal(string cn, int rowIndex, int colIndex)
         {
             if (cn.Contains(' '))
             {
@@ -34,7 +34,7 @@ namespace WebInterface
             return true;
         }
 
-        private bool CheckControllerIPLegal(String IP, int rowIndex, int colIndex, List<string> checkList)
+        private bool CheckControllerIPLegal(string IP, int rowIndex, int colIndex, List<string> checkList)
         {
             if (IP == "")
             {
@@ -57,14 +57,14 @@ namespace WebInterface
                 return false;
             }*/
 
-            List<String> s = IP.Split('.').ToList();
+            List<string> s = IP.Split('.').ToList();
             if (s.Count != 4)
             {
                 MessageBox.Show("IP错误");
                 return false;
             }
 
-            foreach (String ss in s)
+            foreach (string ss in s)
             {
                 bool r = int.TryParse(ss, out int i);
                 if ((!r) || (i < 0) || (i > 255))
@@ -118,7 +118,7 @@ namespace WebInterface
             return true;
         }
 
-        private bool CheckControllerName(String cn, int rowIndex, int colIndex, List<string> CheckList)
+        private bool CheckControllerName(string cn, int rowIndex, int colIndex, List<string> CheckList)
         {
             DataGridViewCellStyle st = new DataGridViewCellStyle();
             if ((cn.ToString() == "") && (oldStr != ""))
@@ -148,7 +148,7 @@ namespace WebInterface
             return true;
         }
 
-        private bool CheckControllerAddress(String address, int rowIndex, int colIndex, List<string> checkList)
+        private bool CheckControllerAddress(string address, int rowIndex, int colIndex, List<string> checkList)
         {
             DataGridViewCellStyle st = new DataGridViewCellStyle();
             bool result;
@@ -171,7 +171,7 @@ namespace WebInterface
 
         public void CheckRowValueLegal(int rowIndex, int colIndex)
         {
-            String cn, address;
+            string cn, address;
 
             List<string> checkList = (from DataGridViewRow dgvr in controllerDGV.Rows
                                       let s = dgvr.Cells[colIndex].Value as string

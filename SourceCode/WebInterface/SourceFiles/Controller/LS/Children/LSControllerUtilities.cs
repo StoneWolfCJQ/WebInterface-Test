@@ -37,7 +37,7 @@ namespace WebInterface
         //other IOs must start at 0 and be sequential
         //IN0-IN7 for internel IO, port0's 0-7, others for remaining port IOs
         //other port mapping rule: *x.y-- port:floor((x+1)/4), index:(x+1)*8+y
-        public List<int> ReadDevice(String cname, List<string> queryList)
+        public List<int> ReadDevice(string cname, List<string> queryList)
         {
             Dictionary<string, int> IOIndexList=new Dictionary<string, int>();
             uint[] result = new uint[queryList.Count];
@@ -111,7 +111,7 @@ namespace WebInterface
             return LTDMC.dmc_write_outbit((ushort)LSList[cname], (ushort)bitNo, (ushort)value);
         }
 
-        public void Connect(String cname, int CardID)
+        public void Connect(string cname, int CardID)
         {
            LSList.Add(cname, CardID);
         }
@@ -121,7 +121,7 @@ namespace WebInterface
         //     //
         // }
 
-        public void StartUpdate(String cname, String queryStr)
+        public void StartUpdate(string cname, string queryStr)
         {
 
         }
@@ -130,7 +130,7 @@ namespace WebInterface
 
     public partial class LSControllerUtilities
 {
-        public Dictionary<String, int> LSList;
+        public Dictionary<string, int> LSList;
         private bool stopUpdate = false;
     }
 }

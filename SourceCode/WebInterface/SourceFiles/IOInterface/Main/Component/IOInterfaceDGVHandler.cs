@@ -89,8 +89,8 @@ namespace WebInterface
 
         private void RetrieveSelectController()
         {
-            String controllerName = controllerDropList.SelectedValue as String;
-            if (String.IsNullOrEmpty(controllerName))
+            string controllerName = controllerDropList.SelectedValue as string;
+            if (string.IsNullOrEmpty(controllerName))
             {
                 foreach (DataGridView dgv in dgvList)
                 {
@@ -122,27 +122,27 @@ namespace WebInterface
             }
         }
 
-        public void ChangeCheckStatus(String cName, String IOName, String checkStatus)
+        public void ChangeCheckStatus(string cName, string IOName, string checkStatus)
         {
             Invoke(new Action(()=> { IODataCollection.ChangeCheckStatus(cName, IOName, checkStatus) ; }));
         }
 
-        public void ChangeOnOFF(String cName, String IOName, String onoff)
+        public void ChangeOnOFF(string cName, string IOName, string onoff)
         {
             int i = onoff == "ON" ? 1 : 0;
-            String command = $"{IOName}={i}";
+            string command = $"{IOName}={i}";
             string cType = cName.Split('-')[0];
             try
             {
                 switch (cType)
                 {
-                    case "ACS": String s = ACSUpdater.acsu.Transaction(cName, command);break;
+                    case "ACS": string s = ACSUpdater.acsu.Transaction(cName, command);break;
                     case "QPLC":
                         int iReturnCode;
                         iReturnCode = QPLCUpdater.qplcu.WriteDevice(cName, IOName, i);
                         if (iReturnCode!=0)
                         {
-                            throw new Exception(String.Format("0xf{0:x8}", iReturnCode));
+                            throw new Exception(string.Format("0xf{0:x8}", iReturnCode));
                         }
                         break;
                     case ControllerNames.LS:
@@ -150,7 +150,7 @@ namespace WebInterface
                         ErrCode=LSUpdater.LSu.WriteDevice(cName, IOName, i);
                         if (ErrCode != 0)
                         {
-                            throw new Exception(String.Format("0xf{0:x8}", ErrCode));
+                            throw new Exception(string.Format("0xf{0:x8}", ErrCode));
                         }
                         break;
                 }
@@ -162,7 +162,7 @@ namespace WebInterface
             }
         }
 
-        private void CheckErrorCell(IODataCollection.dataTableType dtt, String controllerName)
+        private void CheckErrorCell(IODataCollection.dataTableType dtt, string controllerName)
         {
 
         }
@@ -184,7 +184,7 @@ namespace WebInterface
                             dgv.Rows.Remove(row);                         
                         }
                         string cname = controllerDropList.SelectedValue as string;
-                        String IOType = IOTab.SelectedTab.Text;
+                        string IOType = IOTab.SelectedTab.Text;
                         IODataCollection.dataTableType dtt = (IODataCollection.dataTableType)Array.IndexOf(
                                 Enum.GetNames(typeof(IODataCollection.dataTableType)), IOType);
                         if (dgv.Rows.Count <= 0)
@@ -212,7 +212,7 @@ namespace WebInterface
                         System.Data.DataTable table = dgv.DataSource as System.Data.DataTable;
                         table.Clear();
                         string cname = controllerDropList.SelectedValue as string;
-                        String IOType = IOTab.SelectedTab.Text;
+                        string IOType = IOTab.SelectedTab.Text;
                         IODataCollection.dataTableType dtt = (IODataCollection.dataTableType)Array.IndexOf(
                                 Enum.GetNames(typeof(IODataCollection.dataTableType)), IOType);
                         IODataCollection.FillEmptyTable(cname, dtt);

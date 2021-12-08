@@ -35,7 +35,7 @@ namespace WebInterface
             aList.Clear();
         }
 
-        public String Transaction(String cname, String queryStr)
+        public string Transaction(string cname, string queryStr)
         {
             return aList[cname].Transaction(queryStr);
         }
@@ -47,34 +47,34 @@ namespace WebInterface
             aList.Add(IODataCollection.MergeTypeNameAndControllerName("ACS",ACSBaseConfig.sim), simApi);
         }
 
-        public void TCPConnect(String cname, String IP)
+        public void TCPConnect(string cname, string IP)
         {
             Api tapi = new Api();
             tapi.OpenCommEthernetTCP(IP, 701);
             aList.Add(cname, tapi);
         }
 
-        public void BeginTransaction(String cname, String queryStr, AsyncCallback ac, ACSControllerUtilities _acsu)
+        public void BeginTransaction(string cname, string queryStr, AsyncCallback ac, ACSControllerUtilities _acsu)
         {
             ACSControllerUtilities acsu = new ACSControllerUtilities(_acsu);
             AsyncTransactionDel tdel = new AsyncTransactionDel(Transaction);
             IAsyncResult result = tdel.BeginInvoke(cname, queryStr, new AsyncCallback(ac), new object[] { cname, acsu});
         }
 
-        public String EndTransaction(IAsyncResult ar)
+        public string EndTransaction(IAsyncResult ar)
         {
             AsyncResult ra = (AsyncResult)ar;
             AsyncTransactionDel tdel = (AsyncTransactionDel)ra.AsyncDelegate;
-            String s= tdel.EndInvoke(ar);
+            string s= tdel.EndInvoke(ar);
             return s;
         }
     }
 
     public partial class ACSControllerUtilities
     {
-        public Dictionary<String, Api> aList;
+        public Dictionary<string, Api> aList;
         public Api simApi;
         private bool stopUpdate = false;
-        private delegate String AsyncTransactionDel(String cname, String queryStr);
+        private delegate string AsyncTransactionDel(string cname, string queryStr);
     }
 }

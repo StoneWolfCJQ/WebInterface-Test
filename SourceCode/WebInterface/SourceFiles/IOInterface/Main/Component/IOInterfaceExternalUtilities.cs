@@ -10,7 +10,7 @@ namespace WebInterface
 {
     public partial class IOInterface
     {
-        public static void ShowError(String err)
+        public static void ShowError(string err)
         {
             if (!suppressShowingError)
             {

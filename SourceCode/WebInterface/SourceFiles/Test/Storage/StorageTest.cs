@@ -16,7 +16,7 @@ namespace WebInterface
         public StorageTest()
         {
             InitializeComponent();
-            String cp = Directory.GetCurrentDirectory();
+            string cp = Directory.GetCurrentDirectory();
             defaultPath = cp + defaultDir + defaultFileName;
         }
 
@@ -25,8 +25,8 @@ namespace WebInterface
             TestAction t = new TestAction(defaultPath);
         }
 
-        private String defaultFileName = "TestStorage.json";
-        private String defaultDir = @"\json\";
-        private String defaultPath;
+        private string defaultFileName = "TestStorage.json";
+        private string defaultDir = @"\json\";
+        private string defaultPath;
     }
 }

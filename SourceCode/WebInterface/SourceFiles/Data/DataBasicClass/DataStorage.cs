@@ -46,8 +46,8 @@ namespace WebInterface
         public DataBase db;
         public JSONBase jb;
 
-        public String defaultFileName;
-        public String defaultDir;
-        public String defaultPath;
+        public string defaultFileName;
+        public string defaultDir;
+        public string defaultPath;
     }
 }
