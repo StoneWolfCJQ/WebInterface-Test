@@ -50,6 +50,7 @@ namespace WebInterface
                 IODataCollection.AddController("QPLC", ACSBaseConfig.sim, "");
                 IODataCollection.AddControllerTable("QPLC", false, ACSBaseConfig.sim, "");
                 IODataCollection.DuplicateControllerTable("QPLC");
+                IODataCollection.DuplicateControllerTable("LS");
             }
 
             RetrieveSelectController();
